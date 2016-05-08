@@ -5,9 +5,14 @@ var sequelize = new Sequelize('todo-db', undefined, undefined, {
   'storage': __dirname + '/database.sqlite'
 });
 
-module.exports = {
-  todo: sequelize.import(__dirname + '/models/todos'),
-  user: sequelize.import(__dirname + '/models/user'),
-  sequelize: sequelize,
-  Sequelize: Sequelize
-};
+var db = {};
+
+db.todo =sequelize.import(__dirname + '/models/todos');
+db.user = sequelize.import(__dirname + '/models/user');
+db.sequelize =  sequelize;
+db.Sequelize= Sequelize;
+//define relationships
+
+db.user.hasMany(db.todo);
+
+module.exports = db;
