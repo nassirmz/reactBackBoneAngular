@@ -1,12 +1,13 @@
 var express = require('express');
-var bodyParser = require('body-parser');
 var db = require('./db/db');
 
 var app = express();
 
-app.use(bodyParser.json());
-app.use(express.static(__dirname + '/../client'));
+//set up middleware
+require('./utils/middleware')(app, express);
 
+//routes
+require('./utils/routes')(app, db);
 var port = process.env.PORT || 4568;
 
 db.sequelize.sync({force: true})
