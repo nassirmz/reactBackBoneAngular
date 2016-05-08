@@ -1,21 +1,16 @@
-var Sequelize = require('sequelize');
-var sequelize = require('./../config');
-
-var Todo = sequelize.define('Todo', {
-  task: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      len: [1, 250]
+module.exports = function(sequelize, DataTypes) {
+  return sequelize.define('Todo', {
+    task: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [1, 250]
+      }
+    },
+    completed: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: false
     }
-  },
-  completed: {
-    type: Sequelize.BOOLEAN,
-    defaultValue: false,
-    validate: {
-      len: [7, 100]
-    }
-  }
-});
-
-module.exports = Todo;
+  });
+};
