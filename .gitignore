@@ -1,5 +1,6 @@
 #dependecies
 node_modules
+client/lib/
 
 #db
 *.sqlite

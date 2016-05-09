@@ -10,7 +10,7 @@ require('./utils/middleware')(app, express);
 require('./utils/routes')(app, db);
 var port = process.env.PORT || 4568;
 
-db.sequelize.sync({force: true})
+db.sequelize.sync()
 .then(function () {
   app.listen(port, function () {
     console.log('Listening on port ', port);
