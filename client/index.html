@@ -2,10 +2,21 @@
 <html>
 <head>
   <title>Todo App</title>
+  <link rel="stylesheet" href="assets/main.css" />
 </head>
 <body>
-<h1>Todo App</h1>
+  <div class="container">
+    <h1>Todo App</h1>
+    <h3>Todo</h3>
+    <ul id="imcompleted-tasks">
+    </ul>
+  </div>
+
+  <script src="lib/jquery/dist/jquery.js"></script>
+  <script src="lib/underscore/underscore.js"></script>
+  <script src="lib/backbone/backbone.js"></script>
+  <script src="collections/todos.js"></script>
   <script src="models/todoModel.js"></script>
-  <script src="viewss/todoView.js"></script>
+  <script src="views/todoView.js"></script>
 </body>
 </html>
