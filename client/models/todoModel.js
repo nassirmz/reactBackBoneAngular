@@ -1,5 +1,8 @@
 var TodoItem = Backbone.Model.extend({
-  urlRoot: '/todos'
+  urlRoot: '/todos',
+  defaults: {
+    completed: false
+  }
 });
 
 var todoItem = new TodoItem({id: 1});

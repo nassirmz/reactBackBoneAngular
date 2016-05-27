@@ -1,6 +1,9 @@
 var TodoView = Backbone.View.extend({
+  tagName: 'li',
+  template: _.template('<input type="checkbox" <%if (completed) { %>"checked" <%}%>>' + '<label><%= task %></label>' + '<input type="text"><button class="edit">Edit</button><button class="delete">Delete</button'),
   render: function () {
-    this.$el.html('<li>' + this.model.get('task') + '</li>');
+    var attr = this.model.toJSON();
+    this.$el.html(this.template(attr));
     console.log(this.el);
     console.log(this.model);
   }
@@ -14,7 +17,7 @@ todoItem.fetch({
       model: todoItem
     });
     todoView.render();
-    $("#incompleted-tasks").append(todoView.el);
+    $("#incompleted-tasks").append(todoView.$el);
   },
   error: function () {
     console.log('Failed to fetch!');
