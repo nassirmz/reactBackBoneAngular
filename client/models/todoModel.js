@@ -3,4 +3,3 @@ var TodoItem = Backbone.Model.extend({
 });
 
 var todoItem = new TodoItem({id: 1});
-todoItem.fetch();

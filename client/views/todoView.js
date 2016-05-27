@@ -1,11 +1,23 @@
 var TodoView = Backbone.View.extend({
   render: function () {
+    this.$el.html('<li>' + this.model.get('task') + '</li>');
+    console.log(this.el);
     console.log(this.model);
-    $(this.el).html('<li>' + this.model.get('task') + '</li>');
   }
 });
-var  todoView = new TodoView({
-  model: todoItem
+
+var  todoView;
+
+todoItem.fetch({
+  success: function () {
+    todoView = new TodoView({
+      model: todoItem
+    });
+    todoView.render();
+    $("#incompleted-tasks").append(todoView.el);
+  },
+  error: function () {
+    console.log('Failed to fetch!');
+  }
 });
 
-todoView.render();
