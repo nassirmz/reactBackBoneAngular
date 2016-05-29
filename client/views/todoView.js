@@ -1,5 +1,11 @@
 var TodoView = Backbone.View.extend({
+  events: {
+    'change input': 'changeCompleted'
+  },
   tagName: 'li',
+  changeCompleted: function () {
+    this.model.changeCompleted();
+  },
   template: _.template('<input type="checkbox" <% if(completed) print("checked") %>>' + '<label><%= task %></label>' + '<input type="text"><button class="edit">Edit</button><button class="delete">Delete</button'),
   render: function () {
     var attr = this.model.toJSON();
