@@ -1,5 +1,6 @@
 var TodosCollection = Backbone.Collection.extend({
-  url: '/todos'
+  url: '/todos',
+  model: TodoItem,
 });
 
 var todosCollection = new TodosCollection();
@@ -12,4 +13,4 @@ todosCollection.fetch({
   }
 });
 
-console.log(todosCollection);
+console.log(todosCollection.length);

@@ -4,6 +4,12 @@ var TodoView = Backbone.View.extend({
   render: function () {
     var attr = this.model.toJSON();
     this.$el.html(this.template(attr));
+    if(attr.completed) {
+      $('#completed-tasks').append(this.el);
+    }
+    else {
+      $('#incompleted-tasks').append(this.el);
+    }
   }
 });
 
