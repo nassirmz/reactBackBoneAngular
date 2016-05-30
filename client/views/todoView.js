@@ -1,6 +1,7 @@
 var TodoView = Backbone.View.extend({
   initialize: function () {
     this.model.on('change input', this.render, this);
+    this.model.on('destroy', this.removeItem, this);
   },
   events: {
     'change input': 'changeCompleted',
@@ -12,6 +13,10 @@ var TodoView = Backbone.View.extend({
   },
   deleteTask: function () {
     this.model.deleteTask();
+  },
+  removeItem: function () {
+    this.$el.remove();
+    console.log('Remove item called');
   },
   template: _.template('<input type="checkbox" <% if(completed) print("checked") %>>' + '<label><%= task %></label>' + '<input type="text"><button class="edit">Edit</button><button class="delete">Delete</button'),
   render: function () {
