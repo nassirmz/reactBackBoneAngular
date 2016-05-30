@@ -1,10 +1,10 @@
 var TodoView = Backbone.View.extend({
   initialize: function () {
-    this.model.on('change input', this.render, this);
+    this.model.on('change input:checkbox', this.render, this);
     this.model.on('destroy', this.removeItem, this);
   },
   events: {
-    'change input': 'changeCompleted',
+    'change input:checkbox': 'changeCompleted',
     'click .delete': 'deleteTask',
     'click .edit': 'changeToEditMode',
   },
@@ -17,10 +17,11 @@ var TodoView = Backbone.View.extend({
   },
   removeItem: function () {
     this.$el.remove();
-    console.log('Remove item called');
   },
   changeToEditMode: function () {
     this.$el.addClass('editMode');
+    this.$el.find('.edit').addClass('save').text('save');
+    this.$el.find(':text').val(this.model.get('task'));
   },
   template: _.template('<input type="checkbox" <% if(completed) print("checked") %>>' + '<label><%= task %></label>' + '<input type="text"><button class="edit">Edit</button><button class="delete">Delete</button'),
   render: function () {
