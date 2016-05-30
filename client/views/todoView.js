@@ -5,7 +5,8 @@ var TodoView = Backbone.View.extend({
   },
   events: {
     'change input': 'changeCompleted',
-    'click .delete': 'deleteTask'
+    'click .delete': 'deleteTask',
+    'click .edit': 'changeToEditMode',
   },
   tagName: 'li',
   changeCompleted: function () {
@@ -17,6 +18,9 @@ var TodoView = Backbone.View.extend({
   removeItem: function () {
     this.$el.remove();
     console.log('Remove item called');
+  },
+  changeToEditMode: function () {
+    this.$el.addClass('editMode');
   },
   template: _.template('<input type="checkbox" <% if(completed) print("checked") %>>' + '<label><%= task %></label>' + '<input type="text"><button class="edit">Edit</button><button class="delete">Delete</button'),
   render: function () {
