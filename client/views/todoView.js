@@ -1,4 +1,7 @@
 var TodoView = Backbone.View.extend({
+  initialize: function () {
+    this.model.on('change input', this.render, this);
+  },
   events: {
     'change input': 'changeCompleted'
   },
