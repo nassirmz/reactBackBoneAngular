@@ -8,6 +8,9 @@ var TodoItem = Backbone.Model.extend({
     }
     this.save();
   },
+  deleteTask: function () {
+    this.destroy();
+  },
   defaults: {
     completed: false
   }
