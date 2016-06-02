@@ -1,17 +1,13 @@
 var TodosView = Backbone.View.extend({
-  tagName: 'ul',
-  id: 'incompleted-tasks',
   render: function () {
     this.collection.forEach(this.addData, this);
   },
   addData: function (todoItem) {
-    if(!todoItem.get('completed')) {
-      var todoView = new  TodoView({
-        model: todoItem
-      });
-      todoView.render();
-      this.$el.append(todoView.el);
-    }
+    var todoView = new  TodoView({
+      model: todoItem
+    });
+    todoView.render();
+    //this.$el.append(todoView.el);
   }
 });
 
@@ -24,6 +20,5 @@ todosCollection.fetch({
     });
     todosView.render();
     // $("#incompleted-tasks").append(todosView.el);
-    $(".incomplete").append(todosView.el);
   }
 });
