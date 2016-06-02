@@ -22,15 +22,14 @@ var TodoView = Backbone.View.extend({
   },
   changeToEditMode: function () {
     this.$el.addClass('editMode');
-    this.$el.find('.edit').addClass('save').removeClass('edit').text('save');
+    this.$el.find('.edit').addClass('save').removeClass('edit').text('Save');
     this.$el.find(':text').val(this.model.get('task'));
   },
   editTask: function () {
     var newValue = this.$el.find(':text').val();
-    console.log(newValue);
     this.model.set({ task: newValue});
     this.$el.removeClass('editMode');
-    this.$el.find('.edit').removeClass('save').addClass('.edit').text('edit');
+    this.$el.find('.edit').removeClass('save').addClass('.edit').text('Edit');
     this.model.save();
   },
   newTask: function () {

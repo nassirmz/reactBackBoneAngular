@@ -7,7 +7,6 @@ var TodosView = Backbone.View.extend({
       model: todoItem
     });
     todoView.render();
-    //this.$el.append(todoView.el);
   }
 });
 
@@ -19,6 +18,5 @@ todosCollection.fetch({
       collection: todosCollection
     });
     todosView.render();
-    // $("#incompleted-tasks").append(todosView.el);
   }
 });
