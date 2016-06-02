@@ -10,13 +10,12 @@
     <p>
       <label for="new-task">Add Item</label><input id="new-task" type="text"><button>Add</button>
     </p>
-    <div class="incomplete">
-      <h3>Todo</h3>
-    </div>
-    <div class="complete">
-      <h3>Completed</h3>
-    </div>
+    <h3>Todo</h3>
+    <ul id="incompleted-tasks"></ul>
+    <h3>Completed</h3>
+    <ul id="completed-tasks"></ul>
   </div>
+
   <script src="lib/jquery/dist/jquery.js"></script>
   <script src="lib/underscore/underscore.js"></script>
   <script src="lib/backbone/backbone.js"></script>
@@ -24,6 +23,5 @@
   <script src="collections/todos.js"></script>
   <script src="views/todoView.js"></script>
   <script src="views/todosView.js"></script>
-  <script src="views/todosCompletedView.js"></script>
 </body>
 </html>
