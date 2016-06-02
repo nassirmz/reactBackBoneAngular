@@ -41,10 +41,10 @@ var TodoView = Backbone.View.extend({
     var attr = this.model.toJSON();
     this.$el.html(this.template(attr));
     if(attr.completed) {
-      $('#completed-tasks').append(this.el);
+      $('#completed-tasks').prepend(this.el);
     }
     else {
-      $('#incompleted-tasks').append(this.el);
+      $('#incompleted-tasks').prepend(this.el);
     }
   }
 });
