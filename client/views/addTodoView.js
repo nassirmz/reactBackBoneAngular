@@ -3,9 +3,10 @@ var AddTodoView = Backbone.View.extend({
     'click .add': 'addTodo'
   },
   addTodo: function () {
-    this.model.set({task: this.$el.find(':text').val()});
+    var newTodo = new TodoItem({task: this.$el.find(':text').val()});
+    newTodo.save();
+    this.collection.add(newTodo);
     this.$el.find(':text').val('');
-    this.model.create();
   },
   template: _.template('<input id="new-task" type="text">' + '<button class="add">Add</button>'),
   render: function () {
@@ -13,8 +14,3 @@ var AddTodoView = Backbone.View.extend({
     $('p').append(this.$el);
   }
 });
-
-var addTodoView = new AddTodoView({
-  model: todoItem
-});
-addTodoView.render();
