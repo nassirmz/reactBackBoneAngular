@@ -3,6 +3,7 @@ var TodoView = Backbone.View.extend({
     this.model.on('change:completed', this.render, this);
     this.model.on('destroy', this.removeItem, this);
     this.model.on('change:task', this.newTask, this);
+    // this.model.on('addTodo', this.consol, this);
   },
   events: {
     'change input:checkbox': 'changeCompleted',
