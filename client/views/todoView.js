@@ -3,13 +3,11 @@ var TodoView = Backbone.View.extend({
     this.model.on('change:completed', this.render, this);
     this.model.on('destroy', this.removeItem, this);
     this.model.on('change:task', this.newTask, this);
-    // this.model.on('addTodo', this.consol, this);
   },
   events: {
     'change input:checkbox': 'changeCompleted',
     'click .delete': 'deleteTask',
-    'click .edit': 'changeToEditMode',
-    'click .save': 'editTask'
+    'click .edit': 'editTask'
   },
   tagName: 'li',
   changeCompleted: function () {
@@ -21,18 +19,22 @@ var TodoView = Backbone.View.extend({
   removeItem: function () {
     this.$el.remove();
   },
-  changeToEditMode: function () {
-    this.$el.addClass('editMode');
-    this.$el.find('.edit').addClass('save').removeClass('edit').text('Save');
-    this.$el.find(':text').val(this.model.get('task'));
-  },
   editTask: function () {
-    var el = this.$el;
-    var newValue = el.find(':text').val();
-    this.model.set({ task: newValue});
-    el.removeClass('editMode');
-    this.$el.find('.edit').removeClass('save').addClass('.edit').text('Edit');
-    this.model.save();
+    var el = this.$el,
+    inputText = el.find(':text'),
+    editButton = el.find('.edit');
+    model = this.model;
+    if(!el.hasClass('editMode')) {
+      el.addClass('editMode');
+      editButton.text('Save');
+      inputText.val(model.get('task'));
+    }
+    else {
+      el.removeClass('editMode');
+      model.set({ task: inputText.val() });
+      editButton.text('Edit');
+      model.save();
+    }
   },
   newTask: function () {
     var attr = this.model.toJSON();
