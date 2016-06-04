@@ -27,20 +27,21 @@ var TodoView = Backbone.View.extend({
     this.$el.find(':text').val(this.model.get('task'));
   },
   editTask: function () {
-    var newValue = this.$el.find(':text').val();
+    var el = this.$el;
+    var newValue = el.find(':text').val();
     this.model.set({ task: newValue});
-    this.$el.removeClass('editMode');
+    el.removeClass('editMode');
     this.$el.find('.edit').removeClass('save').addClass('.edit').text('Edit');
     this.model.save();
   },
   newTask: function () {
     var attr = this.model.toJSON();
     this.$el.html(this.template(attr));
+    return attr;
   },
   template: _.template('<input type="checkbox" <% if(completed) print("checked") %>>' + '<label><%= task %></label>' + '<input type="text"><button class="edit">Edit</button><button class="delete">Delete</button'),
   render: function () {
-    var attr = this.model.toJSON();
-    this.$el.html(this.template(attr));
+    var attr = this.newTask();
     if(attr.completed) {
       $('#completed-tasks').prepend(this.el);
     }
