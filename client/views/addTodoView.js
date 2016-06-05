@@ -9,10 +9,10 @@ var AddTodoView = Backbone.View.extend({
     this.collection.add(newTodo);
     textInput.val('');
   },
-  template: _.template('<input id="new-task" type="text">' + '<button class="add">Add</button>'),
+  template: _.template('<p><label for="new-task">Add Item</label><input id="new-task" type="text">' + '<button class="add">Add</button></p>'),
   render: function () {
     var el = this.$el;
     el.html(this.template());
-    $('p').append(el);
+    $('.container').append(el);
   }
 });
