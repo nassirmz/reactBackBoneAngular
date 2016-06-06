@@ -6,7 +6,7 @@ var HeaderView = Backbone.View.extend({
     '<li><a href="signout">Sign Out</a></li>'),
   render: function () {
     this.$el.html(this.template());
-    $('.header').append(this.$el);
+    $('.header').prepend(this.$el);
   }
 });
 var headerView = new HeaderView();
