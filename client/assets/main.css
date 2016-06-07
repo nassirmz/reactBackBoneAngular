@@ -72,7 +72,7 @@ label[for='new-task'] {
   font-weight: 700;
   font-size: 15px;
   border-bottom: 2px solid #333;
-  padding: 15px 0 5px;
+  padding: 10px 0 2px;
   margin: 0;
   text-transform: uppercase;
 }
@@ -95,7 +95,7 @@ input[type="text"]:focus {
 /* New Task */
 label[for='new-task'] {
   display: block;
-  margin: 0 0 20px;
+  margin: 0 0 10px;
 }
 input#new-task {
   float: left;
@@ -108,7 +108,7 @@ p > button:hover {
 /* Task list */
 li {
   overflow: hidden;
-  padding: 10px 0;
+  padding: 5px 0;
   border-bottom: 1px solid #eee;
 }
 li > input[type="checkbox"] {
@@ -120,7 +120,7 @@ li > label {
   font-size: 18px;
   line-height: 40px;
   width: 237px;
-  padding: 0 0 0 11px;
+  padding: 0 0 0 5px;
 }
 li >  input[type="text"] {
   width: 226px;
