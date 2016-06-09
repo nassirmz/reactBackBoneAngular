@@ -18,17 +18,4 @@ var TodosView = Backbone.View.extend({
   }
 });
 
-var todosView;
-var addTodoView;
-todosCollection.fetch({
-  success: function () {
-    todosView = new TodosView({
-      collection: todosCollection
-    });
-    addTodoView = new AddTodoView({
-      collection: todosCollection
-    });
-    addTodoView.render();
-    todosView.render();
-  }
-});
+
