@@ -1,5 +1,6 @@
 var TodoApp =  Backbone.Router.extend({
   routes: {
+    'signup': 'signUp',
     '': 'index'
   },
   index: function () {
@@ -18,9 +19,12 @@ var TodoApp =  Backbone.Router.extend({
       }
     });
   },
-  initialize: function () {
-
-  }
+  signUp: function () {
+    this.userModel = new UserModel();
+    this.signupView = new SignupView();
+    this.signupView.render();
+    console.log('render signup');
+  },
 });
 var todoApp = new TodoApp();
 Backbone.history.start({pushState: true });
