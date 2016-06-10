@@ -147,3 +147,17 @@ ul li.editMode input[type=text] {
 ul li.editMode label {
   display:none;
 }
+
+/****forms *****/
+form {
+  margin-top: 50px;
+}
+form li {
+  border-bottom: none;
+}
+form ul li input[type="text"] {
+  display: inline;
+}
+form button {
+  width: 200px;
+}
