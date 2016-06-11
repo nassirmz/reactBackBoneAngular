@@ -91,7 +91,7 @@ module.exports = {
         if (!result || !bcrypt.compareSync(req.body.password, result.get('password_hash'))) {
           res.status(401).send();
         }
-        res.send(result.toPublicJSON());
+        res.header('Auth', result.generateToken('authentication')).send(result.toPublicJSON());
       }, function (err) {
         res.status(500).send(err);
       });
