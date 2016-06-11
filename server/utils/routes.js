@@ -15,4 +15,6 @@ module.exports = function (app) {
     .put(helpers.updateTodo)
     .get(helpers.getTodo)
     .delete(helpers.deleteTodo);
+  app.route('/users/login')
+    .post(helpers.loginUser);
 };

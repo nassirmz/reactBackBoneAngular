@@ -1,4 +1,5 @@
 var db = require('./../db/db');
+var bcrypt = require('bcrypt');
 
 module.exports = {
   getAllTodos: function(req, res) {
@@ -78,5 +79,28 @@ module.exports = {
       .catch(function (err) {
         res.status(500).send(err);
       });
+  },
+  loginUser: function (req, res) {
+    db.user
+      .findOne({
+        where: {
+          username: req.body.username
+        }
+      })
+      .then(function (result) {
+        if (!result || !bcrypt.compareSync(req.body.password, result.get('password_hash'))) {
+          res.status(401).send();
+        }
+        res.send(result.toPublicJSON());
+      }, function (err) {
+        res.status(500).send(err);
+      });
   }
+
+
+
+
+
+
+
 };
