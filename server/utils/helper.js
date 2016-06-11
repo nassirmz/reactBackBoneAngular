@@ -15,17 +15,17 @@ module.exports = {
         res.status(201).send(result);
       })
       .catch(function (err) {
-        res.status(400).send(err.message);
+        res.status(400).send(err);
       });
   },
   createUser: function (req, res) {
     db.user
       .create(req.body)
       .then(function (result) {
-        res.status(201).send(result);
+        res.status(201).send(result.toPublicJSON());
       })
       .catch(function (err) {
-        res.status(400).send(err.message);
+        res.status(400).send(err);
       });
   },
   getUser: function (req, res) {
@@ -36,7 +36,7 @@ module.exports = {
         res.send(result);
       })
       .catch(function (err) {
-        res.status(401).send(err.message);
+        res.status(401).send(err);
       });
   },
   updateTodo: function (req, res) {
@@ -51,7 +51,7 @@ module.exports = {
           });
       })
       .catch(function (err) {
-        res.status(400).send(err.message);
+        res.status(400).send(err);
       });
   },
   getTodo: function (req, res) {
@@ -62,7 +62,7 @@ module.exports = {
         res.send(result);
       })
       .catch(function (err) {
-        res.status(500).send(err.message);
+        res.status(500).send(err);
       });
   },
   deleteTodo: function (req, res) {
@@ -76,7 +76,7 @@ module.exports = {
         });
       })
       .catch(function (err) {
-        res.status(500).send(err.message);
+        res.status(500).send(err);
       });
   }
 };
