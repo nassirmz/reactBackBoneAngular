@@ -4,7 +4,7 @@ var cryptojs = require('crypto-js');
 var jwt = require('jsonwebtoken');
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('User', {
+  var user = sequelize.define('User', {
     username: {
       type: DataTypes.STRING,
       unique: true,
@@ -34,6 +34,32 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   }, {
+    classMethods: {
+      findByToken: function (token) {
+        return new Promise(function (resolve, reject) {
+          try {
+            var decodedJWT = jwt.verify(token, 'qwerty098');
+            var bytes = cryptojs.AES.decrypt(decodedJWT.token, 'abc123!@#!');
+            var tokenData = JSON.parse(bytes.toString(cryptojs.enc.Utf8));
+            user
+              .findById(tokenData.id)
+              .then(function (result) {
+                if (result) {
+                  resolve(result);
+                } else {
+                  reject();
+                }
+              }, function (err) {
+                console.log(err);
+                reject();
+              });
+          } catch (err) {
+            reject();
+            console.log(err);
+          }
+        });
+      }
+    },
     instanceMethods: {
       toPublicJSON: function () {
         var json = this.toJSON();
@@ -57,4 +83,6 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   });
+
+  return user;
 };
