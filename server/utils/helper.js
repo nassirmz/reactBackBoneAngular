@@ -36,11 +36,22 @@ module.exports = {
     db.user
       .create(req.body)
       .then(function (result) {
-        res.status(201).send(result.toPublicJSON());
-      })
-      .catch(function (err) {
-        res.status(400).send(err);
-      });
+        var token = result.generateToken('authentication');
+        userInstance = result;
+        return db.token.create({
+          token: token
+        })
+        .then(function (tokenInstance) {
+          res.header('Auth', tokenInstance.get('token')).send(userInstance.toPublicJSON());
+        });
+        }, function (err) {
+          res.status(500).send(err);
+          console.log(err);
+        })
+        .catch(function (err) {
+          console.log(err);
+          res.status(401).send();
+        });
   },
   getUser: function (req, res) {
     var userID = Number(req.params.id);
