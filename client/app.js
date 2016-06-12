@@ -1,7 +1,6 @@
 var TodoApp =  Backbone.Router.extend({
   routes: {
-    'signup': 'signUp',
-    '': 'index'
+    '': 'signUp'
   },
   index: function () {
     var self = this;

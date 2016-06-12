@@ -1,6 +1,6 @@
 var SignupView = Backbone.View.extend({
   events: {
-    'click #signupButton': 'login'
+    'click #signupButton': 'createUser'
   },
   tagName: 'form',
   id: 'signupForm',
@@ -9,10 +9,12 @@ var SignupView = Backbone.View.extend({
     this.$el.html(this.template());
     $('.container').append(this.$el);
   },
-  login: function () {
-    this.model.set({username: this.$el.find('#username').val()});
-    this.model.set({password: this.$el.find('#password')});
-    this.saveUser();
+  createUser: function () {
+    var newUser = new UserModel({
+      username: this.$el.find('#username').val(),
+      password: this.$el.find('#password').val()
+    });
+    newUser.save();
   }
 
 });
