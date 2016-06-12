@@ -104,6 +104,7 @@ module.exports = {
       });
   },
   loginUser: function (req, res) {
+    var userInstance;
     db.user
       .findOne({
         where: {
@@ -114,9 +115,21 @@ module.exports = {
         if (!result || !bcrypt.compareSync(req.body.password, result.get('password_hash'))) {
           res.status(401).send();
         }
-        res.header('Auth', result.generateToken('authentication')).send(result.toPublicJSON());
+        var token = result.generateToken('authentication');
+        userInstance = result;
+        return db.token.create({
+          token: token
+        })
+        .then(function (tokenInstance) {
+          res.header('Auth', tokenInstance.get('token')).send(userInstance.toPublicJSON());
+        });
       }, function (err) {
         res.status(500).send(err);
+        console.log(err);
+      })
+      .catch(function (err) {
+        console.log(err);
+        res.status(401).send();
       });
   },
   requireAuthentication: function (req, res, next) {
