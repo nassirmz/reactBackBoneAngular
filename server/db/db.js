@@ -9,6 +9,7 @@ var db = {};
 
 db.todo =sequelize.import(__dirname + '/models/todos');
 db.user = sequelize.import(__dirname + '/models/user');
+db.token = sequelize.import(__dirname + '/models/token');
 db.sequelize =  sequelize;
 db.Sequelize= Sequelize;
 
