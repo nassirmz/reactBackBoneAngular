@@ -12,5 +12,6 @@ module.exports = function (app) {
     .get(helpers.requireAuthentication, helpers.getTodo)
     .delete(helpers.requireAuthentication, helpers.deleteTodo);
   app.route('/users/login')
-    .post(helpers.loginUser);
+    .post(helpers.loginUser)
+    .delete(helpers.requireAuthentication, helpers.logoutUser);
 };

@@ -1,5 +1,6 @@
 var db = require('./../db/db');
 var bcrypt = require('bcrypt');
+var cryptojs = require('crypto-js');
 
 module.exports = {
   getAllTodos: function(req, res) {
@@ -132,14 +133,36 @@ module.exports = {
         res.status(401).send();
       });
   },
+  logoutUser: function (req, res) {
+    req.token
+      .destroy()
+      .then(function () {
+        res.status(204).send();
+      })
+      .catch(function (err) {
+        res.status(500).send(err);
+      });
+  },
   requireAuthentication: function (req, res, next) {
-    var token = req.get('Auth');
-    db.user
-      .findByToken(token)
+    var token = req.get('Auth') || '';
+    db.token
+      .findOne({
+      where: {
+        tokenHash: cryptojs.MD5(token).toString()
+      }
+      })
+      .then(function (tokenInstance) {
+        if(!tokenInstance) {
+          throw new Error();
+        }
+        req.token = tokenInstance;
+        return db.user.findByToken(token);
+      })
       .then(function (user) {
         req.user = user;
         next();
-      }, function () {
+      })
+      .catch(function (err) {
         res.status(401).send();
       });
   }
