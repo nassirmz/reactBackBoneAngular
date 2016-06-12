@@ -55,7 +55,12 @@ module.exports = {
   updateTodo: function (req, res) {
     var userID = Number(req.params.id);
     db.todo
-      .findById(userID)
+      .findOne({
+        where: {
+          id: userID,
+          UserId: req.user.get('id')
+        }
+      })
       .then(function (result) {
         result
           .update(req.body)
@@ -64,15 +69,22 @@ module.exports = {
           });
       })
       .catch(function (err) {
+        console.log(err);
         res.status(400).send(err);
       });
   },
   getTodo: function (req, res) {
     var todoID = Number(req.params.id);
     db.todo
-      .findById(todoID)
+      .findOne({
+        where: {
+          id: todoID,
+          UserId: req.user.get('id')
+        }
+      })
       .then(function (result) {
-        res.send(result);
+        res.status(200).send(result);
+
       })
       .catch(function (err) {
         res.status(500).send(err);
@@ -81,12 +93,11 @@ module.exports = {
   deleteTodo: function (req, res) {
     var todoID = Number(req.params.id);
     db.todo
-      .findById(todoID)
-      .then(function (result) {
-        result.destroy()
-        .then(function (result) {
-          res.send(result);
-        });
+      .destory({
+        where: {
+          id: todoID,
+          UserId: req.user.get('id')
+        }
       })
       .catch(function (err) {
         res.status(500).send(err);
