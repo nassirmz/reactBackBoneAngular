@@ -3,19 +3,31 @@ var bcrypt = require('bcrypt');
 
 module.exports = {
   getAllTodos: function(req, res) {
-    db.todo
-      .findAll()
-      .then(function(results) {
-        res.send(results);
-      });
+    req.user
+      .getTodos()
+        .then(function (result) {
+          res.status(200).send(result);
+        });
   },
   createTodo: function (req, res) {
     db.todo
       .create(req.body)
       .then(function (result) {
-        res.status(201).send(result);
+        req.user
+          .addTodo(result)
+          .then(function () {
+            return result.reload();
+          })
+          .then(function (result) {
+            res.status(201).send(result);
+          }, function (err) {
+            console.error(err);
+          });
+      }, function (err) {
+        console.error(err);
       })
       .catch(function (err) {
+        console.log(err);
         res.status(400).send(err);
       });
   },

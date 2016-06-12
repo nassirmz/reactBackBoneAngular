@@ -11,8 +11,8 @@ db.todo =sequelize.import(__dirname + '/models/todos');
 db.user = sequelize.import(__dirname + '/models/user');
 db.sequelize =  sequelize;
 db.Sequelize= Sequelize;
-//define relationships
 
+//define relationships
 db.user.hasMany(db.todo);
 
 module.exports = db;
