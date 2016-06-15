@@ -19,8 +19,10 @@ var TodoApp =  Backbone.Router.extend({
     });
   },
   signUp: function () {
-    this.userModel = new UserModel();
-    this.signupView = new SignupView();
+    var userModel = new UserModel();
+    this.signupView = new SignupView({
+      model: userModel
+    });
     this.signupView.render();
     console.log('render signup');
   },
