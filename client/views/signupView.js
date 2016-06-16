@@ -19,6 +19,11 @@ var SignupView = Backbone.View.extend({
       dataType: 'text',
       success: function (model, response, options) {
         window.localStorage.setItem('Auth', options.xhr.getResponseHeader('Auth'));
+        // console.log('Auth returned', window.localStorage.getItem('Auth'));
+        Backbone.history.navigate('/todos', {
+          trigger: true,
+          replace: true
+        });
       },
       error: function (model, response) {
         console.log('error');

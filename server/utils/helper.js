@@ -174,7 +174,7 @@ module.exports = {
         next();
       })
       .catch(function (err) {
-        res.status(401).send();
+        res.status(401).send(err);
       });
   }
 };

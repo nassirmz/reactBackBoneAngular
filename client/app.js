@@ -1,12 +1,15 @@
 var TodoApp =  Backbone.Router.extend({
   routes: {
+    'todos': 'index',
     '': 'signUp'
   },
   index: function () {
+    console.log('todos called');
     var self = this;
     self.todosCollection = new TodosCollection();
     self.todosCollection.fetch({
-      success: function () {
+      success: function (model, response) {
+        console.log('success');
         self.todosView = new TodosView({
           collection: self.todosCollection
         });
@@ -15,6 +18,9 @@ var TodoApp =  Backbone.Router.extend({
         });
         self.addTodoView.render();
         self.todosView.render();
+      },
+      error: function (model, response) {
+        console.log(response);
       }
     });
   },
@@ -24,7 +30,6 @@ var TodoApp =  Backbone.Router.extend({
       model: userModel
     });
     this.signupView.render();
-    console.log('render signup');
   },
 });
 var todoApp = new TodoApp();
