@@ -1,16 +1,23 @@
 var TodoApp =  Backbone.Router.extend({
   routes: {
+    '': 'home',
     'todos': 'index',
-    '': 'signUp'
+    'login': 'login',
+    'signup': 'signUp'
+  },
+  home: function () {
+    if(window.localStorage.getItem('token')) {
+      this.index();
+    } else {
+      this.signUp();
+    }
   },
   index: function () {
     this.beforeLoading();
-    console.log('todos called');
     var self = this;
     self.todosCollection = new TodosCollection();
     self.todosCollection.fetch({
       success: function (model, response) {
-        console.log('success');
         self.todosView = new TodosView({
           collection: self.todosCollection
         });
@@ -22,6 +29,10 @@ var TodoApp =  Backbone.Router.extend({
       },
       error: function (model, response) {
         console.log(response);
+        Backbone.history.navigate('/signup', {
+          trigger: true,
+          replace: true
+        });
       }
     });
   },
@@ -37,5 +48,6 @@ var TodoApp =  Backbone.Router.extend({
     $('.container').empty();
   }
 });
+
 var todoApp = new TodoApp();
 Backbone.history.start();
