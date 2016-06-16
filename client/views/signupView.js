@@ -2,11 +2,12 @@ var SignupView = Backbone.View.extend({
   events: {
     'click #signupButton': 'createUser'
   },
-  tagName: 'form',
+  // tagName: 'form',
   id: 'signupForm',
-  template: _.template('<ul><li><input id="username" placeholder="username" type="text"></li><li><input id="password" placeholder="password" type="password"></li><li><button id="signupButton">Create Free Account</button></li></ul>'),
+  template: _.template($('#userInputForm').html()),
   render: function () {
     this.$el.html(this.template());
+    this.$el.find('ul').append('<li><button id="signupButton">Create Free Account</button></li>');
     $('.container').append(this.$el);
   },
   createUser: function (e) {
@@ -19,7 +20,6 @@ var SignupView = Backbone.View.extend({
       dataType: 'text',
       success: function (model, response, options) {
         window.localStorage.setItem('Auth', options.xhr.getResponseHeader('Auth'));
-        // console.log('Auth returned', window.localStorage.getItem('Auth'));
         Backbone.history.navigate('/todos', {
           trigger: true,
           replace: true
