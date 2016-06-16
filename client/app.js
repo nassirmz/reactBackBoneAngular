@@ -4,6 +4,7 @@ var TodoApp =  Backbone.Router.extend({
     '': 'signUp'
   },
   index: function () {
+    this.beforeLoading();
     console.log('todos called');
     var self = this;
     self.todosCollection = new TodosCollection();
@@ -25,12 +26,16 @@ var TodoApp =  Backbone.Router.extend({
     });
   },
   signUp: function () {
+    this.beforeLoading();
     var userModel = new UserModel();
     this.signupView = new SignupView({
       model: userModel
     });
     this.signupView.render();
   },
+  beforeLoading: function () {
+    $('.container').empty();
+  }
 });
 var todoApp = new TodoApp();
 Backbone.history.start({pushState: true });
