@@ -38,4 +38,4 @@ var TodoApp =  Backbone.Router.extend({
   }
 });
 var todoApp = new TodoApp();
-Backbone.history.start({pushState: true });
+Backbone.history.start();
