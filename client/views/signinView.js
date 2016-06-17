@@ -28,7 +28,10 @@ var SigninView = Backbone.View.extend({
         });
       },
       error: function (err) {
-        console.log(err);
+        Backbone.history.navigate('signin', {
+          trigger: true,
+          replace: true
+        });
       }
     });
   }

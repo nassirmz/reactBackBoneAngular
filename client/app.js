@@ -2,7 +2,7 @@ var TodoApp =  Backbone.Router.extend({
   routes: {
     '': 'home',
     'todos': 'index',
-    'login': 'login',
+    'signin': 'login',
     'signup': 'signUp'
   },
   home: function () {
@@ -46,6 +46,11 @@ var TodoApp =  Backbone.Router.extend({
   },
   beforeLoading: function () {
     $('.container').empty();
+  },
+  login: function () {
+    this.beforeLoading();
+    var signinView = new SigninView();
+    signinView.render();
   }
 });
 

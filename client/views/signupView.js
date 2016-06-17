@@ -2,8 +2,6 @@ var SignupView = Backbone.View.extend({
   events: {
     'click #signupButton': 'createUser'
   },
-  // tagName: 'form',
-  id: 'signupForm',
   template: _.template($('#userInputForm').html()),
   render: function () {
     this.$el.html(this.template());

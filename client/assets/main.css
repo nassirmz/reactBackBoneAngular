@@ -57,10 +57,12 @@ button {
   border: 0px;
   color: #888;
   font-size: 15px;
-  width: 60px;
   margin: 10px 0 0;
   font-family: Lato, sans-serif;
   cursor: pointer;
+}
+.edit, .delete, .add {
+  width: 60px;
 }
 button:hover {
   color: #333;
@@ -160,8 +162,7 @@ form ul li input[type=text], form ul li input[type=password] {
   width: 350px;
 }
 form button {
-  width: 200px;
   border: 2px solid black;
   border-radius: 30px;
-  padding: 5px;
+  padding: 3px 15px;
 }
