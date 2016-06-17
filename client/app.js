@@ -5,6 +5,19 @@ var TodoApp =  Backbone.Router.extend({
     'signin': 'login',
     'signup': 'signUp'
   },
+  initialize: function () {
+    this.todosCollection = new TodosCollection();
+    this.userModel = new UserModel();
+    this.addTodoView = new AddTodoView({
+      collection: this.todosCollection
+    });
+    this.todosView = new TodosView({
+      collection: this.todosCollection
+    });
+    this.signupView = new SignupView({
+      model: this.userModel
+    });
+  },
   home: function () {
     if(window.localStorage.getItem('token')) {
       this.index();
@@ -15,20 +28,12 @@ var TodoApp =  Backbone.Router.extend({
   index: function () {
     this.beforeLoading();
     var self = this;
-    self.todosCollection = new TodosCollection();
-    self.todosCollection.fetch({
+    this.todosCollection.fetch({
       success: function (model, response) {
-        self.todosView = new TodosView({
-          collection: self.todosCollection
-        });
-        self.addTodoView = new AddTodoView({
-          collection: self.todosCollection
-        });
         self.addTodoView.render();
         self.todosView.render();
       },
       error: function (model, response) {
-        console.log(response);
         Backbone.history.navigate('/signup', {
           trigger: true,
           replace: true
@@ -38,19 +43,15 @@ var TodoApp =  Backbone.Router.extend({
   },
   signUp: function () {
     this.beforeLoading();
-    var userModel = new UserModel();
-    this.signupView = new SignupView({
-      model: userModel
-    });
     this.signupView.render();
-  },
-  beforeLoading: function () {
-    $('.container').empty();
   },
   login: function () {
     this.beforeLoading();
     var signinView = new SigninView();
     signinView.render();
+  },
+  beforeLoading: function () {
+    $('.container').empty();
   }
 });
 
