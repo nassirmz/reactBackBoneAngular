@@ -15,5 +15,3 @@ var TodoItem = Backbone.Model.extend({
     completed: false
   }
 });
-
-var todoItem = new TodoItem();

@@ -17,6 +17,13 @@ var TodoApp =  Backbone.Router.extend({
     this.signupView = new SignupView({
       model: this.userModel
     });
+    this.headerLogInView = new HeaderLogInView({
+      model: this.userModel
+    });
+    this.headerLogOutView = new HeaderLogOutView({
+      model: this.userModel
+    });
+    this.signinView = new SigninView();
   },
   home: function () {
     if(window.localStorage.getItem('token')) {
@@ -32,6 +39,7 @@ var TodoApp =  Backbone.Router.extend({
       success: function (model, response) {
         self.addTodoView.render();
         self.todosView.render();
+        self.headerLogOutView.render();
       },
       error: function (model, response) {
         Backbone.history.navigate('/signup', {
@@ -44,14 +52,16 @@ var TodoApp =  Backbone.Router.extend({
   signUp: function () {
     this.beforeLoading();
     this.signupView.render();
+    this.headerLogInView.render();
   },
   login: function () {
     this.beforeLoading();
-    var signinView = new SigninView();
-    signinView.render();
+    this.signinView.render();
+    this.headerLogInView.render();
   },
   beforeLoading: function () {
     $('.container').empty();
+    $('.header').find('ul').empty();
   }
 });
 

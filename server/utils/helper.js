@@ -105,7 +105,7 @@ module.exports = {
   deleteTodo: function (req, res) {
     var todoID = Number(req.params.id);
     db.todo
-      .destory({
+      .destroy({
         where: {
           id: todoID,
           UserId: req.user.get('id')

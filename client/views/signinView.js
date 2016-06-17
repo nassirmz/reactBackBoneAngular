@@ -21,7 +21,7 @@ var SigninView = Backbone.View.extend({
       dataType: 'json',
       data: inputValues,
       success: function (data, textStatus, jqXHR) {
-        window.localStorage.setItem('Auth', console.log(jqXHR.getResponseHeader('Auth')));
+        window.localStorage.setItem('Auth', jqXHR.getResponseHeader('Auth'));
         Backbone.history.navigate('/todos', {
           trigger: true,
           replace: true

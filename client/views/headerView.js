@@ -1,13 +1,20 @@
-var HeaderView = Backbone.View.extend({
+var HeaderLogInView = Backbone.View.extend({
+
   tagName: 'ul',
   className: 'nav',
-  template: _.template('<li><a href="/signup">Create Account</a></li>' +
-    '<li><a href="signin">Sign In</a></li>' +
-    '<li><a href="signout">Sign Out</a></li>'),
+  template: _.template($('#logInNav').html()),
   render: function () {
     this.$el.html(this.template());
     $('.header').prepend(this.$el);
   }
 });
-var headerView = new HeaderView();
-headerView.render();
+
+var HeaderLogOutView = Backbone.View.extend({
+  tagName: 'ul',
+  className: 'nav',
+  template: _.template($('#loggedInNav').html()),
+  render: function () {
+    this.$el.html(this.template());
+    $('.header').prepend(this.$el);
+  }
+});
