@@ -1,20 +1,39 @@
-var HeaderLogInView = Backbone.View.extend({
-
+var HeaderView = Backbone.View.extend({
+  events: {
+    'click #logoutButton': 'logout'
+  },
   tagName: 'ul',
   className: 'nav',
-  template: _.template($('#logInNav').html()),
+  template1: _.template($('#logInNav').html()),
+  template2: _.template($('#loggedInNav').html()),
   render: function () {
-    this.$el.html(this.template());
+    this.$el.empty();
+    if(isAuthenticated()) {
+      console.log('called log in');
+      this.$el.html(this.template2());
+    } else {
+      console.log('called log out');
+      this.$el.html(this.template1());
+    }
     $('.header').prepend(this.$el);
-  }
-});
-
-var HeaderLogOutView = Backbone.View.extend({
-  tagName: 'ul',
-  className: 'nav',
-  template: _.template($('#loggedInNav').html()),
-  render: function () {
-    this.$el.html(this.template());
-    $('.header').prepend(this.$el);
+  },
+  logout: function (e) {
+    e.preventDefault();
+    $.ajax({
+      url: '/users/login',
+      type: 'DELETE',
+      dataType: 'json',
+      success: function () {
+        console.log('success');
+        window.localStorage.removeItem('Auth');
+        Backbone.history.navigate('/signin', {
+          trigger: true,
+          replace: true
+        });
+      },
+      error: function (response) {
+        console.log('error');
+      }
+    });
   }
 });

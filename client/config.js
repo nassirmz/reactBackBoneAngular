@@ -1,3 +1,7 @@
+function isAuthenticated () {
+  console.log(window.localStorage.getItem('Auth'));
+  return window.localStorage.getItem('Auth');
+}
 
 $.ajaxSetup({
        beforeSend: function (xhr) {
