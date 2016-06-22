@@ -26,10 +26,7 @@ var HeaderView = Backbone.View.extend({
       success: function () {
         console.log('success');
         window.localStorage.removeItem('Auth');
-        Backbone.history.navigate('/signin', {
-          trigger: true,
-          replace: true
-        });
+        window.location.replace('#signin');
       },
       error: function (response) {
         console.log('error');

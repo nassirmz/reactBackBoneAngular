@@ -26,7 +26,7 @@ var TodoApp =  Backbone.Router.extend({
     if(window.localStorage.getItem('token')) {
       this.index();
     } else {
-      this.signUp();
+      this.login();
     }
   },
   index: function () {
@@ -39,7 +39,7 @@ var TodoApp =  Backbone.Router.extend({
         // self.headerLogOutView.render();
       },
       error: function (model, response) {
-        Backbone.history.navigate('/signup', {
+        Backbone.history.navigate('/signin', {
           trigger: true,
           replace: true
         });

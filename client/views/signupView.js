@@ -18,7 +18,7 @@ var SignupView = Backbone.View.extend({
       dataType: 'text',
       success: function (model, response, options) {
         window.localStorage.setItem('Auth', options.xhr.getResponseHeader('Auth'));
-        Backbone.history.navigate('/todos', {
+        Backbone.history.navigate('todos', {
           trigger: true,
           replace: true
         });

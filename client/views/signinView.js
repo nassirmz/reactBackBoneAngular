@@ -22,7 +22,7 @@ var SigninView = Backbone.View.extend({
       data: inputValues,
       success: function (data, textStatus, jqXHR) {
         window.localStorage.setItem('Auth', jqXHR.getResponseHeader('Auth'));
-        Backbone.history.navigate('/todos', {
+        Backbone.history.navigate('todos', {
           trigger: true,
           replace: true
         });
