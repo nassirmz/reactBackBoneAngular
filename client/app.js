@@ -1,6 +1,7 @@
 var TodoApp =  Backbone.Router.extend({
   routes: {
     '': 'home',
+    'home': 'home',
     'todos': 'index',
     'signin': 'login',
     'signup': 'signUp'
