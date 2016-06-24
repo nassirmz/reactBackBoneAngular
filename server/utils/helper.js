@@ -147,8 +147,8 @@ module.exports = {
   logoutUser: function (req, res) {
     req.token
       .destroy()
-      .then(function () {
-        res.status(204).send();
+      .then(function (result) {
+        res.status(204).send(result);
       })
       .catch(function (err) {
         res.status(500).send(err);

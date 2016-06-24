@@ -28,10 +28,11 @@ var SigninView = Backbone.View.extend({
         });
       },
       error: function (err) {
-        Backbone.history.navigate('signin', {
+        Backbone.history.navigate('todos', {
           trigger: true,
           replace: true
         });
+        Backbone.history.loadUrl('todos');
       }
     });
   }

@@ -28,5 +28,4 @@ var SignupView = Backbone.View.extend({
       }
     });
   }
-
 });

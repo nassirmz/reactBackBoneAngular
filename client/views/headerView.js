@@ -20,13 +20,15 @@ var HeaderView = Backbone.View.extend({
   logout: function (e) {
     e.preventDefault();
     $.ajax({
-      url: '/users/login',
+      url: '/users/logout',
       type: 'DELETE',
       dataType: 'json',
       success: function () {
-        console.log('success');
         window.localStorage.removeItem('Auth');
-        window.location.replace('#signin');
+        Backbone.history.navigate('signin', {
+          trigger: true,
+          replace: true
+        });
       },
       error: function (response) {
         console.log('error');
