@@ -1,6 +1,5 @@
 #dependecies
 node_modules
-client/lib/
-
+backbone/lib/
 #db
 *.sqlite
