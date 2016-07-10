@@ -5,6 +5,11 @@ module.exports = {
     filename: './public/bundle.js'
   },
   resolve: {
+    root: __dirname,
+    modulesDirectories: [
+      'node_modules',
+      './react/components'
+    ],
     extensions: ['', '.js', '.jsx']
   },
   module: {
