@@ -4,11 +4,11 @@ var React = require('react');
 var AddTodo = React.createClass({
   render () {
     return (
-        <p>
-          <label for="new-task">Add Item</label>
-          <input id="new-task" type="text"/>
+        <div>
+          <h3>ADD ITEM</h3>
+          <input id="new-task" className="new-task" type="text"/>
           <button className="add">Add</button>
-        </p>
+        </div>
     );
   }
 });

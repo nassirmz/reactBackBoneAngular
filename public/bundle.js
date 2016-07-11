@@ -27258,14 +27258,14 @@
 	  displayName: "AddTodo",
 	  render: function render() {
 	    return React.createElement(
-	      "p",
+	      "div",
 	      null,
 	      React.createElement(
-	        "label",
-	        { "for": "new-task" },
-	        "Add Item"
+	        "h3",
+	        null,
+	        "ADD ITEM"
 	      ),
-	      React.createElement("input", { id: "new-task", type: "text" }),
+	      React.createElement("input", { id: "new-task", className: "new-task", type: "text" }),
 	      React.createElement(
 	        "button",
 	        { className: "add" },
