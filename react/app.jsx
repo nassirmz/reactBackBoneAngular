@@ -13,6 +13,8 @@ var helloReact = React.createClass({
   }
 });
 
+require('styles');
+
 ReactDOM.render(
   <Provider>
     <Router history={hashHistory}>

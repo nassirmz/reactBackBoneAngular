@@ -10,6 +10,9 @@ module.exports = {
       'node_modules',
       './react/components'
     ],
+    alias: {
+      styles: 'assets/main.css'
+    },
     extensions: ['', '.js', '.jsx']
   },
   module: {
@@ -21,6 +24,10 @@ module.exports = {
         },
         test: /\.jsx?$/,
         exclude: /(node_modules)/
+      },
+      {
+        loader: 'style!css',
+        test: /\.css?$/
       }
     ]
   }
