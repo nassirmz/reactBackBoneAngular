@@ -2,7 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-redux');
 var Nav = require('Nav');
 var Login = require('Login');
-var Register = require('Register');
+
 
 var Main = React.createClass({
   render () {
@@ -10,7 +10,7 @@ var Main = React.createClass({
       <div className="main">
         <Nav/>
         <div className="container">
-          <Login/>
+          {this.props.children}
         </div>
       </div>
     );

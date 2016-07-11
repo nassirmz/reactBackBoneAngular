@@ -64,9 +64,9 @@
 	var Login = __webpack_require__(241);
 	var TodoApp = __webpack_require__(242);
 	var Main = __webpack_require__(243);
-	var Register = __webpack_require__(249);
+	var Register = __webpack_require__(245);
 
-	__webpack_require__(245);
+	__webpack_require__(246);
 
 	ReactDOM.render(
 	// <Provider>
@@ -26761,15 +26761,13 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(158);
 
+	var AddTodo = __webpack_require__(250);
+
 	var TodoApp = React.createClass({
 	  displayName: 'TodoApp',
 
 	  render: function render() {
-	    return React.createElement(
-	      'p',
-	      null,
-	      'Todo App rendered'
-	    );
+	    return React.createElement(AddTodo, null);
 	  }
 	});
 
@@ -26785,7 +26783,6 @@
 	var ReactDOM = __webpack_require__(159);
 	var Nav = __webpack_require__(244);
 	var Login = __webpack_require__(241);
-	var Register = __webpack_require__(249);
 
 	var Main = React.createClass({
 	  displayName: 'Main',
@@ -26797,7 +26794,7 @@
 	      React.createElement(
 	        'div',
 	        { className: 'container' },
-	        React.createElement(Login, null)
+	        this.props.children
 	      )
 	    );
 	  }
@@ -26860,13 +26857,56 @@
 /* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var Register = React.createClass({
+	  displayName: "Register",
+	  render: function render() {
+	    return React.createElement(
+	      "form",
+	      null,
+	      React.createElement(
+	        "ul",
+	        null,
+	        React.createElement(
+	          "li",
+	          null,
+	          React.createElement("input", { id: "username", placeholder: "username", type: "text" })
+	        ),
+	        React.createElement(
+	          "li",
+	          null,
+	          React.createElement("input", { id: "password", placeholder: "password", type: "password" })
+	        ),
+	        React.createElement(
+	          "li",
+	          null,
+	          React.createElement(
+	            "button",
+	            { id: "signupButton" },
+	            "Create Free Account"
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Register;
+
+/***/ },
+/* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(246);
+	var content = __webpack_require__(247);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(248)(content, {});
+	var update = __webpack_require__(249)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -26883,10 +26923,10 @@
 	}
 
 /***/ },
-/* 246 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(247)();
+	exports = module.exports = __webpack_require__(248)();
 	// imports
 
 
@@ -26897,7 +26937,7 @@
 
 
 /***/ },
-/* 247 */
+/* 248 */
 /***/ function(module, exports) {
 
 	/*
@@ -26953,7 +26993,7 @@
 
 
 /***/ },
-/* 248 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -27207,47 +27247,35 @@
 
 
 /***/ },
-/* 249 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	var React = __webpack_require__(1);
 
-	var Register = React.createClass({
-	  displayName: "Register",
+	var AddTodo = React.createClass({
+	  displayName: "AddTodo",
 	  render: function render() {
 	    return React.createElement(
-	      "form",
+	      "p",
 	      null,
 	      React.createElement(
-	        "ul",
-	        null,
-	        React.createElement(
-	          "li",
-	          null,
-	          React.createElement("input", { id: "username", placeholder: "username", type: "text" })
-	        ),
-	        React.createElement(
-	          "li",
-	          null,
-	          React.createElement("input", { id: "password", placeholder: "password", type: "password" })
-	        ),
-	        React.createElement(
-	          "li",
-	          null,
-	          React.createElement(
-	            "button",
-	            { id: "signupButton" },
-	            "Create Free Account"
-	          )
-	        )
+	        "label",
+	        { "for": "new-task" },
+	        "Add Item"
+	      ),
+	      React.createElement("input", { id: "new-task", type: "text" }),
+	      React.createElement(
+	        "button",
+	        { className: "add" },
+	        "Add"
 	      )
 	    );
 	  }
 	});
 
-	module.exports = Register;
+	module.exports = AddTodo;
 
 /***/ }
 /******/ ]);
