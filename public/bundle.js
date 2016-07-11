@@ -63,10 +63,10 @@
 
 	var Login = __webpack_require__(241);
 	var TodoApp = __webpack_require__(242);
-	var Main = __webpack_require__(243);
-	var Register = __webpack_require__(245);
+	var Main = __webpack_require__(246);
+	var Register = __webpack_require__(248);
 
-	__webpack_require__(246);
+	__webpack_require__(249);
 
 	ReactDOM.render(
 	// <Provider>
@@ -26761,13 +26761,38 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(158);
 
-	var AddTodo = __webpack_require__(250);
+	var AddTodo = __webpack_require__(243);
+	var Todos = __webpack_require__(244);
 
 	var TodoApp = React.createClass({
 	  displayName: 'TodoApp',
+	  getInitialState: function getInitialState() {
+	    return {
+	      todos: [{
+	        id: 1,
+	        task: 'Walk 30 min',
+	        completed: false
+	      }, {
+	        id: 2,
+	        task: 'Workout',
+	        completed: true
+	      }, {
+	        id: 3,
+	        task: 'Buy TV',
+	        completed: false
+	      }]
+	    };
+	  },
 
 	  render: function render() {
-	    return React.createElement(AddTodo, null);
+	    var todos = this.state.todos;
+
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(AddTodo, null),
+	      React.createElement(Todos, { todos: todos })
+	    );
 	  }
 	});
 
@@ -26777,11 +26802,147 @@
 /* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var AddTodo = React.createClass({
+	  displayName: "AddTodo",
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "h3",
+	        null,
+	        "ADD ITEM"
+	      ),
+	      React.createElement("input", { id: "new-task", className: "new-task", type: "text" }),
+	      React.createElement(
+	        "button",
+	        { className: "add" },
+	        "Add"
+	      )
+	    );
+	  }
+	});
+
+	module.exports = AddTodo;
+
+/***/ },
+/* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var React = __webpack_require__(1);
+	var Todo = __webpack_require__(245);
+
+	var Todos = React.createClass({
+	  displayName: 'Todos',
+	  render: function render() {
+	    var todos = this.props.todos;
+
+	    var incompleteTodos = todos.filter(function (todo) {
+	      return !todo.completed;
+	    });
+
+	    var completedTodos = todos.filter(function (todo) {
+	      return todo.completed;
+	    });
+
+	    var renderIncompleteTodos = function renderIncompleteTodos() {
+	      return incompleteTodos.map(function (todo) {
+	        return React.createElement(Todo, _extends({}, todo, { key: todo.id }));
+	      });
+	    };
+
+	    var renderCompletedTodos = function renderCompletedTodos() {
+	      return completedTodos.map(function (todo) {
+	        return React.createElement(Todo, _extends({}, todo, { key: todo.id }));
+	      });
+	    };
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h3',
+	        null,
+	        'Todo'
+	      ),
+	      React.createElement(
+	        'ul',
+	        { id: 'incompleted-tasks' },
+	        renderIncompleteTodos()
+	      ),
+	      React.createElement(
+	        'h3',
+	        null,
+	        'Completed'
+	      ),
+	      React.createElement(
+	        'ul',
+	        { id: 'completed-tasks' },
+	        renderCompletedTodos()
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Todos;
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var Todo = React.createClass({
+	  displayName: "Todo",
+	  render: function render() {
+	    var _props = this.props;
+	    var task = _props.task;
+	    var completed = _props.completed;
+
+	    return React.createElement(
+	      "li",
+	      null,
+	      React.createElement("input", { type: "checkbox", checked: completed }),
+	      React.createElement(
+	        "label",
+	        null,
+	        task
+	      ),
+	      React.createElement("input", { type: "text" }),
+	      React.createElement(
+	        "button",
+	        { className: "edit" },
+	        "Edit"
+	      ),
+	      React.createElement(
+	        "button",
+	        { className: "Delete" },
+	        "Delete"
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Todo;
+
+/***/ },
+/* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(159);
-	var Nav = __webpack_require__(244);
+	var Nav = __webpack_require__(247);
 	var Login = __webpack_require__(241);
 
 	var Main = React.createClass({
@@ -26803,7 +26964,7 @@
 	module.exports = Main;
 
 /***/ },
-/* 244 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26854,7 +27015,7 @@
 	module.exports = Nav;
 
 /***/ },
-/* 245 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26897,16 +27058,16 @@
 	module.exports = Register;
 
 /***/ },
-/* 246 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(247);
+	var content = __webpack_require__(250);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(249)(content, {});
+	var update = __webpack_require__(252)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -26923,10 +27084,10 @@
 	}
 
 /***/ },
-/* 247 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(248)();
+	exports = module.exports = __webpack_require__(251)();
 	// imports
 
 
@@ -26937,7 +27098,7 @@
 
 
 /***/ },
-/* 248 */
+/* 251 */
 /***/ function(module, exports) {
 
 	/*
@@ -26993,7 +27154,7 @@
 
 
 /***/ },
-/* 249 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -27245,37 +27406,6 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
-
-/***/ },
-/* 250 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var React = __webpack_require__(1);
-
-	var AddTodo = React.createClass({
-	  displayName: "AddTodo",
-	  render: function render() {
-	    return React.createElement(
-	      "div",
-	      null,
-	      React.createElement(
-	        "h3",
-	        null,
-	        "ADD ITEM"
-	      ),
-	      React.createElement("input", { id: "new-task", className: "new-task", type: "text" }),
-	      React.createElement(
-	        "button",
-	        { className: "add" },
-	        "Add"
-	      )
-	    );
-	  }
-	});
-
-	module.exports = AddTodo;
 
 /***/ }
 /******/ ]);
