@@ -26,12 +26,25 @@ var TodoApp = React.createClass({
       ]
     };
   },
+  handleToggle (id) {
+    var {todos} = this.state;
+    var updatedTodos = todos.map((todo) => {
+      if(todo.id ===id) {
+        var newCompleted = !todo.completed;
+        todo.completed = newCompleted;
+      }
+      return todo;
+    });
+    this.setState({
+      todos: updatedTodos
+    });
+  },
   render: function () {
     var {todos} = this.state;
     return (
       <div>
         <AddTodo/>
-        <Todos todos={todos}/>
+        <Todos todos={todos} onToggle={this.handleToggle}/>
       </div>
     );
   }
