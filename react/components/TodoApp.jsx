@@ -26,6 +26,17 @@ var TodoApp = React.createClass({
       ]
     };
   },
+  handleAddTodo (task) {
+    var todos = this.state.todos;
+    var todo = {
+      id: todos.length + 1,
+      task,
+      completed: false
+    }
+    this.setState ({
+      todos: [...this.state.todos, todo]
+    });
+  },
   handleToggle (id) {
     var {todos} = this.state;
     var updatedTodos = todos.map((todo) => {
@@ -43,7 +54,7 @@ var TodoApp = React.createClass({
     var {todos} = this.state;
     return (
       <div>
-        <AddTodo/>
+        <AddTodo onAddTodo={this.handleAddTodo}/>
         <Todos todos={todos} onToggle={this.handleToggle}/>
       </div>
     );

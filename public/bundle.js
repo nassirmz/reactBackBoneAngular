@@ -26758,6 +26758,8 @@
 
 	'use strict';
 
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(158);
 
@@ -26783,6 +26785,17 @@
 	      }]
 	    };
 	  },
+	  handleAddTodo: function handleAddTodo(task) {
+	    var todos = this.state.todos;
+	    var todo = {
+	      id: todos.length + 1,
+	      task: task,
+	      completed: false
+	    };
+	    this.setState({
+	      todos: [].concat(_toConsumableArray(this.state.todos), [todo])
+	    });
+	  },
 	  handleToggle: function handleToggle(id) {
 	    var todos = this.state.todos;
 
@@ -26804,7 +26817,7 @@
 	    return React.createElement(
 	      'div',
 	      null,
-	      React.createElement(AddTodo, null),
+	      React.createElement(AddTodo, { onAddTodo: this.handleAddTodo }),
 	      React.createElement(Todos, { todos: todos, onToggle: this.handleToggle })
 	    );
 	  }
@@ -27289,26 +27302,34 @@
 /* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var React = __webpack_require__(1);
 
 	var AddTodo = React.createClass({
-	  displayName: "AddTodo",
+	  displayName: 'AddTodo',
+	  addTodo: function addTodo(e) {
+	    e.preventDefault;
+	    var task = this.refs.newTask.value;
+	    if (task.length > 0) {
+	      this.refs.newTask.value = '';
+	      this.props.onAddTodo(task);
+	    }
+	  },
 	  render: function render() {
 	    return React.createElement(
-	      "div",
+	      'div',
 	      null,
 	      React.createElement(
-	        "h3",
+	        'h3',
 	        null,
-	        "ADD ITEM"
+	        'ADD ITEM'
 	      ),
-	      React.createElement("input", { id: "new-task", className: "new-task", type: "text" }),
+	      React.createElement('input', { id: 'new-task', className: 'new-task', type: 'text', ref: 'newTask' }),
 	      React.createElement(
-	        "button",
-	        { className: "add" },
-	        "Add"
+	        'button',
+	        { className: 'add', onClick: this.addTodo },
+	        'Add'
 	      )
 	    );
 	  }
