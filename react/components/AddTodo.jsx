@@ -4,10 +4,13 @@ var React = require('react');
 var AddTodo = React.createClass({
   addTodo (e) {
     e.preventDefault;
-    var task = this.refs.newTask.value;
-    if(task.length > 0) {
-      this.refs.newTask.value = '';
+    var elem = this.refs.newTask;
+    if(elem.value.length > 0) {
+      elem.value = '';
       this.props.onAddTodo(task);
+    }
+    else {
+      elem.focus();
     }
   },
   render () {

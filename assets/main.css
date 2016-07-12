@@ -138,15 +138,15 @@ li > .delete:hover {
 }
 
 /* Edit Task */
-ul li input[type=text] {
+ul li .edit-task {
   display:none;
 }
 
-ul li.editMode input[type=text] {
+ul li.edit-mode .edit-task {
   display:block;
 }
 
-ul li.editMode label {
+ul li.edit-mode label {
   display:none;
 }
 
