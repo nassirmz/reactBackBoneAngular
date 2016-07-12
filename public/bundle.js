@@ -26810,6 +26810,17 @@
 	      todos: updatedTodos
 	    });
 	  },
+	  handleDeleteTodo: function handleDeleteTodo(id) {
+	    var newTodos = this.state.todos.filter(function (todo) {
+	      if (todo.id === id) {
+	        return false;
+	      }
+	      return true;
+	    });
+	    this.setState({
+	      todos: newTodos
+	    });
+	  },
 
 	  render: function render() {
 	    var todos = this.state.todos;
@@ -26818,7 +26829,7 @@
 	      'div',
 	      null,
 	      React.createElement(AddTodo, { onAddTodo: this.handleAddTodo }),
-	      React.createElement(Todos, { todos: todos, onToggle: this.handleToggle })
+	      React.createElement(Todos, { todos: todos, onToggle: this.handleToggle, onDeleteTodo: this.handleDeleteTodo })
 	    );
 	  }
 	});
@@ -27354,6 +27365,7 @@
 	    var _props = this.props;
 	    var todos = _props.todos;
 	    var onToggle = _props.onToggle;
+	    var onDeleteTodo = _props.onDeleteTodo;
 
 	    var incompleteTodos = todos.filter(function (todo) {
 	      return !todo.completed;
@@ -27365,13 +27377,13 @@
 
 	    var renderIncompleteTodos = function renderIncompleteTodos() {
 	      return incompleteTodos.map(function (todo) {
-	        return React.createElement(Todo, _extends({}, todo, { key: todo.id, onToggle: onToggle }));
+	        return React.createElement(Todo, _extends({}, todo, { key: todo.id, onToggle: onToggle, onDeleteTodo: onDeleteTodo }));
 	      });
 	    };
 
 	    var renderCompletedTodos = function renderCompletedTodos() {
 	      return completedTodos.map(function (todo) {
-	        return React.createElement(Todo, _extends({}, todo, { key: todo.id, onToggle: onToggle }));
+	        return React.createElement(Todo, _extends({}, todo, { key: todo.id, onToggle: onToggle, onDeleteTodo: onDeleteTodo }));
 	      });
 	    };
 	    return React.createElement(
@@ -27419,6 +27431,7 @@
 	    var completed = _props.completed;
 	    var id = _props.id;
 	    var onToggle = _props.onToggle;
+	    var onDeleteTodo = _props.onDeleteTodo;
 
 	    return React.createElement(
 	      "li",
@@ -27439,7 +27452,9 @@
 	      ),
 	      React.createElement(
 	        "button",
-	        { className: "Delete" },
+	        { className: "Delete", onClick: function onClick() {
+	            onDeleteTodo(id);
+	          } },
 	        "Delete"
 	      )
 	    );

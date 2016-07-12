@@ -3,7 +3,7 @@ var Todo = require('Todo');
 
 var Todos = React.createClass({
   render () {
-    var {todos, onToggle} = this.props;
+    var {todos, onToggle, onDeleteTodo} = this.props;
     var incompleteTodos = todos.filter((todo) => {
       return !todo.completed;
     });
@@ -15,7 +15,7 @@ var Todos = React.createClass({
     var renderIncompleteTodos = () => {
       return incompleteTodos.map((todo) => {
         return (
-        <Todo {...todo} key={todo.id} onToggle={onToggle}/>
+        <Todo {...todo} key={todo.id} onToggle={onToggle} onDeleteTodo={onDeleteTodo}/>
         );
       })
     };
@@ -23,7 +23,7 @@ var Todos = React.createClass({
     var renderCompletedTodos = () => {
       return completedTodos.map((todo) => {
         return (
-        <Todo {...todo} key={todo.id} onToggle={onToggle}/>
+        <Todo {...todo} key={todo.id} onToggle={onToggle} onDeleteTodo={onDeleteTodo}/>
         );
       })
     };

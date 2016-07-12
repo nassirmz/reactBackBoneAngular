@@ -50,12 +50,23 @@ var TodoApp = React.createClass({
       todos: updatedTodos
     });
   },
+  handleDeleteTodo (id) {
+    var newTodos = this.state.todos.filter((todo) => {
+      if(todo.id === id) {
+        return false;
+      }
+      return true;
+    });
+    this.setState({
+      todos: newTodos
+    });
+  },
   render: function () {
     var {todos} = this.state;
     return (
       <div>
         <AddTodo onAddTodo={this.handleAddTodo}/>
-        <Todos todos={todos} onToggle={this.handleToggle}/>
+        <Todos todos={todos} onToggle={this.handleToggle} onDeleteTodo={this.handleDeleteTodo}/>
       </div>
     );
   }
