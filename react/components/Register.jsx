@@ -28,7 +28,7 @@ var Register = React.createClass({
           this.refs.username.value = '';
           this.refs.password.value = '';
           this.refs.username.focus();
-          return this.setState({error: true, errorMsg: 'Username is unavailabel'});
+          return this.setState({error: true, errorMsg: 'Username is unavailable'});
         }
       })
     }

@@ -99,10 +99,6 @@ input[type="text"]:focus {
 }
 
 /* New Task */
-label[for='new-task'] {
-  display: block;
-  margin: 0 0 10px;
-}
 input#new-task {
   float: left;
   width: 318px;

@@ -34,12 +34,10 @@ var TodoApp = React.createClass({
       })
     })
     .catch((error) => {
-      console.log(error);
     })
   },
   handleToggle (id, completed) {
     var {todos} = this.state;
-    console.log(completed);
     axios.put(`/todos/${id}`, {completed: !completed}, { headers: {'Auth': localStorage.getItem('Auth')}})
     .then((resp) => {
       var newTodos = todos.map((todo) => {
@@ -48,11 +46,9 @@ var TodoApp = React.createClass({
         }
         return todo;
       });
-      console.log(newTodos);
       this.setState({ todos: newTodos});
     })
     .catch((error) => {
-      console.log(error);
     })
   },
   handleUpdateTask (id, newTask) {
@@ -65,11 +61,9 @@ var TodoApp = React.createClass({
         }
         return todo;
       });
-      console.log(newTodos);
       this.setState({ todos: newTodos});
     })
     .catch((error) => {
-      console.log(error);
     })
   },
   handleDeleteTodo (id) {
@@ -79,11 +73,9 @@ var TodoApp = React.createClass({
       var newTodos = todos.filter((todo) => {
         return todo.id !== id;
       });
-      console.log(newTodos);
       this.setState({ todos: newTodos});
     })
     .catch((error) => {
-      console.error(error);
     })
   },
   render: function () {
