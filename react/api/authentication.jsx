@@ -32,6 +32,9 @@ module.exports = {
         localStorage.setItem('Auth', resp.headers.auth);
         cb(true);
       }
+    }, (e) => {
+      console.log(e);
+      cb(false);
     })
     .catch((e) => {
       cb(false);

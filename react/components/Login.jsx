@@ -20,11 +20,14 @@ var Login = React.createClass({
     var username = this.refs.username.value;
     var password = this.refs.password.value;
     if(username.length > 0 && password.length > 0) {
-      auth.register(username, password, (loggedIn) => {
+      auth.login(username, password, (loggedIn) => {
         if(loggedIn) {
           hashHistory.push('/todos');
-        } else {
-          return this.setState({eror: true });
+        } else if(!loggedIn){
+          this.refs.username.value = '';
+          this.refs.password.value = '';
+          this.refs.username.focus();
+          return this.setState({error: true });
         }
       });
     }
@@ -37,7 +40,7 @@ var Login = React.createClass({
             <li><input id="password" placeholder="password" type="password" ref="password"/></li>
             <li><button id="signinButton" onClick={this.onSubmitLogin}>Sign In</button></li>
           </ul>
-          {this.state.error && (<p style={styles.error}>Bad login information</p>)}
+          {this.state.error && (<p style={styles.error}>Invalid Username or Password!<br/>Please try again!</p>)}
         </form>
     );
   }

@@ -26744,11 +26744,14 @@
 	    var username = this.refs.username.value;
 	    var password = this.refs.password.value;
 	    if (username.length > 0 && password.length > 0) {
-	      auth.register(username, password, function (loggedIn) {
+	      auth.login(username, password, function (loggedIn) {
 	        if (loggedIn) {
 	          hashHistory.push('/todos');
-	        } else {
-	          return _this.setState({ eror: true });
+	        } else if (!loggedIn) {
+	          _this.refs.username.value = '';
+	          _this.refs.password.value = '';
+	          _this.refs.username.focus();
+	          return _this.setState({ error: true });
 	        }
 	      });
 	    }
@@ -26783,7 +26786,9 @@
 	      this.state.error && React.createElement(
 	        'p',
 	        { style: styles.error },
-	        'Bad login information'
+	        'Invalid Username or Password!',
+	        React.createElement('br', null),
+	        'Please try again!'
 	      )
 	    );
 	  }
@@ -26829,6 +26834,9 @@
 	        localStorage.setItem('Auth', resp.headers.auth);
 	        cb(true);
 	      }
+	    }, function (e) {
+	      console.log(e);
+	      cb(false);
 	    }).catch(function (e) {
 	      cb(false);
 	      console.error(e);
@@ -38200,18 +38208,19 @@
 
 	var Link = _require.Link;
 	var IndexLink = _require.IndexLink;
+	var hashHistory = _require.hashHistory;
 
+	var auth = __webpack_require__(242);
 
-	var Nav = function Nav() {
-	  return React.createElement(
-	    'div',
-	    { className: 'header' },
-	    React.createElement(
-	      'h1',
-	      null,
-	      'TODO LIST'
-	    ),
-	    React.createElement(
+	var Nav = React.createClass({
+	  displayName: 'Nav',
+	  onSubmitLogout: function onSubmitLogout(e) {
+	    e.preventDefault();
+	    auth.logout();
+	    hashHistory.push('/');
+	  },
+	  notLoggedIn: function notLoggedIn() {
+	    return React.createElement(
 	      'ul',
 	      { className: 'nav' },
 	      React.createElement(
@@ -38232,10 +38241,37 @@
 	          'Sign In'
 	        )
 	      )
-	    ),
-	    React.createElement('div', { className: 'clear' })
-	  );
-	};
+	    );
+	  },
+	  loggedIn: function loggedIn() {
+	    return React.createElement(
+	      'ul',
+	      { className: 'nav' },
+	      React.createElement(
+	        'li',
+	        null,
+	        React.createElement(
+	          'button',
+	          { id: 'logoutButton', onClick: this.onSubmitLogout },
+	          'Sign Out'
+	        )
+	      )
+	    );
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'header' },
+	      React.createElement(
+	        'h1',
+	        null,
+	        'TODO LIST'
+	      ),
+	      auth.isAuthenticated() ? this.loggedIn() : this.notLoggedIn(),
+	      React.createElement('div', { className: 'clear' })
+	    );
+	  }
+	});
 
 	module.exports = Nav;
 
@@ -38278,12 +38314,16 @@
 	      auth.register(username, password, function (loggedIn) {
 	        if (loggedIn) {
 	          hashHistory.push('/todos');
-	        } else {
-	          return _this.setState({ error: true });
+	        } else if (!loggedIn) {
+	          _this.refs.username.value = '';
+	          _this.refs.password.value = '';
+	          _this.refs.username.focus();
+	          return _this.setState({ error: true, errorMsg: 'Username is unavailabel' });
 	        }
 	      });
 	    } else {
-	      this.setState({ error: true });
+	      this.refs.username.focus();
+	      return this.setState({ error: true, errorMsg: 'username/password is required' });
 	    }
 	  },
 	  render: function render() {
@@ -38316,7 +38356,10 @@
 	      this.state.error && React.createElement(
 	        'p',
 	        { style: styles.error },
-	        'Bad login information'
+	        this.state.errorMsg,
+	        '!',
+	        React.createElement('br', null),
+	        'Please try again!'
 	      )
 	    );
 	  }

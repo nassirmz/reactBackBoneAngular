@@ -24,14 +24,17 @@ var Register = React.createClass({
       auth.register(username, password, (loggedIn) => {
         if (loggedIn) {
           hashHistory.push('/todos');
-        }
-        else {
-          return this.setState({error: true});
+        } else if (!loggedIn){
+          this.refs.username.value = '';
+          this.refs.password.value = '';
+          this.refs.username.focus();
+          return this.setState({error: true, errorMsg: 'Username is unavailabel'});
         }
       })
     }
     else {
-      this.setState({error: true})
+      this.refs.username.focus();
+      return this.setState({error: true, errorMsg: 'username/password is required'});
     }
   },
   render() {
@@ -42,7 +45,7 @@ var Register = React.createClass({
             <li><input id="password" placeholder="password" ref="password" type="password" /></li>
             <li><button id="signupButton" onClick={this.onSubmitRegister}>Create Free Account</button></li>
           </ul>
-          {this.state.error && (<p style={styles.error}>Bad login information</p>)}
+          {this.state.error && (<p style={styles.error}>{this.state.errorMsg}!<br/>Please try again!</p>)}
         </form>
     );
   }
