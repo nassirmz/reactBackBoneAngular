@@ -1,5 +1,5 @@
 var React = require('react');
-var auth = require('./../api/authentication.jsx');
+var auth = require('auth');
 var {hashHistory} = require('react-router');
 
 var styles = {

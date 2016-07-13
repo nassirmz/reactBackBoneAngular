@@ -7,18 +7,31 @@ var Login = require('Login');
 var TodoApp = require('TodoApp');
 var Main = require('Main');
 var Register = require('Register');
+var auth = require('auth');
 
 require('styles');
 
+var requireLogin = (nextState, replace, next) => {
+  if(!auth.isAuthenticated()) {
+    replace('/');
+  }
+  next();
+}
+
+var redirectIfLoggedIn = (nextState, replace, next) => {
+  if(auth.isAuthenticated()) {
+    replace('/todos');
+  }
+  next();
+}
+
 ReactDOM.render(
-  // <Provider>
     <Router history={hashHistory}>
       <Route path="/" component={Main}>
-        <Route path="todos" component={TodoApp}/>
-        <IndexRoute component={Login}/>
+        <Route path="todos" component={TodoApp} onEnter={requireLogin}/>
+        <IndexRoute component={Login} onEnter={redirectIfLoggedIn}/>
         <Route path="signup" component={Register}/>
       </Route>
     </Router>,
-  // </Provider>,
   document.getElementById('app')
 );

@@ -11,7 +11,8 @@ module.exports = {
       './react/components'
     ],
     alias: {
-      styles: 'assets/main.css'
+      styles: 'assets/main.css',
+      auth: 'react/api/authentication.jsx'
     },
     extensions: ['', '.js', '.jsx']
   },

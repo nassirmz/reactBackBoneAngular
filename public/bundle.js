@@ -65,24 +65,35 @@
 	var TodoApp = __webpack_require__(262);
 	var Main = __webpack_require__(267);
 	var Register = __webpack_require__(269);
+	var auth = __webpack_require__(242);
 
 	__webpack_require__(270);
 
-	ReactDOM.render(
-	// <Provider>
-	React.createElement(
+	var requireLogin = function requireLogin(nextState, replace, next) {
+	  if (!auth.isAuthenticated()) {
+	    replace('/');
+	  }
+	  next();
+	};
+
+	var redirectIfLoggedIn = function redirectIfLoggedIn(nextState, replace, next) {
+	  if (auth.isAuthenticated()) {
+	    replace('/todos');
+	  }
+	  next();
+	};
+
+	ReactDOM.render(React.createElement(
 	  Router,
 	  { history: hashHistory },
 	  React.createElement(
 	    Route,
 	    { path: '/', component: Main },
-	    React.createElement(Route, { path: 'todos', component: TodoApp }),
-	    React.createElement(IndexRoute, { component: Login }),
+	    React.createElement(Route, { path: 'todos', component: TodoApp, onEnter: requireLogin }),
+	    React.createElement(IndexRoute, { component: Login, onEnter: redirectIfLoggedIn }),
 	    React.createElement(Route, { path: 'signup', component: Register })
 	  )
-	),
-	// </Provider>,
-	document.getElementById('app'));
+	), document.getElementById('app'));
 
 /***/ },
 /* 1 */
