@@ -28118,42 +28118,56 @@
 	      console.log(error);
 	    });
 	  },
-	  handleToggle: function handleToggle(id) {
+	  handleToggle: function handleToggle(id, completed) {
+	    var _this3 = this;
+
 	    var todos = this.state.todos;
 
-	    var updatedTodos = todos.map(function (todo) {
-	      if (todo.id === id) {
-	        var newCompleted = !todo.completed;
-	        todo.completed = newCompleted;
-	      }
-	      return todo;
-	    });
-	    this.setState({
-	      todos: updatedTodos
+	    console.log(completed);
+	    axios.put('/todos/' + id, { completed: !completed }, { headers: { 'Auth': localStorage.getItem('Auth') } }).then(function (resp) {
+	      var newTodos = todos.map(function (todo) {
+	        if (todo.id === id) {
+	          return resp.data;
+	        }
+	        return todo;
+	      });
+	      console.log(newTodos);
+	      _this3.setState({ todos: newTodos });
+	    }).catch(function (error) {
+	      console.log(error);
 	    });
 	  },
 	  handleUpdateTask: function handleUpdateTask(id, newTask) {
+	    var _this4 = this;
+
 	    var todos = this.state.todos;
 
-	    var newTodos = todos.map(function (todo) {
-	      if (todo.id === id) {
-	        todo.task = newTask;
-	      }
-	      return todo;
-	    });
-	    this.setState({
-	      todos: newTodos
+	    axios.put('/todos/' + id, { task: newTask }, { headers: { 'Auth': localStorage.getItem('Auth') } }).then(function (resp) {
+	      var newTodos = todos.map(function (todo) {
+	        if (todo.id === id) {
+	          return resp.data;
+	        }
+	        return todo;
+	      });
+	      console.log(newTodos);
+	      _this4.setState({ todos: newTodos });
+	    }).catch(function (error) {
+	      console.log(error);
 	    });
 	  },
 	  handleDeleteTodo: function handleDeleteTodo(id) {
-	    var newTodos = this.state.todos.filter(function (todo) {
-	      if (todo.id === id) {
-	        return false;
-	      }
-	      return true;
-	    });
-	    this.setState({
-	      todos: newTodos
+	    var _this5 = this;
+
+	    var todos = this.state.todos;
+
+	    axios.delete('/todos/' + id, { headers: { 'Auth': localStorage.getItem('Auth') } }).then(function (resp) {
+	      var newTodos = todos.filter(function (todo) {
+	        return todo.id !== id;
+	      });
+	      console.log(newTodos);
+	      _this5.setState({ todos: newTodos });
+	    }).catch(function (error) {
+	      console.error(error);
 	    });
 	  },
 
@@ -28885,7 +28899,7 @@
 	      'li',
 	      null,
 	      React.createElement('input', { type: 'checkbox', checked: completed, onClick: function onClick() {
-	          onToggle(id);
+	          onToggle(id, completed);
 	        } }),
 	      React.createElement(
 	        'label',

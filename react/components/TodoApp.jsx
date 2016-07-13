@@ -37,41 +37,54 @@ var TodoApp = React.createClass({
       console.log(error);
     })
   },
-  handleToggle (id) {
+  handleToggle (id, completed) {
     var {todos} = this.state;
-    var updatedTodos = todos.map((todo) => {
-      if(todo.id ===id) {
-        var newCompleted = !todo.completed;
-        todo.completed = newCompleted;
-      }
-      return todo;
-    });
-    this.setState({
-      todos: updatedTodos
-    });
+    console.log(completed);
+    axios.put(`/todos/${id}`, {completed: !completed}, { headers: {'Auth': localStorage.getItem('Auth')}})
+    .then((resp) => {
+      var newTodos = todos.map((todo) => {
+        if (todo.id === id) {
+          return resp.data;
+        }
+        return todo;
+      });
+      console.log(newTodos);
+      this.setState({ todos: newTodos});
+    })
+    .catch((error) => {
+      console.log(error);
+    })
   },
   handleUpdateTask (id, newTask) {
     var {todos} = this.state;
-    var newTodos = todos.map((todo) => {
-      if(todo.id === id) {
-        todo.task = newTask;
-      }
-      return todo;
+    axios.put(`/todos/${id}`, {task: newTask}, { headers: {'Auth': localStorage.getItem('Auth')}})
+    .then((resp) => {
+      var newTodos = todos.map((todo) => {
+        if (todo.id === id) {
+          return resp.data;
+        }
+        return todo;
+      });
+      console.log(newTodos);
+      this.setState({ todos: newTodos});
     })
-    this.setState({
-      todos: newTodos
-    });
+    .catch((error) => {
+      console.log(error);
+    })
   },
   handleDeleteTodo (id) {
-    var newTodos = this.state.todos.filter((todo) => {
-      if(todo.id === id) {
-        return false;
-      }
-      return true;
-    });
-    this.setState({
-      todos: newTodos
-    });
+    var {todos} = this.state;
+    axios.delete(`/todos/${id}`, { headers: {'Auth': localStorage.getItem('Auth')}})
+    .then((resp) => {
+      var newTodos = todos.filter((todo) => {
+        return todo.id !== id;
+      });
+      console.log(newTodos);
+      this.setState({ todos: newTodos});
+    })
+    .catch((error) => {
+      console.error(error);
+    })
   },
   render: function () {
     var {todos} = this.state;

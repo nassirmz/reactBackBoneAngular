@@ -35,7 +35,7 @@ var Todo = React.createClass({
     return (
       <li>
         <input type="checkbox" checked={completed} onClick={ () => {
-            onToggle(id);
+            onToggle(id, completed);
           }}/>
         <label>{task}</label>
         <input type="text" className="edit-task" value={this.state.task} ref='editTask' onChange={this.editTask}/>

@@ -111,6 +111,10 @@ module.exports = {
           UserId: req.user.get('id')
         }
       })
+      .then(function (result) {
+        console.log(result);
+        res.sendStatus(200);
+      })
       .catch(function (err) {
         res.status(500).send(err);
       });
