@@ -28172,13 +28172,24 @@
 	  },
 
 	  render: function render() {
+	    var _this6 = this;
+
 	    var todos = this.state.todos;
 
+	    var renderWhenTodos = function renderWhenTodos() {
+	      return React.createElement(Todos, { todos: todos, onToggle: _this6.handleToggle, onDeleteTodo: _this6.handleDeleteTodo, onUpdateTask: _this6.handleUpdateTask });
+	    };
 	    return React.createElement(
 	      'div',
 	      null,
 	      React.createElement(AddTodo, { onAddTodo: this.handleAddTodo }),
-	      React.createElement(Todos, { todos: todos, onToggle: this.handleToggle, onDeleteTodo: this.handleDeleteTodo, onUpdateTask: this.handleUpdateTask })
+	      !todos.length ? React.createElement(
+	        'p',
+	        null,
+	        'No todos yet!',
+	        React.createElement('br', null),
+	        'Please add your todos!'
+	      ) : renderWhenTodos()
 	    );
 	  }
 	});
@@ -28420,7 +28431,7 @@
 
 
 	// module
-	exports.push([module.id, "body, html {\n  background: #fff;\n  color: #333;\n  font-family: Lato, sans-serif;\n  margin: 0;\n  padding: 0;\n}\n.header {\n  margin: 10px 5%;\n  border-bottom: 2px solid black;\n}\nh1 {\n  float: left;\n  margin: 0;\n  margin-bottom: 10px;\n}\n.nav {\n  float: right;\n  margin-top: 10px;\n}\n.nav li {\n  display: inline;\n  border-bottom: none;\n}\n.nav li a {\n  margin-right: 20px;\n  text-decoration: none;\n  color: black;\n}\n.nav li a:hover {\n  color: #aaa;\n}\n.clear {\n  clear: both;\n}\n.container {\n  display: block;\n  width: 400px;\n  margin: 10px auto 0;\n}\nul {\n  margin: 0;\n  padding: 0;\n}\nli * {\n  float: left;\n}\nli, h3 {\n  clear:both;\n  list-style:none;\n}\ninput, button {\n  outline: none;\n}\nbutton {\n  background: none;\n  border: 0px;\n  color: #888;\n  font-size: 15px;\n  margin: 10px 0 0;\n  font-family: Lato, sans-serif;\n  cursor: pointer;\n}\n.edit, .delete, .add {\n  width: 60px;\n}\nbutton:hover {\n  color: #333;\n}\n/* Heading */\nh3,\nlabel[for='new-task'] {\n  color: #333;\n  font-weight: 700;\n  font-size: 15px;\n  border-bottom: 2px solid #333;\n  padding: 10px 0 2px;\n  margin: 0;\n  text-transform: uppercase;\n}\ninput[type=\"text\"], input[type=\"password\"] {\n  margin: 0;\n  font-size: 18px;\n  line-height: 18px;\n  height: 18px;\n  padding: 10px;\n  border: 1px solid #ddd;\n  background: #fff;\n  border-radius: 6px;\n  font-family: Lato, sans-serif;\n  color: #888;\n}\ninput[type=\"text\"]:focus {\n  color: #333;\n}\n\n/* New Task */\nlabel[for='new-task'] {\n  display: block;\n  margin: 0 0 10px;\n}\ninput#new-task {\n  float: left;\n  width: 318px;\n}\np > button:hover {\n  color: #0FC57C;\n}\n\n/* Task list */\nli {\n  overflow: hidden;\n  padding: 5px 0;\n  border-bottom: 1px solid #eee;\n}\nli > input[type=\"checkbox\"] {\n  margin: 0 10px;\n  position: relative;\n  top: 15px;\n}\nli > label {\n  font-size: 18px;\n  line-height: 40px;\n  width: 237px;\n  padding: 0 0 0 5px;\n}\nli >  input[type=\"text\"] {\n  width: 226px;\n}\nli > .delete:hover {\n  color: #CF2323;\n}\n\n/* Completed */\n#completed-tasks label {\n  text-decoration: line-through;\n  color: #888;\n}\n\n/* Edit Task */\nul li .edit-task {\n  display:none;\n}\n\nul li.edit-mode .edit-task {\n  display:block;\n}\n\nul li.edit-mode label {\n  display:none;\n}\n\n/****forms *****/\nform {\n  margin-top: 50px;\n}\nform li {\n  border-bottom: none;\n}\nform ul li input[type=text], form ul li input[type=password] {\n  display: inline;\n  width: 350px;\n}\nform button {\n  border: 2px solid black;\n  border-radius: 30px;\n  padding: 3px 15px;\n}\n", ""]);
+	exports.push([module.id, "body, html {\n  background: #fff;\n  color: #333;\n  font-family: Lato, sans-serif;\n  margin: 0;\n  padding: 0;\n}\n.header {\n  margin: 10px 5%;\n  border-bottom: 2px solid black;\n}\nh1 {\n  float: left;\n  margin: 0;\n  margin-bottom: 10px;\n}\n.nav {\n  float: right;\n  margin-top: 10px;\n}\n.nav li {\n  display: inline;\n  border-bottom: none;\n}\n.nav li a {\n  margin-right: 20px;\n  text-decoration: none;\n  color: black;\n}\n.nav li a:hover {\n  color: #aaa;\n}\n.clear {\n  clear: both;\n}\n.container {\n  display: block;\n  width: 400px;\n  margin: 10px auto 0;\n}\nul {\n  margin: 0;\n  padding: 0;\n}\nli * {\n  float: left;\n}\nli, h3 {\n  clear:both;\n  list-style:none;\n}\ninput, button {\n  outline: none;\n}\nbutton {\n  background: none;\n  border: 0px;\n  color: #888;\n  font-size: 15px;\n  margin: 10px 0 0;\n  font-family: Lato, sans-serif;\n  cursor: pointer;\n}\n.edit, .delete, .add {\n  width: 60px;\n}\nbutton:hover {\n  color: #333;\n}\n.edit:hover {\n  color: green;\n}\n.delete:hover {\n  color: red;\n}\n/* Heading */\nh3 {\n  color: #333;\n  font-weight: 700;\n  font-size: 15px;\n  border-bottom: 2px solid #333;\n  padding: 10px 0 2px;\n  text-transform: uppercase;\n}\ninput[type=\"text\"], input[type=\"password\"] {\n  margin: 0;\n  font-size: 18px;\n  line-height: 18px;\n  height: 18px;\n  padding: 10px;\n  border: 1px solid #ddd;\n  background: #fff;\n  border-radius: 6px;\n  font-family: Lato, sans-serif;\n  color: #888;\n}\ninput[type=\"text\"]:focus {\n  color: #333;\n}\n\n/* New Task */\nlabel[for='new-task'] {\n  display: block;\n  margin: 0 0 10px;\n}\ninput#new-task {\n  float: left;\n  width: 318px;\n}\np > button:hover {\n  color: #0FC57C;\n}\n\n/* Task list */\nli {\n  overflow: hidden;\n  padding: 5px 0;\n  border-bottom: 1px solid #eee;\n}\nli > input[type=\"checkbox\"] {\n  margin: 0 10px;\n  position: relative;\n  top: 15px;\n}\nli > label {\n  font-size: 18px;\n  line-height: 40px;\n  width: 237px;\n  padding: 0 0 0 5px;\n}\nli >  input[type=\"text\"] {\n  width: 226px;\n}\nli > .delete:hover {\n  color: #CF2323;\n}\n\n/* Completed */\n#completed-tasks label {\n  text-decoration: line-through;\n  color: #888;\n}\n\n/* Edit Task */\nul li .edit-task {\n  display:none;\n}\n\nul li.edit-mode .edit-task {\n  display:block;\n}\n\nul li.edit-mode label {\n  display:none;\n}\n\n/****forms *****/\nform {\n  margin-top: 50px;\n}\nform li {\n  border-bottom: none;\n}\nform ul li input[type=text], form ul li input[type=password] {\n  display: inline;\n  width: 350px;\n}\nform button {\n  border: 2px solid black;\n  border-radius: 30px;\n  padding: 3px 15px;\n}\n", ""]);
 
 	// exports
 
@@ -28914,7 +28925,7 @@
 	      ),
 	      React.createElement(
 	        'button',
-	        { className: 'Delete', onClick: function onClick() {
+	        { className: 'delete', onClick: function onClick() {
 	            onDeleteTodo(id);
 	          } },
 	        'Delete'

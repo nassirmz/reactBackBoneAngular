@@ -67,15 +67,19 @@ button {
 button:hover {
   color: #333;
 }
+.edit:hover {
+  color: green;
+}
+.delete:hover {
+  color: red;
+}
 /* Heading */
-h3,
-label[for='new-task'] {
+h3 {
   color: #333;
   font-weight: 700;
   font-size: 15px;
   border-bottom: 2px solid #333;
   padding: 10px 0 2px;
-  margin: 0;
   text-transform: uppercase;
 }
 input[type="text"], input[type="password"] {

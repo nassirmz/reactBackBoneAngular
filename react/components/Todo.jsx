@@ -40,7 +40,7 @@ var Todo = React.createClass({
         <label>{task}</label>
         <input type="text" className="edit-task" value={this.state.task} ref='editTask' onChange={this.editTask}/>
         <button className="edit" onClick={this.updateTask}>Edit</button>
-        <button className="Delete" onClick={ () => {
+        <button className="delete" onClick={ () => {
             onDeleteTodo(id)
           }}>Delete</button>
       </li>

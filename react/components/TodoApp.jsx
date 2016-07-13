@@ -88,10 +88,15 @@ var TodoApp = React.createClass({
   },
   render: function () {
     var {todos} = this.state;
+    var renderWhenTodos = () => {
+      return (
+        <Todos todos={todos} onToggle={this.handleToggle} onDeleteTodo={this.handleDeleteTodo} onUpdateTask={this.handleUpdateTask}/>
+      )
+    }
     return (
       <div>
         <AddTodo onAddTodo={this.handleAddTodo}/>
-        <Todos todos={todos} onToggle={this.handleToggle} onDeleteTodo={this.handleDeleteTodo} onUpdateTask={this.handleUpdateTask}/>
+          {!todos.length ? (<p>No todos yet!<br/>Please add your todos!</p>) : renderWhenTodos()}
       </div>
     );
   }
