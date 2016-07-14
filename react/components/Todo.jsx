@@ -1,16 +1,19 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var $ = require('jquery');
+var {connect} = require('react-redux');
+var actions = require('actions');
+
 var Todo = React.createClass({
   updateTask (e) {
     e.preventDefault();
-    var {onUpdateTask, id} = this.props;
+    var {dispatch, id} = this.props;
     var listElem = ReactDOM.findDOMNode(this);
     var editButton = $(listElem).find('.edit');
     if(listElem.className === 'edit-mode') {
       var {task} = this.state;
       if(task.length > 0) {
-        onUpdateTask(id, task);
+        dispatch(actions.startUpdateTodo(id, {task: task}));
       }
       editButton.text('Edit');
       listElem.className = '';
@@ -30,12 +33,12 @@ var Todo = React.createClass({
     });
   },
   render () {
-    var {task, completed, id, onToggle, onDeleteTodo} = this.props;
+    var {task, completed, id, dispatch} = this.props;
 
     return (
       <li>
         <input type="checkbox" checked={completed} onClick={ () => {
-            onToggle(id, completed);
+            dispatch(actions.startUpdateTodo(id, {completed: !completed}));
           }}/>
         <label>{task}</label>
         <input type="text" className="edit-task" value={this.state.task} ref='editTask' onChange={this.editTask}/>
@@ -48,4 +51,4 @@ var Todo = React.createClass({
   }
 });
 
-module.exports = Todo;
+module.exports = connect()(Todo);

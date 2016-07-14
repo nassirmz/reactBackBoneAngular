@@ -63,11 +63,17 @@
 
 	var Login = __webpack_require__(241);
 	var TodoApp = __webpack_require__(262);
-	var Main = __webpack_require__(263);
-	var Register = __webpack_require__(265);
+	var Main = __webpack_require__(268);
+	var Register = __webpack_require__(270);
 	var auth = __webpack_require__(242);
+	var actions = __webpack_require__(267);
+	var store = __webpack_require__(271).configure();
 
-	__webpack_require__(266);
+	store.subscribe(function () {
+	  console.log('New state', store.getState());
+	});
+
+	__webpack_require__(274);
 
 	var requireLogin = function requireLogin(nextState, replace, next) {
 	  if (!auth.isAuthenticated()) {
@@ -84,14 +90,18 @@
 	};
 
 	ReactDOM.render(React.createElement(
-	  Router,
-	  { history: hashHistory },
+	  Provider,
+	  { store: store },
 	  React.createElement(
-	    Route,
-	    { path: '/', component: Main },
-	    React.createElement(Route, { path: 'todos', component: TodoApp, onEnter: requireLogin }),
-	    React.createElement(IndexRoute, { component: Login, onEnter: redirectIfLoggedIn }),
-	    React.createElement(Route, { path: 'signup', component: Register })
+	    Router,
+	    { history: hashHistory },
+	    React.createElement(
+	      Route,
+	      { path: '/', component: Main },
+	      React.createElement(Route, { path: 'todos', component: TodoApp, onEnter: requireLogin }),
+	      React.createElement(IndexRoute, { component: Login, onEnter: redirectIfLoggedIn }),
+	      React.createElement(Route, { path: 'signup', component: Register })
+	    )
 	  )
 	), document.getElementById('app'));
 
@@ -28077,112 +28087,50 @@
 
 	'use strict';
 
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(158);
 	var axios = __webpack_require__(243);
 
-	var AddTodo = __webpack_require__(270);
-	var Todos = __webpack_require__(271);
+	var _require = __webpack_require__(159);
+
+	var connect = _require.connect;
+
+
+	var AddTodo = __webpack_require__(263);
+	var Todos = __webpack_require__(264);
+	var actions = __webpack_require__(267);
 
 	var TodoApp = React.createClass({
 	  displayName: 'TodoApp',
-	  getInitialState: function getInitialState() {
-	    return {
-	      todos: []
-	    };
-	  },
 	  componentDidMount: function componentDidMount() {
-	    var _this = this;
+	    var dispatch = this.props.dispatch;
 
-	    axios.get('/todos', { headers: { 'Auth': localStorage.getItem('Auth') } }).then(function (resp) {
-	      _this.setState({
-	        todos: resp.data
-	      });
-	    });
-	  },
-	  handleAddTodo: function handleAddTodo(task) {
-	    var _this2 = this;
-
-	    var todos = this.state.todos;
-
-	    var todo = {
-	      task: task
-	    };
-	    axios.post('/todos', todo, { headers: { 'Auth': localStorage.getItem('Auth') } }).then(function (resp) {
-	      _this2.setState({
-	        todos: [].concat(_toConsumableArray(todos), [resp.data])
-	      });
-	    }).catch(function (error) {});
-	  },
-	  handleToggle: function handleToggle(id, completed) {
-	    var _this3 = this;
-
-	    var todos = this.state.todos;
-
-	    axios.put('/todos/' + id, { completed: !completed }, { headers: { 'Auth': localStorage.getItem('Auth') } }).then(function (resp) {
-	      var newTodos = todos.map(function (todo) {
-	        if (todo.id === id) {
-	          return resp.data;
-	        }
-	        return todo;
-	      });
-	      _this3.setState({ todos: newTodos });
-	    }).catch(function (error) {});
-	  },
-	  handleUpdateTask: function handleUpdateTask(id, newTask) {
-	    var _this4 = this;
-
-	    var todos = this.state.todos;
-
-	    axios.put('/todos/' + id, { task: newTask }, { headers: { 'Auth': localStorage.getItem('Auth') } }).then(function (resp) {
-	      var newTodos = todos.map(function (todo) {
-	        if (todo.id === id) {
-	          return resp.data;
-	        }
-	        return todo;
-	      });
-	      _this4.setState({ todos: newTodos });
-	    }).catch(function (error) {});
-	  },
-	  handleDeleteTodo: function handleDeleteTodo(id) {
-	    var _this5 = this;
-
-	    var todos = this.state.todos;
-
-	    axios.delete('/todos/' + id, { headers: { 'Auth': localStorage.getItem('Auth') } }).then(function (resp) {
-	      var newTodos = todos.filter(function (todo) {
-	        return todo.id !== id;
-	      });
-	      _this5.setState({ todos: newTodos });
-	    }).catch(function (error) {});
+	    dispatch(actions.startAddTodos());
 	  },
 
 	  render: function render() {
-	    var _this6 = this;
+	    var todos = this.props.todos;
 
-	    var todos = this.state.todos;
-
-	    var renderWhenTodos = function renderWhenTodos() {
-	      return React.createElement(Todos, { todos: todos, onToggle: _this6.handleToggle, onDeleteTodo: _this6.handleDeleteTodo, onUpdateTask: _this6.handleUpdateTask });
-	    };
 	    return React.createElement(
 	      'div',
 	      null,
-	      React.createElement(AddTodo, { onAddTodo: this.handleAddTodo }),
-	      !todos.length ? React.createElement(
+	      React.createElement(AddTodo, null),
+	      todos.length ? React.createElement(Todos, null) : React.createElement(
 	        'p',
 	        null,
 	        'No todos yet!',
 	        React.createElement('br', null),
-	        'Please add your todos!'
-	      ) : renderWhenTodos()
+	        'Please add Todos!'
+	      )
 	    );
 	  }
 	});
 
-	module.exports = TodoApp;
+	module.exports = connect(function (state) {
+	  return {
+	    todos: state.todos
+	  };
+	})(TodoApp);
 
 /***/ },
 /* 263 */
@@ -28191,564 +28139,22 @@
 	'use strict';
 
 	var React = __webpack_require__(1);
-	var ReactDOM = __webpack_require__(159);
-	var Nav = __webpack_require__(264);
-	var Login = __webpack_require__(241);
 
-	var Main = React.createClass({
-	  displayName: 'Main',
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      { className: 'main' },
-	      React.createElement(Nav, null),
-	      React.createElement(
-	        'div',
-	        { className: 'container' },
-	        this.props.children
-	      )
-	    );
-	  }
-	});
+	var _require = __webpack_require__(159);
 
-	module.exports = Main;
+	var connect = _require.connect;
 
-/***/ },
-/* 264 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-
-	var _require = __webpack_require__(181);
-
-	var Link = _require.Link;
-	var IndexLink = _require.IndexLink;
-	var hashHistory = _require.hashHistory;
-
-	var auth = __webpack_require__(242);
-
-	var Nav = React.createClass({
-	  displayName: 'Nav',
-	  onSubmitLogout: function onSubmitLogout(e) {
-	    e.preventDefault();
-	    auth.logout();
-	    hashHistory.push('/');
-	  },
-	  notLoggedIn: function notLoggedIn() {
-	    return React.createElement(
-	      'ul',
-	      { className: 'nav' },
-	      React.createElement(
-	        'li',
-	        null,
-	        React.createElement(
-	          Link,
-	          { to: '/signup' },
-	          'Create Account'
-	        )
-	      ),
-	      React.createElement(
-	        'li',
-	        null,
-	        React.createElement(
-	          IndexLink,
-	          { to: '/', href: '#signin' },
-	          'Sign In'
-	        )
-	      )
-	    );
-	  },
-	  loggedIn: function loggedIn() {
-	    return React.createElement(
-	      'ul',
-	      { className: 'nav' },
-	      React.createElement(
-	        'li',
-	        null,
-	        React.createElement(
-	          'button',
-	          { id: 'logoutButton', onClick: this.onSubmitLogout },
-	          'Sign Out'
-	        )
-	      )
-	    );
-	  },
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      { className: 'header' },
-	      React.createElement(
-	        'h1',
-	        null,
-	        'TODO LIST'
-	      ),
-	      auth.isAuthenticated() ? this.loggedIn() : this.notLoggedIn(),
-	      React.createElement('div', { className: 'clear' })
-	    );
-	  }
-	});
-
-	module.exports = Nav;
-
-/***/ },
-/* 265 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-	var auth = __webpack_require__(242);
-
-	var _require = __webpack_require__(181);
-
-	var hashHistory = _require.hashHistory;
-
-
-	var styles = {
-	  error: {
-	    color: '#FF0000',
-	    marginTop: '15px'
-	  }
-	};
-
-	var Register = React.createClass({
-	  displayName: 'Register',
-	  getInitialState: function getInitialState() {
-	    return {
-	      error: false,
-	      errorMsg: ''
-	    };
-	  },
-	  onSubmitRegister: function onSubmitRegister(e) {
-	    var _this = this;
-
-	    e.preventDefault();
-	    var username = this.refs.username.value;
-	    var password = this.refs.password.value;
-	    if (username.length > 0 && password.length > 0) {
-	      auth.register(username, password, function (loggedIn) {
-	        if (loggedIn) {
-	          hashHistory.push('/todos');
-	        } else if (!loggedIn) {
-	          _this.refs.username.value = '';
-	          _this.refs.password.value = '';
-	          _this.refs.username.focus();
-	          return _this.setState({ error: true, errorMsg: 'Username is unavailable' });
-	        }
-	      });
-	    } else {
-	      this.refs.username.focus();
-	      return this.setState({ error: true, errorMsg: 'username/password is required' });
-	    }
-	  },
-	  render: function render() {
-	    return React.createElement(
-	      'form',
-	      null,
-	      React.createElement(
-	        'ul',
-	        null,
-	        React.createElement(
-	          'li',
-	          null,
-	          React.createElement('input', { id: 'username', placeholder: 'username', type: 'text', ref: 'username' })
-	        ),
-	        React.createElement(
-	          'li',
-	          null,
-	          React.createElement('input', { id: 'password', placeholder: 'password', ref: 'password', type: 'password' })
-	        ),
-	        React.createElement(
-	          'li',
-	          null,
-	          React.createElement(
-	            'button',
-	            { id: 'signupButton', onClick: this.onSubmitRegister },
-	            'Create Free Account'
-	          )
-	        )
-	      ),
-	      this.state.error && React.createElement(
-	        'p',
-	        { style: styles.error },
-	        this.state.errorMsg,
-	        '!',
-	        React.createElement('br', null),
-	        'Please try again!'
-	      )
-	    );
-	  }
-	});
-
-	module.exports = Register;
-
-/***/ },
-/* 266 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(267);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(269)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../node_modules/css-loader/index.js!./main.css", function() {
-				var newContent = require("!!./../node_modules/css-loader/index.js!./main.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 267 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(268)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "body, html {\n  background: #fff;\n  color: #333;\n  font-family: Lato, sans-serif;\n  margin: 0;\n  padding: 0;\n}\n.header {\n  margin: 10px 5%;\n  border-bottom: 2px solid black;\n}\nh1 {\n  float: left;\n  margin: 0;\n  margin-bottom: 10px;\n}\n.nav {\n  float: right;\n  margin-top: 10px;\n}\n.nav li {\n  display: inline;\n  border-bottom: none;\n}\n.nav li a {\n  margin-right: 20px;\n  text-decoration: none;\n  color: black;\n}\n.nav li a:hover {\n  color: #aaa;\n}\n.clear {\n  clear: both;\n}\n.container {\n  display: block;\n  width: 400px;\n  margin: 10px auto 0;\n}\nul {\n  margin: 0;\n  padding: 0;\n}\nli * {\n  float: left;\n}\nli, h3 {\n  clear:both;\n  list-style:none;\n}\ninput, button {\n  outline: none;\n}\nbutton {\n  background: none;\n  border: 0px;\n  color: #888;\n  font-size: 15px;\n  margin: 10px 0 0;\n  font-family: Lato, sans-serif;\n  cursor: pointer;\n}\n.edit, .delete, .add {\n  width: 60px;\n}\nbutton:hover {\n  color: #333;\n}\n.edit:hover {\n  color: green;\n}\n.delete:hover {\n  color: red;\n}\n/* Heading */\nh3 {\n  color: #333;\n  font-weight: 700;\n  font-size: 15px;\n  border-bottom: 2px solid #333;\n  padding: 10px 0 2px;\n  text-transform: uppercase;\n}\ninput[type=\"text\"], input[type=\"password\"] {\n  margin: 0;\n  font-size: 18px;\n  line-height: 18px;\n  height: 18px;\n  padding: 10px;\n  border: 1px solid #ddd;\n  background: #fff;\n  border-radius: 6px;\n  font-family: Lato, sans-serif;\n  color: #888;\n}\ninput[type=\"text\"]:focus {\n  color: #333;\n}\n\n/* New Task */\ninput#new-task {\n  float: left;\n  width: 318px;\n}\np > button:hover {\n  color: #0FC57C;\n}\n\n/* Task list */\nli {\n  overflow: hidden;\n  padding: 5px 0;\n  border-bottom: 1px solid #eee;\n}\nli > input[type=\"checkbox\"] {\n  margin: 0 10px;\n  position: relative;\n  top: 15px;\n}\nli > label {\n  font-size: 18px;\n  line-height: 40px;\n  width: 237px;\n  padding: 0 0 0 5px;\n}\nli >  input[type=\"text\"] {\n  width: 226px;\n}\nli > .delete:hover {\n  color: #CF2323;\n}\n\n/* Completed */\n#completed-tasks label {\n  text-decoration: line-through;\n  color: #888;\n}\n\n/* Edit Task */\nul li .edit-task {\n  display:none;\n}\n\nul li.edit-mode .edit-task {\n  display:block;\n}\n\nul li.edit-mode label {\n  display:none;\n}\n\n/****forms *****/\nform {\n  margin-top: 50px;\n}\nform li {\n  border-bottom: none;\n}\nform ul li input[type=text], form ul li input[type=password] {\n  display: inline;\n  width: 350px;\n}\nform button {\n  border: 2px solid black;\n  border-radius: 30px;\n  padding: 3px 15px;\n}\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 268 */
-/***/ function(module, exports) {
-
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	// css base code, injected by the css-loader
-	module.exports = function() {
-		var list = [];
-
-		// return the list of modules as css string
-		list.toString = function toString() {
-			var result = [];
-			for(var i = 0; i < this.length; i++) {
-				var item = this[i];
-				if(item[2]) {
-					result.push("@media " + item[2] + "{" + item[1] + "}");
-				} else {
-					result.push(item[1]);
-				}
-			}
-			return result.join("");
-		};
-
-		// import a list of modules into the list
-		list.i = function(modules, mediaQuery) {
-			if(typeof modules === "string")
-				modules = [[null, modules, ""]];
-			var alreadyImportedModules = {};
-			for(var i = 0; i < this.length; i++) {
-				var id = this[i][0];
-				if(typeof id === "number")
-					alreadyImportedModules[id] = true;
-			}
-			for(i = 0; i < modules.length; i++) {
-				var item = modules[i];
-				// skip already imported module
-				// this implementation is not 100% perfect for weird media query combinations
-				//  when a module is imported multiple times with different media queries.
-				//  I hope this will never occur (Hey this way we have smaller bundles)
-				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-					if(mediaQuery && !item[2]) {
-						item[2] = mediaQuery;
-					} else if(mediaQuery) {
-						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-					}
-					list.push(item);
-				}
-			}
-		};
-		return list;
-	};
-
-
-/***/ },
-/* 269 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	var stylesInDom = {},
-		memoize = function(fn) {
-			var memo;
-			return function () {
-				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-				return memo;
-			};
-		},
-		isOldIE = memoize(function() {
-			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
-		}),
-		getHeadElement = memoize(function () {
-			return document.head || document.getElementsByTagName("head")[0];
-		}),
-		singletonElement = null,
-		singletonCounter = 0,
-		styleElementsInsertedAtTop = [];
-
-	module.exports = function(list, options) {
-		if(false) {
-			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-		}
-
-		options = options || {};
-		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-		// tags it will allow on a page
-		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
-
-		// By default, add <style> tags to the bottom of <head>.
-		if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
-
-		var styles = listToStyles(list);
-		addStylesToDom(styles, options);
-
-		return function update(newList) {
-			var mayRemove = [];
-			for(var i = 0; i < styles.length; i++) {
-				var item = styles[i];
-				var domStyle = stylesInDom[item.id];
-				domStyle.refs--;
-				mayRemove.push(domStyle);
-			}
-			if(newList) {
-				var newStyles = listToStyles(newList);
-				addStylesToDom(newStyles, options);
-			}
-			for(var i = 0; i < mayRemove.length; i++) {
-				var domStyle = mayRemove[i];
-				if(domStyle.refs === 0) {
-					for(var j = 0; j < domStyle.parts.length; j++)
-						domStyle.parts[j]();
-					delete stylesInDom[domStyle.id];
-				}
-			}
-		};
-	}
-
-	function addStylesToDom(styles, options) {
-		for(var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-			if(domStyle) {
-				domStyle.refs++;
-				for(var j = 0; j < domStyle.parts.length; j++) {
-					domStyle.parts[j](item.parts[j]);
-				}
-				for(; j < item.parts.length; j++) {
-					domStyle.parts.push(addStyle(item.parts[j], options));
-				}
-			} else {
-				var parts = [];
-				for(var j = 0; j < item.parts.length; j++) {
-					parts.push(addStyle(item.parts[j], options));
-				}
-				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-			}
-		}
-	}
-
-	function listToStyles(list) {
-		var styles = [];
-		var newStyles = {};
-		for(var i = 0; i < list.length; i++) {
-			var item = list[i];
-			var id = item[0];
-			var css = item[1];
-			var media = item[2];
-			var sourceMap = item[3];
-			var part = {css: css, media: media, sourceMap: sourceMap};
-			if(!newStyles[id])
-				styles.push(newStyles[id] = {id: id, parts: [part]});
-			else
-				newStyles[id].parts.push(part);
-		}
-		return styles;
-	}
-
-	function insertStyleElement(options, styleElement) {
-		var head = getHeadElement();
-		var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
-		if (options.insertAt === "top") {
-			if(!lastStyleElementInsertedAtTop) {
-				head.insertBefore(styleElement, head.firstChild);
-			} else if(lastStyleElementInsertedAtTop.nextSibling) {
-				head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
-			} else {
-				head.appendChild(styleElement);
-			}
-			styleElementsInsertedAtTop.push(styleElement);
-		} else if (options.insertAt === "bottom") {
-			head.appendChild(styleElement);
-		} else {
-			throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-		}
-	}
-
-	function removeStyleElement(styleElement) {
-		styleElement.parentNode.removeChild(styleElement);
-		var idx = styleElementsInsertedAtTop.indexOf(styleElement);
-		if(idx >= 0) {
-			styleElementsInsertedAtTop.splice(idx, 1);
-		}
-	}
-
-	function createStyleElement(options) {
-		var styleElement = document.createElement("style");
-		styleElement.type = "text/css";
-		insertStyleElement(options, styleElement);
-		return styleElement;
-	}
-
-	function createLinkElement(options) {
-		var linkElement = document.createElement("link");
-		linkElement.rel = "stylesheet";
-		insertStyleElement(options, linkElement);
-		return linkElement;
-	}
-
-	function addStyle(obj, options) {
-		var styleElement, update, remove;
-
-		if (options.singleton) {
-			var styleIndex = singletonCounter++;
-			styleElement = singletonElement || (singletonElement = createStyleElement(options));
-			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
-			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
-		} else if(obj.sourceMap &&
-			typeof URL === "function" &&
-			typeof URL.createObjectURL === "function" &&
-			typeof URL.revokeObjectURL === "function" &&
-			typeof Blob === "function" &&
-			typeof btoa === "function") {
-			styleElement = createLinkElement(options);
-			update = updateLink.bind(null, styleElement);
-			remove = function() {
-				removeStyleElement(styleElement);
-				if(styleElement.href)
-					URL.revokeObjectURL(styleElement.href);
-			};
-		} else {
-			styleElement = createStyleElement(options);
-			update = applyToTag.bind(null, styleElement);
-			remove = function() {
-				removeStyleElement(styleElement);
-			};
-		}
-
-		update(obj);
-
-		return function updateStyle(newObj) {
-			if(newObj) {
-				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
-					return;
-				update(obj = newObj);
-			} else {
-				remove();
-			}
-		};
-	}
-
-	var replaceText = (function () {
-		var textStore = [];
-
-		return function (index, replacement) {
-			textStore[index] = replacement;
-			return textStore.filter(Boolean).join('\n');
-		};
-	})();
-
-	function applyToSingletonTag(styleElement, index, remove, obj) {
-		var css = remove ? "" : obj.css;
-
-		if (styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = replaceText(index, css);
-		} else {
-			var cssNode = document.createTextNode(css);
-			var childNodes = styleElement.childNodes;
-			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
-			if (childNodes.length) {
-				styleElement.insertBefore(cssNode, childNodes[index]);
-			} else {
-				styleElement.appendChild(cssNode);
-			}
-		}
-	}
-
-	function applyToTag(styleElement, obj) {
-		var css = obj.css;
-		var media = obj.media;
-		var sourceMap = obj.sourceMap;
-
-		if(media) {
-			styleElement.setAttribute("media", media)
-		}
-
-		if(styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = css;
-		} else {
-			while(styleElement.firstChild) {
-				styleElement.removeChild(styleElement.firstChild);
-			}
-			styleElement.appendChild(document.createTextNode(css));
-		}
-	}
-
-	function updateLink(linkElement, obj) {
-		var css = obj.css;
-		var media = obj.media;
-		var sourceMap = obj.sourceMap;
-
-		if(sourceMap) {
-			// http://stackoverflow.com/a/26603875
-			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-		}
-
-		var blob = new Blob([css], { type: "text/css" });
-
-		var oldSrc = linkElement.href;
-
-		linkElement.href = URL.createObjectURL(blob);
-
-		if(oldSrc)
-			URL.revokeObjectURL(oldSrc);
-	}
-
-
-/***/ },
-/* 270 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
+	var actions = __webpack_require__(267);
 
 	var AddTodo = React.createClass({
 	  displayName: 'AddTodo',
 	  addTodo: function addTodo(e) {
 	    e.preventDefault;
 	    var elem = this.refs.newTask;
+	    var dispatch = this.props.dispatch;
+
 	    if (elem.value.length > 0) {
-	      this.props.onAddTodo(elem.value);
+	      dispatch(actions.startAddTodo(elem.value));
 	      elem.value = '';
 	    } else {
 	      elem.focus();
@@ -28773,10 +28179,10 @@
 	  }
 	});
 
-	module.exports = AddTodo;
+	module.exports = connect()(AddTodo);
 
 /***/ },
-/* 271 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28784,16 +28190,17 @@
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var React = __webpack_require__(1);
-	var Todo = __webpack_require__(272);
+	var Todo = __webpack_require__(265);
+
+	var _require = __webpack_require__(159);
+
+	var connect = _require.connect;
+
 
 	var Todos = React.createClass({
 	  displayName: 'Todos',
 	  render: function render() {
-	    var _props = this.props;
-	    var todos = _props.todos;
-	    var onToggle = _props.onToggle;
-	    var onDeleteTodo = _props.onDeleteTodo;
-	    var onUpdateTask = _props.onUpdateTask;
+	    var todos = this.props.todos;
 
 	    var incompleteTodos = todos.filter(function (todo) {
 	      return !todo.completed;
@@ -28805,13 +28212,13 @@
 
 	    var renderIncompleteTodos = function renderIncompleteTodos() {
 	      return incompleteTodos.map(function (todo) {
-	        return React.createElement(Todo, _extends({}, todo, { key: todo.id, onToggle: onToggle, onDeleteTodo: onDeleteTodo, onUpdateTask: onUpdateTask }));
+	        return React.createElement(Todo, _extends({}, todo, { key: todo.id }));
 	      });
 	    };
 
 	    var renderCompletedTodos = function renderCompletedTodos() {
 	      return completedTodos.map(function (todo) {
-	        return React.createElement(Todo, _extends({}, todo, { key: todo.id, onToggle: onToggle, onDeleteTodo: onDeleteTodo, onUpdateTask: onUpdateTask }));
+	        return React.createElement(Todo, _extends({}, todo, { key: todo.id }));
 	      });
 	    };
 	    return React.createElement(
@@ -28841,23 +28248,34 @@
 	  }
 	});
 
-	module.exports = Todos;
+	module.exports = connect(function (state) {
+	  return {
+	    todos: state.todos
+	  };
+	})(Todos);
 
 /***/ },
-/* 272 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(158);
-	var $ = __webpack_require__(273);
+	var $ = __webpack_require__(266);
+
+	var _require = __webpack_require__(159);
+
+	var connect = _require.connect;
+
+	var actions = __webpack_require__(267);
+
 	var Todo = React.createClass({
 	  displayName: 'Todo',
 	  updateTask: function updateTask(e) {
 	    e.preventDefault();
 	    var _props = this.props;
-	    var onUpdateTask = _props.onUpdateTask;
+	    var dispatch = _props.dispatch;
 	    var id = _props.id;
 
 	    var listElem = ReactDOM.findDOMNode(this);
@@ -28866,7 +28284,7 @@
 	      var task = this.state.task;
 
 	      if (task.length > 0) {
-	        onUpdateTask(id, task);
+	        dispatch(actions.startUpdateTodo(id, { task: task }));
 	      }
 	      editButton.text('Edit');
 	      listElem.className = '';
@@ -28890,15 +28308,14 @@
 	    var task = _props2.task;
 	    var completed = _props2.completed;
 	    var id = _props2.id;
-	    var onToggle = _props2.onToggle;
-	    var onDeleteTodo = _props2.onDeleteTodo;
+	    var dispatch = _props2.dispatch;
 
 
 	    return React.createElement(
 	      'li',
 	      null,
 	      React.createElement('input', { type: 'checkbox', checked: completed, onClick: function onClick() {
-	          onToggle(id, completed);
+	          dispatch(actions.startUpdateTodo(id, { completed: !completed }));
 	        } }),
 	      React.createElement(
 	        'label',
@@ -28922,10 +28339,10 @@
 	  }
 	});
 
-	module.exports = Todo;
+	module.exports = connect()(Todo);
 
 /***/ },
-/* 273 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -38742,6 +38159,740 @@
 
 	return jQuery;
 	}));
+
+
+/***/ },
+/* 267 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var axios = __webpack_require__(243);
+
+	var addTodo = exports.addTodo = function addTodo(todo) {
+	  return {
+	    type: 'ADD_TODO',
+	    todo: todo
+	  };
+	};
+
+	var addTodos = exports.addTodos = function addTodos(todos) {
+	  return {
+	    type: 'ADD_TODOS',
+	    todos: todos
+	  };
+	};
+
+	var updateTodo = exports.updateTodo = function updateTodo(todo) {
+	  return {
+	    type: 'UPDATE_TODO',
+	    todo: todo
+	  };
+	};
+
+	var deleteTodo = exports.deleteTodo = function deleteTodo(id) {
+	  return {
+	    type: 'DELETE_TODO',
+	    id: id
+	  };
+	};
+
+	var startAddTodos = exports.startAddTodos = function startAddTodos() {
+	  var headers = { headers: { 'Auth': localStorage.getItem('Auth') } };
+	  return function (dispatch, getState) {
+	    axios.get('/todos', headers).then(function (resp) {
+	      var todos = resp.data;
+	      dispatch(addTodos(todos));
+	    });
+	  };
+	};
+
+	var startAddTodo = exports.startAddTodo = function startAddTodo(task) {
+	  var headers = { headers: { 'Auth': localStorage.getItem('Auth') } };
+	  return function (dispatch, getState) {
+	    axios.post('/todos', { task: task }, headers).then(function (resp) {
+	      var todo = resp.data;
+	      dispatch(addTodo(todo));
+	    });
+	  };
+	};
+
+	var startUpdateTodo = exports.startUpdateTodo = function startUpdateTodo(id, changedTodo) {
+	  var headers = { headers: { 'Auth': localStorage.getItem('Auth') } };
+	  return function (dispatch, getState) {
+	    axios.put('/todos/' + id, changedTodo, headers).then(function (resp) {
+	      var updatedTodo = resp.data;
+	      dispatch(updateTodo(updatedTodo));
+	    });
+	  };
+	};
+
+	var startDeleteTodo = exports.startDeleteTodo = function startDeleteTodo(id, changedTodo) {
+	  var headers = { headers: { 'Auth': localStorage.getItem('Auth') } };
+	  return function (dispatch, getState) {
+	    axios.delete('/todos/' + id, headers).then(function (resp) {
+	      dispatch(deleteTodo(id));
+	    });
+	  };
+	};
+
+	// export var login = (auth) => {
+	//   return {
+	//     type: 'LOGIN',
+	//     auth
+	//   };
+	// };
+	//
+	// export var logout = () => {
+	//   return {
+	//     type: 'LOGOUT'
+	//   };
+	// };
+	//
+	// export var startRegister = (username, password) {
+	//   var user = {username, password};
+	//   axios.post('/users', user)
+	//   .then((resp) {
+	//
+	//   })
+	// }
+
+/***/ },
+/* 268 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(159);
+	var Nav = __webpack_require__(269);
+	var Login = __webpack_require__(241);
+
+	var Main = React.createClass({
+	  displayName: 'Main',
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'main' },
+	      React.createElement(Nav, null),
+	      React.createElement(
+	        'div',
+	        { className: 'container' },
+	        this.props.children
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Main;
+
+/***/ },
+/* 269 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	var _require = __webpack_require__(181);
+
+	var Link = _require.Link;
+	var IndexLink = _require.IndexLink;
+	var hashHistory = _require.hashHistory;
+
+	var auth = __webpack_require__(242);
+
+	var Nav = React.createClass({
+	  displayName: 'Nav',
+	  onSubmitLogout: function onSubmitLogout(e) {
+	    e.preventDefault();
+	    auth.logout();
+	    hashHistory.push('/');
+	  },
+	  notLoggedIn: function notLoggedIn() {
+	    return React.createElement(
+	      'ul',
+	      { className: 'nav' },
+	      React.createElement(
+	        'li',
+	        null,
+	        React.createElement(
+	          Link,
+	          { to: '/signup' },
+	          'Create Account'
+	        )
+	      ),
+	      React.createElement(
+	        'li',
+	        null,
+	        React.createElement(
+	          IndexLink,
+	          { to: '/', href: '#signin' },
+	          'Sign In'
+	        )
+	      )
+	    );
+	  },
+	  loggedIn: function loggedIn() {
+	    return React.createElement(
+	      'ul',
+	      { className: 'nav' },
+	      React.createElement(
+	        'li',
+	        null,
+	        React.createElement(
+	          'button',
+	          { id: 'logoutButton', onClick: this.onSubmitLogout },
+	          'Sign Out'
+	        )
+	      )
+	    );
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'header' },
+	      React.createElement(
+	        'h1',
+	        null,
+	        'TODO LIST'
+	      ),
+	      auth.isAuthenticated() ? this.loggedIn() : this.notLoggedIn(),
+	      React.createElement('div', { className: 'clear' })
+	    );
+	  }
+	});
+
+	module.exports = Nav;
+
+/***/ },
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var auth = __webpack_require__(242);
+
+	var _require = __webpack_require__(181);
+
+	var hashHistory = _require.hashHistory;
+
+
+	var styles = {
+	  error: {
+	    color: '#FF0000',
+	    marginTop: '15px'
+	  }
+	};
+
+	var Register = React.createClass({
+	  displayName: 'Register',
+	  getInitialState: function getInitialState() {
+	    return {
+	      error: false,
+	      errorMsg: ''
+	    };
+	  },
+	  onSubmitRegister: function onSubmitRegister(e) {
+	    var _this = this;
+
+	    e.preventDefault();
+	    var username = this.refs.username.value;
+	    var password = this.refs.password.value;
+	    if (username.length > 0 && password.length > 0) {
+	      auth.register(username, password, function (loggedIn) {
+	        if (loggedIn) {
+	          hashHistory.push('/todos');
+	        } else if (!loggedIn) {
+	          _this.refs.username.value = '';
+	          _this.refs.password.value = '';
+	          _this.refs.username.focus();
+	          return _this.setState({ error: true, errorMsg: 'Username is unavailable' });
+	        }
+	      });
+	    } else {
+	      this.refs.username.focus();
+	      return this.setState({ error: true, errorMsg: 'username/password is required' });
+	    }
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      'form',
+	      null,
+	      React.createElement(
+	        'ul',
+	        null,
+	        React.createElement(
+	          'li',
+	          null,
+	          React.createElement('input', { id: 'username', placeholder: 'username', type: 'text', ref: 'username' })
+	        ),
+	        React.createElement(
+	          'li',
+	          null,
+	          React.createElement('input', { id: 'password', placeholder: 'password', ref: 'password', type: 'password' })
+	        ),
+	        React.createElement(
+	          'li',
+	          null,
+	          React.createElement(
+	            'button',
+	            { id: 'signupButton', onClick: this.onSubmitRegister },
+	            'Create Free Account'
+	          )
+	        )
+	      ),
+	      this.state.error && React.createElement(
+	        'p',
+	        { style: styles.error },
+	        this.state.errorMsg,
+	        '!',
+	        React.createElement('br', null),
+	        'Please try again!'
+	      )
+	    );
+	  }
+	});
+
+	module.exports = Register;
+
+/***/ },
+/* 271 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var redux = __webpack_require__(166);
+	var thunk = __webpack_require__(272).default;
+
+	var _require = __webpack_require__(273);
+
+	var todosReducer = _require.todosReducer;
+	var configure = exports.configure = function configure() {
+	  var reducer = redux.combineReducers({
+	    todos: todosReducer
+	  });
+
+	  var store = redux.createStore(reducer, redux.compose(redux.applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : function (f) {
+	    return f;
+	  }));
+	  return store;
+	};
+
+/***/ },
+/* 272 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	function createThunkMiddleware(extraArgument) {
+	  return function (_ref) {
+	    var dispatch = _ref.dispatch;
+	    var getState = _ref.getState;
+	    return function (next) {
+	      return function (action) {
+	        if (typeof action === 'function') {
+	          return action(dispatch, getState, extraArgument);
+	        }
+
+	        return next(action);
+	      };
+	    };
+	  };
+	}
+
+	var thunk = createThunkMiddleware();
+	thunk.withExtraArgument = createThunkMiddleware;
+
+	exports['default'] = thunk;
+
+/***/ },
+/* 273 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	var todosReducer = exports.todosReducer = function todosReducer() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case 'ADD_TODO':
+	      return [].concat(_toConsumableArray(state), [action.todo]);
+	    case 'ADD_TODOS':
+	      return action.todos;
+	    default:
+	      return state;
+	    case 'UPDATE_TODO':
+	      return state.map(function (todo) {
+	        if (todo.id === action.todo.id) return action.todo;
+	        return todo;
+	      });
+	  }
+	};
+
+/***/ },
+/* 274 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(275);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(277)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../node_modules/css-loader/index.js!./main.css", function() {
+				var newContent = require("!!./../node_modules/css-loader/index.js!./main.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(276)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "body, html {\n  background: #fff;\n  color: #333;\n  font-family: Lato, sans-serif;\n  margin: 0;\n  padding: 0;\n}\n.header {\n  margin: 10px 5%;\n  border-bottom: 2px solid black;\n}\nh1 {\n  float: left;\n  margin: 0;\n  margin-bottom: 10px;\n}\n.nav {\n  float: right;\n  margin-top: 10px;\n}\n.nav li {\n  display: inline;\n  border-bottom: none;\n}\n.nav li a {\n  margin-right: 20px;\n  text-decoration: none;\n  color: black;\n}\n.nav li a:hover {\n  color: #aaa;\n}\n.clear {\n  clear: both;\n}\n.container {\n  display: block;\n  width: 400px;\n  margin: 10px auto 0;\n}\nul {\n  margin: 0;\n  padding: 0;\n}\nli * {\n  float: left;\n}\nli, h3 {\n  clear:both;\n  list-style:none;\n}\ninput, button {\n  outline: none;\n}\nbutton {\n  background: none;\n  border: 0px;\n  color: #888;\n  font-size: 15px;\n  margin: 10px 0 0;\n  font-family: Lato, sans-serif;\n  cursor: pointer;\n}\n.edit, .delete, .add {\n  width: 60px;\n}\nbutton:hover {\n  color: #333;\n}\n.edit:hover {\n  color: green;\n}\n.delete:hover {\n  color: red;\n}\n/* Heading */\nh3 {\n  color: #333;\n  font-weight: 700;\n  font-size: 15px;\n  border-bottom: 2px solid #333;\n  padding: 10px 0 2px;\n  text-transform: uppercase;\n}\ninput[type=\"text\"], input[type=\"password\"] {\n  margin: 0;\n  font-size: 18px;\n  line-height: 18px;\n  height: 18px;\n  padding: 10px;\n  border: 1px solid #ddd;\n  background: #fff;\n  border-radius: 6px;\n  font-family: Lato, sans-serif;\n  color: #888;\n}\ninput[type=\"text\"]:focus {\n  color: #333;\n}\n\n/* New Task */\ninput#new-task {\n  float: left;\n  width: 318px;\n}\np > button:hover {\n  color: #0FC57C;\n}\n\n/* Task list */\nli {\n  overflow: hidden;\n  padding: 5px 0;\n  border-bottom: 1px solid #eee;\n}\nli > input[type=\"checkbox\"] {\n  margin: 0 10px;\n  position: relative;\n  top: 15px;\n}\nli > label {\n  font-size: 18px;\n  line-height: 40px;\n  width: 237px;\n  padding: 0 0 0 5px;\n}\nli >  input[type=\"text\"] {\n  width: 226px;\n}\nli > .delete:hover {\n  color: #CF2323;\n}\n\n/* Completed */\n#completed-tasks label {\n  text-decoration: line-through;\n  color: #888;\n}\n\n/* Edit Task */\nul li .edit-task {\n  display:none;\n}\n\nul li.edit-mode .edit-task {\n  display:block;\n}\n\nul li.edit-mode label {\n  display:none;\n}\n\n/****forms *****/\nform {\n  margin-top: 50px;\n}\nform li {\n  border-bottom: none;\n}\nform ul li input[type=text], form ul li input[type=password] {\n  display: inline;\n  width: 350px;\n}\nform button {\n  border: 2px solid black;\n  border-radius: 30px;\n  padding: 3px 15px;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 276 */
+/***/ function(module, exports) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	// css base code, injected by the css-loader
+	module.exports = function() {
+		var list = [];
+
+		// return the list of modules as css string
+		list.toString = function toString() {
+			var result = [];
+			for(var i = 0; i < this.length; i++) {
+				var item = this[i];
+				if(item[2]) {
+					result.push("@media " + item[2] + "{" + item[1] + "}");
+				} else {
+					result.push(item[1]);
+				}
+			}
+			return result.join("");
+		};
+
+		// import a list of modules into the list
+		list.i = function(modules, mediaQuery) {
+			if(typeof modules === "string")
+				modules = [[null, modules, ""]];
+			var alreadyImportedModules = {};
+			for(var i = 0; i < this.length; i++) {
+				var id = this[i][0];
+				if(typeof id === "number")
+					alreadyImportedModules[id] = true;
+			}
+			for(i = 0; i < modules.length; i++) {
+				var item = modules[i];
+				// skip already imported module
+				// this implementation is not 100% perfect for weird media query combinations
+				//  when a module is imported multiple times with different media queries.
+				//  I hope this will never occur (Hey this way we have smaller bundles)
+				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+					if(mediaQuery && !item[2]) {
+						item[2] = mediaQuery;
+					} else if(mediaQuery) {
+						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+					}
+					list.push(item);
+				}
+			}
+		};
+		return list;
+	};
+
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	var stylesInDom = {},
+		memoize = function(fn) {
+			var memo;
+			return function () {
+				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+				return memo;
+			};
+		},
+		isOldIE = memoize(function() {
+			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+		}),
+		getHeadElement = memoize(function () {
+			return document.head || document.getElementsByTagName("head")[0];
+		}),
+		singletonElement = null,
+		singletonCounter = 0,
+		styleElementsInsertedAtTop = [];
+
+	module.exports = function(list, options) {
+		if(false) {
+			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+		}
+
+		options = options || {};
+		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+		// tags it will allow on a page
+		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
+
+		// By default, add <style> tags to the bottom of <head>.
+		if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
+
+		var styles = listToStyles(list);
+		addStylesToDom(styles, options);
+
+		return function update(newList) {
+			var mayRemove = [];
+			for(var i = 0; i < styles.length; i++) {
+				var item = styles[i];
+				var domStyle = stylesInDom[item.id];
+				domStyle.refs--;
+				mayRemove.push(domStyle);
+			}
+			if(newList) {
+				var newStyles = listToStyles(newList);
+				addStylesToDom(newStyles, options);
+			}
+			for(var i = 0; i < mayRemove.length; i++) {
+				var domStyle = mayRemove[i];
+				if(domStyle.refs === 0) {
+					for(var j = 0; j < domStyle.parts.length; j++)
+						domStyle.parts[j]();
+					delete stylesInDom[domStyle.id];
+				}
+			}
+		};
+	}
+
+	function addStylesToDom(styles, options) {
+		for(var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+			if(domStyle) {
+				domStyle.refs++;
+				for(var j = 0; j < domStyle.parts.length; j++) {
+					domStyle.parts[j](item.parts[j]);
+				}
+				for(; j < item.parts.length; j++) {
+					domStyle.parts.push(addStyle(item.parts[j], options));
+				}
+			} else {
+				var parts = [];
+				for(var j = 0; j < item.parts.length; j++) {
+					parts.push(addStyle(item.parts[j], options));
+				}
+				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+			}
+		}
+	}
+
+	function listToStyles(list) {
+		var styles = [];
+		var newStyles = {};
+		for(var i = 0; i < list.length; i++) {
+			var item = list[i];
+			var id = item[0];
+			var css = item[1];
+			var media = item[2];
+			var sourceMap = item[3];
+			var part = {css: css, media: media, sourceMap: sourceMap};
+			if(!newStyles[id])
+				styles.push(newStyles[id] = {id: id, parts: [part]});
+			else
+				newStyles[id].parts.push(part);
+		}
+		return styles;
+	}
+
+	function insertStyleElement(options, styleElement) {
+		var head = getHeadElement();
+		var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
+		if (options.insertAt === "top") {
+			if(!lastStyleElementInsertedAtTop) {
+				head.insertBefore(styleElement, head.firstChild);
+			} else if(lastStyleElementInsertedAtTop.nextSibling) {
+				head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
+			} else {
+				head.appendChild(styleElement);
+			}
+			styleElementsInsertedAtTop.push(styleElement);
+		} else if (options.insertAt === "bottom") {
+			head.appendChild(styleElement);
+		} else {
+			throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+		}
+	}
+
+	function removeStyleElement(styleElement) {
+		styleElement.parentNode.removeChild(styleElement);
+		var idx = styleElementsInsertedAtTop.indexOf(styleElement);
+		if(idx >= 0) {
+			styleElementsInsertedAtTop.splice(idx, 1);
+		}
+	}
+
+	function createStyleElement(options) {
+		var styleElement = document.createElement("style");
+		styleElement.type = "text/css";
+		insertStyleElement(options, styleElement);
+		return styleElement;
+	}
+
+	function createLinkElement(options) {
+		var linkElement = document.createElement("link");
+		linkElement.rel = "stylesheet";
+		insertStyleElement(options, linkElement);
+		return linkElement;
+	}
+
+	function addStyle(obj, options) {
+		var styleElement, update, remove;
+
+		if (options.singleton) {
+			var styleIndex = singletonCounter++;
+			styleElement = singletonElement || (singletonElement = createStyleElement(options));
+			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
+			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
+		} else if(obj.sourceMap &&
+			typeof URL === "function" &&
+			typeof URL.createObjectURL === "function" &&
+			typeof URL.revokeObjectURL === "function" &&
+			typeof Blob === "function" &&
+			typeof btoa === "function") {
+			styleElement = createLinkElement(options);
+			update = updateLink.bind(null, styleElement);
+			remove = function() {
+				removeStyleElement(styleElement);
+				if(styleElement.href)
+					URL.revokeObjectURL(styleElement.href);
+			};
+		} else {
+			styleElement = createStyleElement(options);
+			update = applyToTag.bind(null, styleElement);
+			remove = function() {
+				removeStyleElement(styleElement);
+			};
+		}
+
+		update(obj);
+
+		return function updateStyle(newObj) {
+			if(newObj) {
+				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
+					return;
+				update(obj = newObj);
+			} else {
+				remove();
+			}
+		};
+	}
+
+	var replaceText = (function () {
+		var textStore = [];
+
+		return function (index, replacement) {
+			textStore[index] = replacement;
+			return textStore.filter(Boolean).join('\n');
+		};
+	})();
+
+	function applyToSingletonTag(styleElement, index, remove, obj) {
+		var css = remove ? "" : obj.css;
+
+		if (styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = replaceText(index, css);
+		} else {
+			var cssNode = document.createTextNode(css);
+			var childNodes = styleElement.childNodes;
+			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
+			if (childNodes.length) {
+				styleElement.insertBefore(cssNode, childNodes[index]);
+			} else {
+				styleElement.appendChild(cssNode);
+			}
+		}
+	}
+
+	function applyToTag(styleElement, obj) {
+		var css = obj.css;
+		var media = obj.media;
+		var sourceMap = obj.sourceMap;
+
+		if(media) {
+			styleElement.setAttribute("media", media)
+		}
+
+		if(styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = css;
+		} else {
+			while(styleElement.firstChild) {
+				styleElement.removeChild(styleElement.firstChild);
+			}
+			styleElement.appendChild(document.createTextNode(css));
+		}
+	}
+
+	function updateLink(linkElement, obj) {
+		var css = obj.css;
+		var media = obj.media;
+		var sourceMap = obj.sourceMap;
+
+		if(sourceMap) {
+			// http://stackoverflow.com/a/26603875
+			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+		}
+
+		var blob = new Blob([css], { type: "text/css" });
+
+		var oldSrc = linkElement.href;
+
+		linkElement.href = URL.createObjectURL(blob);
+
+		if(oldSrc)
+			URL.revokeObjectURL(oldSrc);
+	}
 
 
 /***/ }

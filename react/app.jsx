@@ -8,6 +8,12 @@ var TodoApp = require('TodoApp');
 var Main = require('Main');
 var Register = require('Register');
 var auth = require('auth');
+var actions = require('actions');
+var store = require('configureStore').configure();
+
+store.subscribe(() => {
+  console.log('New state', store.getState());
+});
 
 require('styles');
 
@@ -26,12 +32,14 @@ var redirectIfLoggedIn = (nextState, replace, next) => {
 }
 
 ReactDOM.render(
-    <Router history={hashHistory}>
-      <Route path="/" component={Main}>
-        <Route path="todos" component={TodoApp} onEnter={requireLogin}/>
-        <IndexRoute component={Login} onEnter={redirectIfLoggedIn}/>
-        <Route path="signup" component={Register}/>
-      </Route>
-    </Router>,
+    <Provider store={store}>
+      <Router history={hashHistory}>
+        <Route path="/" component={Main}>
+          <Route path="todos" component={TodoApp} onEnter={requireLogin}/>
+          <IndexRoute component={Login} onEnter={redirectIfLoggedIn}/>
+          <Route path="signup" component={Register}/>
+        </Route>
+      </Router>
+    </Provider>,
   document.getElementById('app')
 );

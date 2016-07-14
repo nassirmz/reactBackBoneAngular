@@ -12,7 +12,10 @@ module.exports = {
     ],
     alias: {
       styles: 'assets/main.css',
-      auth: 'react/api/authentication.jsx'
+      auth: 'react/api/authentication.jsx',
+      actions: 'react/actions/actions.jsx',
+      reducers: 'react/reducers/reducers.jsx',
+      configureStore: 'react/store/configureStore.jsx'
     },
     extensions: ['', '.js', '.jsx']
   },
