@@ -26746,12 +26746,19 @@
 	'use strict';
 
 	var React = __webpack_require__(1);
+
+	var _require = __webpack_require__(159);
+
+	var connect = _require.connect;
+
+
 	var auth = __webpack_require__(242);
 
-	var _require = __webpack_require__(181);
+	var _require2 = __webpack_require__(181);
 
-	var hashHistory = _require.hashHistory;
+	var hashHistory = _require2.hashHistory;
 
+	var actions = __webpack_require__(264);
 
 	var styles = {
 	  error: {
@@ -26762,28 +26769,17 @@
 
 	var Login = React.createClass({
 	  displayName: 'Login',
-	  getInitialState: function getInitialState() {
-	    return {
-	      error: false
-	    };
-	  },
 	  onSubmitLogin: function onSubmitLogin(e) {
-	    var _this = this;
+	    var dispatch = this.props.dispatch;
 
 	    e.preventDefault();
 	    var username = this.refs.username.value;
 	    var password = this.refs.password.value;
 	    if (username.length > 0 && password.length > 0) {
-	      auth.login(username, password, function (loggedIn) {
-	        if (loggedIn) {
-	          hashHistory.push('/todos');
-	        } else if (!loggedIn) {
-	          _this.refs.username.value = '';
-	          _this.refs.password.value = '';
-	          _this.refs.username.focus();
-	          return _this.setState({ error: true });
-	        }
-	      });
+	      dispatch(actions.startLoginUser(username, password));
+	    } else {
+	      this.refs.username.focus();
+	      dispatch(actions.authError('Username/Password required!'));
 	    }
 	  },
 	  render: function render() {
@@ -26813,10 +26809,11 @@
 	          )
 	        )
 	      ),
-	      this.state.error && React.createElement(
+	      this.props.auth.errorMessage && React.createElement(
 	        'p',
 	        { style: styles.error },
-	        'Invalid Username or Password!',
+	        this.props.auth.errorMessage,
+	        '!',
 	        React.createElement('br', null),
 	        'Please try again!'
 	      )
@@ -26824,7 +26821,9 @@
 	  }
 	});
 
-	module.exports = Login;
+	module.exports = connect(function (state) {
+	  return { auth: state.auth };
+	})(Login);
 
 /***/ },
 /* 242 */
@@ -28306,6 +28305,22 @@
 	    }).catch(function (e) {
 	      console.log(e);
 	      dispatch(authError('Username is unavailable!'));
+	    });
+	  };
+	};
+
+	var startLoginUser = exports.startLoginUser = function startLoginUser(username, password) {
+	  return function (dispatch, getState) {
+	    axios.post('/users/login', {
+	      username: username,
+	      password: password
+	    }).then(function (resp) {
+	      localStorage.setItem('Auth', resp.headers.auth);
+	      dispatch(authSuccess());
+	      hashHistory.push('/todos');
+	    }).catch(function (e) {
+	      console.log(e);
+	      dispatch(authError('Invalid login information!'));
 	    });
 	  };
 	};
@@ -38414,8 +38429,6 @@
 	'use strict';
 
 	var React = __webpack_require__(1);
-
-	var auth = __webpack_require__(242);
 
 	var _require = __webpack_require__(181);
 

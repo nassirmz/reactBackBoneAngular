@@ -1,6 +1,5 @@
 var React = require('react');
 
-var auth = require('auth');
 var {hashHistory} = require('react-router');
 var {connect} = require('react-redux');
 var actions = require('actions');

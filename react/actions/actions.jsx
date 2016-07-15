@@ -114,3 +114,21 @@ export var startRegisterUser = (username, password) => {
     })
   }
 }
+
+export var startLoginUser = (username, password) => {
+  return (dispatch, getState) => {
+    axios.post('/users/login', {
+      username: username,
+      password: password
+    })
+    .then((resp)=> {
+      localStorage.setItem('Auth', resp.headers.auth);
+      dispatch(authSuccess());
+      hashHistory.push('/todos');
+    })
+    .catch((e) => {
+      console.log(e);
+      dispatch(authError('Invalid login information!'))
+    })
+  }
+}
