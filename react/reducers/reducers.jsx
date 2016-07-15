@@ -1,3 +1,8 @@
+var authStateDefault = {
+  isAuthenticated: false,
+  errorMessage: ''
+};
+
 export var todosReducer = (state = [], action) => {
   switch (action.type) {
     case 'ADD_TODO':
@@ -16,4 +21,15 @@ export var todosReducer = (state = [], action) => {
         return todo;
       });
   }
+};
+
+export var authReducer = (state = authStateDefault, action) => {
+  switch (action.type) {
+    case 'AUTH_SUCCESS':
+      return action.auth;
+    case 'AUTH_ERROR':
+      return action.auth;
+    default:
+      return state;
+  };
 };
