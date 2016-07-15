@@ -1,12 +1,14 @@
 var React = require('react');
-var {Link, IndexLink, hashHistory} = require('react-router');
 var {connect} = require('react-redux');
+
+var {Link, IndexLink, hashHistory} = require('react-router');
+var actions = require('actions');
 
 var Nav = React.createClass({
   onSubmitLogout (e) {
+    var {dispatch} = this.props;
     e.preventDefault();
-    auth.logout();
-    hashHistory.push('/');
+    dispatch(actions.startLogout());
   },
   notLoggedIn () {
     return (
@@ -28,7 +30,7 @@ var Nav = React.createClass({
     return (
       <div className="header">
         <h1>TODO LIST</h1>
-        {auth.isAuthenticated ? this.loggedIn() : this.notLoggedIn()}
+        {localStorage.getItem('Auth') ? this.loggedIn() : this.notLoggedIn()}
         <div className="clear"></div>
       </div>
     );

@@ -76,23 +76,15 @@
 	__webpack_require__(274);
 
 	var requireLogin = function requireLogin(nextState, replace, next) {
-	  var _store$getState = store.getState();
-
-	  var auth = _store$getState.auth;
-
-	  console.log(auth);
-	  if (!auth.isAuthenticated) {
+	  // console.log(auth);
+	  if (!localStorage.getItem('Auth')) {
 	    replace('/');
 	  }
 	  next();
 	};
 
 	var redirectIfLoggedIn = function redirectIfLoggedIn(nextState, replace, next) {
-	  var _store$getState2 = store.getState();
-
-	  var auth = _store$getState2.auth;
-
-	  if (auth.isAuthenticated) {
+	  if (localStorage.getItem('Auth')) {
 	    replace('/todos');
 	  }
 	  next();
@@ -28175,7 +28167,7 @@
 	      React.createElement(
 	        'h3',
 	        null,
-	        'ADD ITEM'
+	        'ADD TODO'
 	      ),
 	      React.createElement('input', { id: 'new-task', className: 'new-task', type: 'text', ref: 'newTask' }),
 	      React.createElement(
@@ -28321,6 +28313,24 @@
 	    }).catch(function (e) {
 	      console.log(e);
 	      dispatch(authError('Invalid login information!'));
+	    });
+	  };
+	};
+
+	var logout = exports.logout = function logout() {
+	  return {
+	    type: 'LOGOUT',
+	    auth: { isAuthenticated: false, errorMessage: '' }
+	  };
+	};
+
+	var startLogout = exports.startLogout = function startLogout() {
+	  var headers = { headers: { Auth: localStorage.getItem('Auth') } };
+	  return function (dispatch, getState) {
+	    axios.delete('/users/logout', headers).then(function (resp) {
+	      localStorage.removeItem('Auth');
+	      dispatch(logout());
+	      hashHistory.push('/');
 	    });
 	  };
 	};
@@ -28475,7 +28485,7 @@
 	      React.createElement(
 	        'button',
 	        { className: 'delete', onClick: function onClick() {
-	            onDeleteTodo(id);
+	            dispatch(actions.startDeleteTodo(id));
 	          } },
 	        'Delete'
 	      )
@@ -38342,23 +38352,25 @@
 
 	var React = __webpack_require__(1);
 
-	var _require = __webpack_require__(181);
+	var _require = __webpack_require__(159);
 
-	var Link = _require.Link;
-	var IndexLink = _require.IndexLink;
-	var hashHistory = _require.hashHistory;
+	var connect = _require.connect;
 
-	var _require2 = __webpack_require__(159);
+	var _require2 = __webpack_require__(181);
 
-	var connect = _require2.connect;
+	var Link = _require2.Link;
+	var IndexLink = _require2.IndexLink;
+	var hashHistory = _require2.hashHistory;
 
+	var actions = __webpack_require__(264);
 
 	var Nav = React.createClass({
 	  displayName: 'Nav',
 	  onSubmitLogout: function onSubmitLogout(e) {
+	    var dispatch = this.props.dispatch;
+
 	    e.preventDefault();
-	    auth.logout();
-	    hashHistory.push('/');
+	    dispatch(actions.startLogout());
 	  },
 	  notLoggedIn: function notLoggedIn() {
 	    return React.createElement(
@@ -38410,7 +38422,7 @@
 	        null,
 	        'TODO LIST'
 	      ),
-	      auth.isAuthenticated ? this.loggedIn() : this.notLoggedIn(),
+	      localStorage.getItem('Auth') ? this.loggedIn() : this.notLoggedIn(),
 	      React.createElement('div', { className: 'clear' })
 	    );
 	  }
@@ -38594,6 +38606,10 @@
 	        if (todo.id === action.todo.id) return action.todo;
 	        return todo;
 	      });
+	    case 'DELETE_TODO':
+	      return state.filter(function (todo) {
+	        todo.id !== action.id;
+	      });
 	  }
 	};
 
@@ -38605,6 +38621,8 @@
 	    case 'AUTH_SUCCESS':
 	      return action.auth;
 	    case 'AUTH_ERROR':
+	      return action.auth;
+	    case 'LOGOUT':
 	      return action.auth;
 	    default:
 	      return state;

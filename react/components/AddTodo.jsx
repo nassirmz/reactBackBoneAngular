@@ -18,7 +18,7 @@ var AddTodo = React.createClass({
   render () {
     return (
         <div>
-          <h3>ADD ITEM</h3>
+          <h3>ADD TODO</h3>
           <input id="new-task" className="new-task" type="text" ref="newTask"/>
           <button className="add" onClick={this.addTodo}>Add</button>
         </div>

@@ -18,17 +18,15 @@ store.subscribe(() => {
 require('styles');
 
 var requireLogin = (nextState, replace, next) => {
-  var {auth} = store.getState();
-  console.log(auth);
-  if(!auth.isAuthenticated) {
+  // console.log(auth);
+  if(!localStorage.getItem('Auth')) {
     replace('/');
   }
   next();
 }
 
 var redirectIfLoggedIn = (nextState, replace, next) => {
-  var {auth} = store.getState();
-  if(auth.isAuthenticated) {
+  if(localStorage.getItem('Auth')) {
     replace('/todos');
   }
   next();
