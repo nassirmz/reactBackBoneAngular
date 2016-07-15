@@ -111,9 +111,9 @@ export var startRegisterUser = (username, password) => {
     .catch((e) => {
       console.log(e);
       dispatch(authError('Username is unavailable!'))
-    })
-  }
-}
+    });
+  };
+};
 
 export var startLoginUser = (username, password) => {
   return (dispatch, getState) => {
@@ -129,6 +129,25 @@ export var startLoginUser = (username, password) => {
     .catch((e) => {
       console.log(e);
       dispatch(authError('Invalid login information!'))
+    });
+  };
+};
+
+export var logout = () => {
+  return {
+    type: 'LOGOUT',
+    auth: { isAuthenticated: false, errorMessage: ''}
+  };
+};
+
+export var startLogout = () => {
+  var headers = { headers: { Auth: localStorage.getItem('Auth')}};
+  return (dispatch, getState) => {
+    axios.delete('/users/logout', headers)
+    .then((resp) => {
+      localStorage.removeItem('Auth');
+      dispatch(logout());
+      hashHistory.push('/');
     })
   }
 }
