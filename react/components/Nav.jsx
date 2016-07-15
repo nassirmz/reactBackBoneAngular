@@ -1,6 +1,6 @@
 var React = require('react');
 var {Link, IndexLink, hashHistory} = require('react-router');
-var auth = require('./../api/authentication.jsx');
+var {connect} = require('react-redux');
 
 var Nav = React.createClass({
   onSubmitLogout (e) {
@@ -24,14 +24,19 @@ var Nav = React.createClass({
     );
   },
   render () {
+    var {auth} = this.props;
     return (
       <div className="header">
         <h1>TODO LIST</h1>
-        {auth.isAuthenticated() ? this.loggedIn() : this.notLoggedIn()}
+        {auth.isAuthenticated ? this.loggedIn() : this.notLoggedIn()}
         <div className="clear"></div>
       </div>
     );
   }
 });
 
-module.exports = Nav;
+module.exports = connect((state) => {
+  return {
+    auth: state.auth
+  };
+})(Nav);

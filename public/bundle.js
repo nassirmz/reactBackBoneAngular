@@ -62,11 +62,11 @@
 
 
 	var Login = __webpack_require__(241);
-	var TodoApp = __webpack_require__(262);
+	var TodoApp = __webpack_require__(243);
 	var Main = __webpack_require__(268);
 	var Register = __webpack_require__(270);
-	var auth = __webpack_require__(242);
-	var actions = __webpack_require__(267);
+	// var auth = require('auth');
+	var actions = __webpack_require__(264);
 	var store = __webpack_require__(271).configure();
 
 	store.subscribe(function () {
@@ -76,14 +76,23 @@
 	__webpack_require__(274);
 
 	var requireLogin = function requireLogin(nextState, replace, next) {
-	  if (!auth.isAuthenticated()) {
+	  var _store$getState = store.getState();
+
+	  var auth = _store$getState.auth;
+
+	  console.log(auth);
+	  if (!auth.isAuthenticated) {
 	    replace('/');
 	  }
 	  next();
 	};
 
 	var redirectIfLoggedIn = function redirectIfLoggedIn(nextState, replace, next) {
-	  if (auth.isAuthenticated()) {
+	  var _store$getState2 = store.getState();
+
+	  var auth = _store$getState2.auth;
+
+	  if (auth.isAuthenticated) {
 	    replace('/todos');
 	  }
 	  next();
@@ -26823,7 +26832,7 @@
 
 	'use strict';
 
-	var axios = __webpack_require__(243);
+	var axios = __webpack_require__(244);
 
 	module.exports = {
 	  register: function register(username, password, cb) {
@@ -26873,22 +26882,73 @@
 /* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(244);
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(158);
+	var axios = __webpack_require__(244);
+
+	var _require = __webpack_require__(159);
+
+	var connect = _require.connect;
+
+
+	var AddTodo = __webpack_require__(263);
+	var Todos = __webpack_require__(265);
+	var actions = __webpack_require__(264);
+
+	var TodoApp = React.createClass({
+	  displayName: 'TodoApp',
+	  componentDidMount: function componentDidMount() {
+	    var dispatch = this.props.dispatch;
+
+	    dispatch(actions.startAddTodos());
+	  },
+
+	  render: function render() {
+	    var todos = this.props.todos;
+
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(AddTodo, null),
+	      todos.length ? React.createElement(Todos, null) : React.createElement(
+	        'p',
+	        null,
+	        'No todos yet!',
+	        React.createElement('br', null),
+	        'Please add Todos!'
+	      )
+	    );
+	  }
+	});
+
+	module.exports = connect(function (state) {
+	  return {
+	    todos: state.todos
+	  };
+	})(TodoApp);
 
 /***/ },
 /* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = __webpack_require__(245);
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
-	var defaults = __webpack_require__(245);
-	var utils = __webpack_require__(246);
-	var dispatchRequest = __webpack_require__(248);
-	var InterceptorManager = __webpack_require__(257);
-	var isAbsoluteURL = __webpack_require__(258);
-	var combineURLs = __webpack_require__(259);
-	var bind = __webpack_require__(260);
-	var transformData = __webpack_require__(252);
+	var defaults = __webpack_require__(246);
+	var utils = __webpack_require__(247);
+	var dispatchRequest = __webpack_require__(249);
+	var InterceptorManager = __webpack_require__(258);
+	var isAbsoluteURL = __webpack_require__(259);
+	var combineURLs = __webpack_require__(260);
+	var bind = __webpack_require__(261);
+	var transformData = __webpack_require__(253);
 
 	function Axios(defaultConfig) {
 	  this.defaults = utils.merge({}, defaultConfig);
@@ -26977,7 +27037,7 @@
 	axios.all = function all(promises) {
 	  return Promise.all(promises);
 	};
-	axios.spread = __webpack_require__(261);
+	axios.spread = __webpack_require__(262);
 
 	// Provide aliases for supported request methods
 	utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
@@ -27005,13 +27065,13 @@
 
 
 /***/ },
-/* 245 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(246);
-	var normalizeHeaderName = __webpack_require__(247);
+	var utils = __webpack_require__(247);
+	var normalizeHeaderName = __webpack_require__(248);
 
 	var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 	var DEFAULT_CONTENT_TYPE = {
@@ -27083,7 +27143,7 @@
 
 
 /***/ },
-/* 246 */
+/* 247 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27366,12 +27426,12 @@
 
 
 /***/ },
-/* 247 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(246);
+	var utils = __webpack_require__(247);
 
 	module.exports = function normalizeHeaderName(headers, normalizedName) {
 	  utils.forEach(headers, function processHeader(value, name) {
@@ -27384,7 +27444,7 @@
 
 
 /***/ },
-/* 248 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -27406,10 +27466,10 @@
 	        adapter = config.adapter;
 	      } else if (typeof XMLHttpRequest !== 'undefined') {
 	        // For browsers use XHR adapter
-	        adapter = __webpack_require__(249);
+	        adapter = __webpack_require__(250);
 	      } else if (typeof process !== 'undefined') {
 	        // For node use HTTP adapter
-	        adapter = __webpack_require__(249);
+	        adapter = __webpack_require__(250);
 	      }
 
 	      if (typeof adapter === 'function') {
@@ -27425,18 +27485,18 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 249 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
-	var utils = __webpack_require__(246);
-	var buildURL = __webpack_require__(250);
-	var parseHeaders = __webpack_require__(251);
-	var transformData = __webpack_require__(252);
-	var isURLSameOrigin = __webpack_require__(253);
-	var btoa = (typeof window !== 'undefined' && window.btoa) || __webpack_require__(254);
-	var settle = __webpack_require__(255);
+	var utils = __webpack_require__(247);
+	var buildURL = __webpack_require__(251);
+	var parseHeaders = __webpack_require__(252);
+	var transformData = __webpack_require__(253);
+	var isURLSameOrigin = __webpack_require__(254);
+	var btoa = (typeof window !== 'undefined' && window.btoa) || __webpack_require__(255);
+	var settle = __webpack_require__(256);
 
 	module.exports = function xhrAdapter(resolve, reject, config) {
 	  var requestData = config.data;
@@ -27533,7 +27593,7 @@
 	  // This is only done if running in a standard browser environment.
 	  // Specifically not if we're in a web worker, or react-native.
 	  if (utils.isStandardBrowserEnv()) {
-	    var cookies = __webpack_require__(256);
+	    var cookies = __webpack_require__(257);
 
 	    // Add xsrf header
 	    var xsrfValue = config.withCredentials || isURLSameOrigin(config.url) ?
@@ -27594,12 +27654,12 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 250 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(246);
+	var utils = __webpack_require__(247);
 
 	function encode(val) {
 	  return encodeURIComponent(val).
@@ -27668,12 +27728,12 @@
 
 
 /***/ },
-/* 251 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(246);
+	var utils = __webpack_require__(247);
 
 	/**
 	 * Parse headers into an object
@@ -27711,12 +27771,12 @@
 
 
 /***/ },
-/* 252 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(246);
+	var utils = __webpack_require__(247);
 
 	/**
 	 * Transform the data for a request or a response
@@ -27737,12 +27797,12 @@
 
 
 /***/ },
-/* 253 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(246);
+	var utils = __webpack_require__(247);
 
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -27811,7 +27871,7 @@
 
 
 /***/ },
-/* 254 */
+/* 255 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27853,7 +27913,7 @@
 
 
 /***/ },
-/* 255 */
+/* 256 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27877,12 +27937,12 @@
 
 
 /***/ },
-/* 256 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(246);
+	var utils = __webpack_require__(247);
 
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -27936,12 +27996,12 @@
 
 
 /***/ },
-/* 257 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(246);
+	var utils = __webpack_require__(247);
 
 	function InterceptorManager() {
 	  this.handlers = [];
@@ -27994,7 +28054,7 @@
 
 
 /***/ },
-/* 258 */
+/* 259 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28014,7 +28074,7 @@
 
 
 /***/ },
-/* 259 */
+/* 260 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28032,7 +28092,7 @@
 
 
 /***/ },
-/* 260 */
+/* 261 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28049,7 +28109,7 @@
 
 
 /***/ },
-/* 261 */
+/* 262 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28082,57 +28142,6 @@
 
 
 /***/ },
-/* 262 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-	var ReactDOM = __webpack_require__(158);
-	var axios = __webpack_require__(243);
-
-	var _require = __webpack_require__(159);
-
-	var connect = _require.connect;
-
-
-	var AddTodo = __webpack_require__(263);
-	var Todos = __webpack_require__(264);
-	var actions = __webpack_require__(267);
-
-	var TodoApp = React.createClass({
-	  displayName: 'TodoApp',
-	  componentDidMount: function componentDidMount() {
-	    var dispatch = this.props.dispatch;
-
-	    dispatch(actions.startAddTodos());
-	  },
-
-	  render: function render() {
-	    var todos = this.props.todos;
-
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(AddTodo, null),
-	      todos.length ? React.createElement(Todos, null) : React.createElement(
-	        'p',
-	        null,
-	        'No todos yet!',
-	        React.createElement('br', null),
-	        'Please add Todos!'
-	      )
-	    );
-	  }
-	});
-
-	module.exports = connect(function (state) {
-	  return {
-	    todos: state.todos
-	  };
-	})(TodoApp);
-
-/***/ },
 /* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -28144,7 +28153,7 @@
 
 	var connect = _require.connect;
 
-	var actions = __webpack_require__(267);
+	var actions = __webpack_require__(264);
 
 	var AddTodo = React.createClass({
 	  displayName: 'AddTodo',
@@ -28187,10 +28196,130 @@
 
 	'use strict';
 
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var axios = __webpack_require__(244);
+
+	var _require = __webpack_require__(181);
+
+	var hashHistory = _require.hashHistory;
+	var addTodo = exports.addTodo = function addTodo(todo) {
+	  return {
+	    type: 'ADD_TODO',
+	    todo: todo
+	  };
+	};
+
+	var addTodos = exports.addTodos = function addTodos(todos) {
+	  return {
+	    type: 'ADD_TODOS',
+	    todos: todos
+	  };
+	};
+
+	var updateTodo = exports.updateTodo = function updateTodo(todo) {
+	  return {
+	    type: 'UPDATE_TODO',
+	    todo: todo
+	  };
+	};
+
+	var deleteTodo = exports.deleteTodo = function deleteTodo(id) {
+	  return {
+	    type: 'DELETE_TODO',
+	    id: id
+	  };
+	};
+
+	var startAddTodos = exports.startAddTodos = function startAddTodos() {
+	  var headers = { headers: { 'Auth': localStorage.getItem('Auth') } };
+	  return function (dispatch, getState) {
+	    axios.get('/todos', headers).then(function (resp) {
+	      var todos = resp.data;
+	      dispatch(addTodos(todos));
+	    });
+	  };
+	};
+
+	var startAddTodo = exports.startAddTodo = function startAddTodo(task) {
+	  var headers = { headers: { 'Auth': localStorage.getItem('Auth') } };
+	  return function (dispatch, getState) {
+	    axios.post('/todos', { task: task }, headers).then(function (resp) {
+	      var todo = resp.data;
+	      dispatch(addTodo(todo));
+	    });
+	  };
+	};
+
+	var startUpdateTodo = exports.startUpdateTodo = function startUpdateTodo(id, changedTodo) {
+	  var headers = { headers: { 'Auth': localStorage.getItem('Auth') } };
+	  return function (dispatch, getState) {
+	    axios.put('/todos/' + id, changedTodo, headers).then(function (resp) {
+	      var updatedTodo = resp.data;
+	      dispatch(updateTodo(updatedTodo));
+	    });
+	  };
+	};
+
+	var startDeleteTodo = exports.startDeleteTodo = function startDeleteTodo(id, changedTodo) {
+	  var headers = { headers: { 'Auth': localStorage.getItem('Auth') } };
+	  return function (dispatch, getState) {
+	    axios.delete('/todos/' + id, headers).then(function (resp) {
+	      dispatch(deleteTodo(id));
+	    });
+	  };
+	};
+
+	var handleAuth = exports.handleAuth = function handleAuth(promise, cb) {
+	  promise.then(function (resp) {
+	    localStorage.setItem('Auth', resp.headers.auth);
+	    cb(true);
+	  });
+	};
+
+	var authSuccess = exports.authSuccess = function authSuccess() {
+	  console.log('authSussess');
+	  return {
+	    type: 'AUTH_SUCCESS',
+	    auth: { isAuthenticated: true, errorMessage: '' }
+	  };
+	};
+
+	var authError = exports.authError = function authError(errorMessage) {
+	  console.log('auth error');
+	  return {
+	    type: 'AUTH_ERROR',
+	    auth: { isAuthenticated: false, errorMessage: errorMessage }
+	  };
+	};
+
+	var startRegisterUser = exports.startRegisterUser = function startRegisterUser(username, password) {
+	  return function (dispatch, getState) {
+	    axios.post('/users', {
+	      username: username,
+	      password: password
+	    }).then(function (resp) {
+	      localStorage.setItem('Auth', resp.headers.auth);
+	      dispatch(authSuccess());
+	      hashHistory.push('/todos');
+	    }).catch(function (e) {
+	      console.log(e);
+	      dispatch(authError('Username is unavailable!'));
+	    });
+	  };
+	};
+
+/***/ },
+/* 265 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var React = __webpack_require__(1);
-	var Todo = __webpack_require__(265);
+	var Todo = __webpack_require__(266);
 
 	var _require = __webpack_require__(159);
 
@@ -28255,20 +28384,20 @@
 	})(Todos);
 
 /***/ },
-/* 265 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(158);
-	var $ = __webpack_require__(266);
+	var $ = __webpack_require__(267);
 
 	var _require = __webpack_require__(159);
 
 	var connect = _require.connect;
 
-	var actions = __webpack_require__(267);
+	var actions = __webpack_require__(264);
 
 	var Todo = React.createClass({
 	  displayName: 'Todo',
@@ -28342,7 +28471,7 @@
 	module.exports = connect()(Todo);
 
 /***/ },
-/* 266 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -38162,105 +38291,6 @@
 
 
 /***/ },
-/* 267 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var axios = __webpack_require__(243);
-
-	var addTodo = exports.addTodo = function addTodo(todo) {
-	  return {
-	    type: 'ADD_TODO',
-	    todo: todo
-	  };
-	};
-
-	var addTodos = exports.addTodos = function addTodos(todos) {
-	  return {
-	    type: 'ADD_TODOS',
-	    todos: todos
-	  };
-	};
-
-	var updateTodo = exports.updateTodo = function updateTodo(todo) {
-	  return {
-	    type: 'UPDATE_TODO',
-	    todo: todo
-	  };
-	};
-
-	var deleteTodo = exports.deleteTodo = function deleteTodo(id) {
-	  return {
-	    type: 'DELETE_TODO',
-	    id: id
-	  };
-	};
-
-	var startAddTodos = exports.startAddTodos = function startAddTodos() {
-	  var headers = { headers: { 'Auth': localStorage.getItem('Auth') } };
-	  return function (dispatch, getState) {
-	    axios.get('/todos', headers).then(function (resp) {
-	      var todos = resp.data;
-	      dispatch(addTodos(todos));
-	    });
-	  };
-	};
-
-	var startAddTodo = exports.startAddTodo = function startAddTodo(task) {
-	  var headers = { headers: { 'Auth': localStorage.getItem('Auth') } };
-	  return function (dispatch, getState) {
-	    axios.post('/todos', { task: task }, headers).then(function (resp) {
-	      var todo = resp.data;
-	      dispatch(addTodo(todo));
-	    });
-	  };
-	};
-
-	var startUpdateTodo = exports.startUpdateTodo = function startUpdateTodo(id, changedTodo) {
-	  var headers = { headers: { 'Auth': localStorage.getItem('Auth') } };
-	  return function (dispatch, getState) {
-	    axios.put('/todos/' + id, changedTodo, headers).then(function (resp) {
-	      var updatedTodo = resp.data;
-	      dispatch(updateTodo(updatedTodo));
-	    });
-	  };
-	};
-
-	var startDeleteTodo = exports.startDeleteTodo = function startDeleteTodo(id, changedTodo) {
-	  var headers = { headers: { 'Auth': localStorage.getItem('Auth') } };
-	  return function (dispatch, getState) {
-	    axios.delete('/todos/' + id, headers).then(function (resp) {
-	      dispatch(deleteTodo(id));
-	    });
-	  };
-	};
-
-	// export var login = (auth) => {
-	//   return {
-	//     type: 'LOGIN',
-	//     auth
-	//   };
-	// };
-	//
-	// export var logout = () => {
-	//   return {
-	//     type: 'LOGOUT'
-	//   };
-	// };
-	//
-	// export var startRegister = (username, password) {
-	//   var user = {username, password};
-	//   axios.post('/users', user)
-	//   .then((resp) {
-	//
-	//   })
-	// }
-
-/***/ },
 /* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -38303,7 +38333,10 @@
 	var IndexLink = _require.IndexLink;
 	var hashHistory = _require.hashHistory;
 
-	var auth = __webpack_require__(242);
+	var _require2 = __webpack_require__(159);
+
+	var connect = _require2.connect;
+
 
 	var Nav = React.createClass({
 	  displayName: 'Nav',
@@ -38352,6 +38385,8 @@
 	    );
 	  },
 	  render: function render() {
+	    var auth = this.props.auth;
+
 	    return React.createElement(
 	      'div',
 	      { className: 'header' },
@@ -38360,13 +38395,17 @@
 	        null,
 	        'TODO LIST'
 	      ),
-	      auth.isAuthenticated() ? this.loggedIn() : this.notLoggedIn(),
+	      auth.isAuthenticated ? this.loggedIn() : this.notLoggedIn(),
 	      React.createElement('div', { className: 'clear' })
 	    );
 	  }
 	});
 
-	module.exports = Nav;
+	module.exports = connect(function (state) {
+	  return {
+	    auth: state.auth
+	  };
+	})(Nav);
 
 /***/ },
 /* 270 */
@@ -38375,12 +38414,18 @@
 	'use strict';
 
 	var React = __webpack_require__(1);
+
 	var auth = __webpack_require__(242);
 
 	var _require = __webpack_require__(181);
 
 	var hashHistory = _require.hashHistory;
 
+	var _require2 = __webpack_require__(159);
+
+	var connect = _require2.connect;
+
+	var actions = __webpack_require__(264);
 
 	var styles = {
 	  error: {
@@ -38391,32 +38436,17 @@
 
 	var Register = React.createClass({
 	  displayName: 'Register',
-	  getInitialState: function getInitialState() {
-	    return {
-	      error: false,
-	      errorMsg: ''
-	    };
-	  },
 	  onSubmitRegister: function onSubmitRegister(e) {
-	    var _this = this;
+	    var dispatch = this.props.dispatch;
 
 	    e.preventDefault();
 	    var username = this.refs.username.value;
 	    var password = this.refs.password.value;
 	    if (username.length > 0 && password.length > 0) {
-	      auth.register(username, password, function (loggedIn) {
-	        if (loggedIn) {
-	          hashHistory.push('/todos');
-	        } else if (!loggedIn) {
-	          _this.refs.username.value = '';
-	          _this.refs.password.value = '';
-	          _this.refs.username.focus();
-	          return _this.setState({ error: true, errorMsg: 'Username is unavailable' });
-	        }
-	      });
+	      dispatch(actions.startRegisterUser(username, password));
 	    } else {
 	      this.refs.username.focus();
-	      return this.setState({ error: true, errorMsg: 'username/password is required' });
+	      dispatch(actions.authError('Username/Password required!'));
 	    }
 	  },
 	  render: function render() {
@@ -38446,10 +38476,10 @@
 	          )
 	        )
 	      ),
-	      this.state.error && React.createElement(
+	      this.props.auth.errorMessage && React.createElement(
 	        'p',
 	        { style: styles.error },
-	        this.state.errorMsg,
+	        this.props.auth.errorMessage,
 	        '!',
 	        React.createElement('br', null),
 	        'Please try again!'
@@ -38458,7 +38488,9 @@
 	  }
 	});
 
-	module.exports = Register;
+	module.exports = connect(function (state) {
+	  return { auth: state.auth };
+	})(Register);
 
 /***/ },
 /* 271 */
@@ -38475,9 +38507,11 @@
 	var _require = __webpack_require__(273);
 
 	var todosReducer = _require.todosReducer;
+	var authReducer = _require.authReducer;
 	var configure = exports.configure = function configure() {
 	  var reducer = redux.combineReducers({
-	    todos: todosReducer
+	    todos: todosReducer,
+	    auth: authReducer
 	  });
 
 	  var store = redux.createStore(reducer, redux.compose(redux.applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : function (f) {
@@ -38526,6 +38560,11 @@
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
+	var authStateDefault = {
+	  isAuthenticated: false,
+	  errorMessage: ''
+	};
+
 	var todosReducer = exports.todosReducer = function todosReducer() {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 	  var action = arguments[1];
@@ -38543,6 +38582,20 @@
 	        return todo;
 	      });
 	  }
+	};
+
+	var authReducer = exports.authReducer = function authReducer() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? authStateDefault : arguments[0];
+	  var action = arguments[1];
+
+	  switch (action.type) {
+	    case 'AUTH_SUCCESS':
+	      return action.auth;
+	    case 'AUTH_ERROR':
+	      return action.auth;
+	    default:
+	      return state;
+	  };
 	};
 
 /***/ },

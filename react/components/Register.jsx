@@ -1,6 +1,9 @@
 var React = require('react');
+
 var auth = require('auth');
 var {hashHistory} = require('react-router');
+var {connect} = require('react-redux');
+var actions = require('actions');
 
 var styles = {
   error: {
@@ -10,31 +13,17 @@ var styles = {
 };
 
 var Register = React.createClass({
-  getInitialState () {
-    return {
-      error: false,
-      errorMsg: ''
-    };
-  },
   onSubmitRegister (e) {
+    var {dispatch} = this.props;
     e.preventDefault();
     var username = this.refs.username.value;
     var password = this.refs.password.value;
     if(username.length > 0 && password.length > 0) {
-      auth.register(username, password, (loggedIn) => {
-        if (loggedIn) {
-          hashHistory.push('/todos');
-        } else if (!loggedIn){
-          this.refs.username.value = '';
-          this.refs.password.value = '';
-          this.refs.username.focus();
-          return this.setState({error: true, errorMsg: 'Username is unavailable'});
-        }
-      })
+      dispatch(actions.startRegisterUser(username, password));
     }
     else {
       this.refs.username.focus();
-      return this.setState({error: true, errorMsg: 'username/password is required'});
+      dispatch(actions.authError('Username/Password required!'));
     }
   },
   render() {
@@ -45,10 +34,12 @@ var Register = React.createClass({
             <li><input id="password" placeholder="password" ref="password" type="password" /></li>
             <li><button id="signupButton" onClick={this.onSubmitRegister}>Create Free Account</button></li>
           </ul>
-          {this.state.error && (<p style={styles.error}>{this.state.errorMsg}!<br/>Please try again!</p>)}
+          {this.props.auth.errorMessage && (<p style={styles.error}>{this.props.auth.errorMessage}!<br/>Please try again!</p>)}
         </form>
     );
   }
 });
 
-module.exports = Register;
+module.exports = connect((state) => {
+  return {  auth: state.auth };
+})(Register);

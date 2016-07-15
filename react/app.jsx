@@ -7,7 +7,7 @@ var Login = require('Login');
 var TodoApp = require('TodoApp');
 var Main = require('Main');
 var Register = require('Register');
-var auth = require('auth');
+// var auth = require('auth');
 var actions = require('actions');
 var store = require('configureStore').configure();
 
@@ -18,14 +18,17 @@ store.subscribe(() => {
 require('styles');
 
 var requireLogin = (nextState, replace, next) => {
-  if(!auth.isAuthenticated()) {
+  var {auth} = store.getState();
+  console.log(auth);
+  if(!auth.isAuthenticated) {
     replace('/');
   }
   next();
 }
 
 var redirectIfLoggedIn = (nextState, replace, next) => {
-  if(auth.isAuthenticated()) {
+  var {auth} = store.getState();
+  if(auth.isAuthenticated) {
     replace('/todos');
   }
   next();
