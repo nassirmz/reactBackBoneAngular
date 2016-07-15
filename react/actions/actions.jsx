@@ -1,4 +1,5 @@
 var axios = require('axios');
+var {hashHistory} = require('react-router');
 
 export var addTodo = (todo) => {
   return {
@@ -73,23 +74,43 @@ export var startDeleteTodo = (id, changedTodo) => {
   };
 };
 
-// export var login = (auth) => {
-//   return {
-//     type: 'LOGIN',
-//     auth
-//   };
-// };
-//
-// export var logout = () => {
-//   return {
-//     type: 'LOGOUT'
-//   };
-// };
-//
-// export var startRegister = (username, password) {
-//   var user = {username, password};
-//   axios.post('/users', user)
-//   .then((resp) {
-//
-//   })
-// }
+export var handleAuth = (promise, cb) => {
+  promise.then((resp) => {
+    localStorage.setItem('Auth', resp.headers.auth);
+    cb(true);
+  });
+};
+
+export var authSuccess = () => {
+  console.log('authSussess')
+  return {
+    type: 'AUTH_SUCCESS',
+    auth: { isAuthenticated: true, errorMessage: '' }
+  };
+};
+
+export var authError = (errorMessage) => {
+  console.log('auth error');
+  return {
+    type: 'AUTH_ERROR',
+    auth: { isAuthenticated: false, errorMessage }
+  }
+}
+
+export var startRegisterUser = (username, password) => {
+  return (dispatch, getState) => {
+    axios.post('/users', {
+      username: username,
+      password: password
+    })
+    .then((resp)=> {
+      localStorage.setItem('Auth', resp.headers.auth);
+      dispatch(authSuccess());
+      hashHistory.push('/todos');
+    })
+    .catch((e) => {
+      console.log(e);
+      dispatch(authError('Username is unavailable!'))
+    })
+  }
+}
