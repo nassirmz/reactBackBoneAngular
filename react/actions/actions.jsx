@@ -64,7 +64,7 @@ export var startUpdateTodo = (id, changedTodo) => {
 };
 
 
-export var startDeleteTodo = (id, changedTodo) => {
+export var startDeleteTodo = (id) => {
   var headers = { headers: { 'Auth': localStorage.getItem('Auth')}};
   return (dispatch, getState) => {
     axios.delete(`/todos/${id}`, headers)
@@ -81,19 +81,22 @@ export var handleAuth = (promise, cb) => {
   });
 };
 
-export var authSuccess = () => {
-  console.log('authSussess')
+export var authSuccess = (username) => {
   return {
     type: 'AUTH_SUCCESS',
-    auth: { isAuthenticated: true, errorMessage: '' }
+    auth: {
+      isAuthenticated: true,
+      username
+    }
   };
 };
 
 export var authError = (errorMessage) => {
-  console.log('auth error');
   return {
     type: 'AUTH_ERROR',
-    auth: { isAuthenticated: false, errorMessage }
+    auth: {
+      errorMessage
+    }
   }
 }
 
@@ -104,8 +107,9 @@ export var startRegisterUser = (username, password) => {
       password: password
     })
     .then((resp)=> {
+      console.log(resp.data);
       localStorage.setItem('Auth', resp.headers.auth);
-      dispatch(authSuccess());
+      dispatch(authSuccess(resp.data.username));
       hashHistory.push('/todos');
     })
     .catch((e) => {
@@ -123,7 +127,7 @@ export var startLoginUser = (username, password) => {
     })
     .then((resp)=> {
       localStorage.setItem('Auth', resp.headers.auth);
-      dispatch(authSuccess());
+      dispatch(authSuccess(resp.data.username));
       hashHistory.push('/todos');
     })
     .catch((e) => {
@@ -136,7 +140,7 @@ export var startLoginUser = (username, password) => {
 export var logout = () => {
   return {
     type: 'LOGOUT',
-    auth: { isAuthenticated: false, errorMessage: ''}
+    auth: { isAuthenticated: false }
   };
 };
 

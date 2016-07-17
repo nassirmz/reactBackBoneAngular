@@ -1,6 +1,7 @@
 var authStateDefault = {
   isAuthenticated: false,
-  errorMessage: ''
+  errorMessage: '',
+  username: ''
 };
 
 export var todosReducer = (state = [], action) => {
@@ -12,28 +13,40 @@ export var todosReducer = (state = [], action) => {
       ];
     case 'ADD_TODOS':
       return action.todos;
-    default:
-      return state;
     case 'UPDATE_TODO':
       return state.map((todo) => {
+        console.log(state);
         if(todo.id === action.todo.id)
           return action.todo;
         return todo;
       });
     case 'DELETE_TODO':
-      return state.filter((todo) => { todo.id !== action.id });
+      return state.filter((todo) => {
+        todo.id !== action.id;
+      });
+    default:
+      return state;
   }
 };
 
 export var authReducer = (state = authStateDefault, action) => {
   switch (action.type) {
     case 'AUTH_SUCCESS':
-      return action.auth;
+      return {
+        ...state,
+        ...action.auth
+      };
     case 'AUTH_ERROR':
-      return action.auth;
+      return {
+        ...state,
+        ...action.auth
+      };
     case 'LOGOUT':
-      return action.auth;
+      return {
+        ...state,
+        ...action.auth
+      }
     default:
       return state;
-  };
+  }
 };
