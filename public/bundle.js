@@ -62,11 +62,11 @@
 
 
 	var Login = __webpack_require__(241);
-	var TodoApp = __webpack_require__(243);
+	var TodoApp = __webpack_require__(263);
 	var Main = __webpack_require__(268);
 	var Register = __webpack_require__(270);
 	// var auth = require('auth');
-	var actions = __webpack_require__(264);
+	var actions = __webpack_require__(262);
 	var store = __webpack_require__(271).configure();
 
 	store.subscribe(function () {
@@ -26750,7 +26750,7 @@
 
 	var hashHistory = _require2.hashHistory;
 
-	var actions = __webpack_require__(264);
+	var actions = __webpack_require__(262);
 
 	var styles = {
 	  error: {
@@ -26823,7 +26823,7 @@
 
 	'use strict';
 
-	var axios = __webpack_require__(244);
+	var axios = __webpack_require__(243);
 
 	module.exports = {
 	  register: function register(username, password, cb) {
@@ -26873,73 +26873,22 @@
 /* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	var React = __webpack_require__(1);
-	var ReactDOM = __webpack_require__(158);
-	var axios = __webpack_require__(244);
-
-	var _require = __webpack_require__(159);
-
-	var connect = _require.connect;
-
-
-	var AddTodo = __webpack_require__(263);
-	var Todos = __webpack_require__(265);
-	var actions = __webpack_require__(264);
-
-	var TodoApp = React.createClass({
-	  displayName: 'TodoApp',
-	  componentDidMount: function componentDidMount() {
-	    var dispatch = this.props.dispatch;
-
-	    dispatch(actions.startAddTodos());
-	  },
-
-	  render: function render() {
-	    var todos = this.props.todos;
-
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(AddTodo, null),
-	      todos.length ? React.createElement(Todos, null) : React.createElement(
-	        'p',
-	        null,
-	        'No todos yet!',
-	        React.createElement('br', null),
-	        'Please add Todos!'
-	      )
-	    );
-	  }
-	});
-
-	module.exports = connect(function (state) {
-	  return {
-	    todos: state.todos
-	  };
-	})(TodoApp);
+	module.exports = __webpack_require__(244);
 
 /***/ },
 /* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(245);
-
-/***/ },
-/* 245 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 
-	var defaults = __webpack_require__(246);
-	var utils = __webpack_require__(247);
-	var dispatchRequest = __webpack_require__(249);
-	var InterceptorManager = __webpack_require__(258);
-	var isAbsoluteURL = __webpack_require__(259);
-	var combineURLs = __webpack_require__(260);
-	var bind = __webpack_require__(261);
-	var transformData = __webpack_require__(253);
+	var defaults = __webpack_require__(245);
+	var utils = __webpack_require__(246);
+	var dispatchRequest = __webpack_require__(248);
+	var InterceptorManager = __webpack_require__(257);
+	var isAbsoluteURL = __webpack_require__(258);
+	var combineURLs = __webpack_require__(259);
+	var bind = __webpack_require__(260);
+	var transformData = __webpack_require__(252);
 
 	function Axios(defaultConfig) {
 	  this.defaults = utils.merge({}, defaultConfig);
@@ -27028,7 +26977,7 @@
 	axios.all = function all(promises) {
 	  return Promise.all(promises);
 	};
-	axios.spread = __webpack_require__(262);
+	axios.spread = __webpack_require__(261);
 
 	// Provide aliases for supported request methods
 	utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
@@ -27056,13 +27005,13 @@
 
 
 /***/ },
-/* 246 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(247);
-	var normalizeHeaderName = __webpack_require__(248);
+	var utils = __webpack_require__(246);
+	var normalizeHeaderName = __webpack_require__(247);
 
 	var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 	var DEFAULT_CONTENT_TYPE = {
@@ -27134,7 +27083,7 @@
 
 
 /***/ },
-/* 247 */
+/* 246 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27417,12 +27366,12 @@
 
 
 /***/ },
-/* 248 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(247);
+	var utils = __webpack_require__(246);
 
 	module.exports = function normalizeHeaderName(headers, normalizedName) {
 	  utils.forEach(headers, function processHeader(value, name) {
@@ -27435,7 +27384,7 @@
 
 
 /***/ },
-/* 249 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -27457,10 +27406,10 @@
 	        adapter = config.adapter;
 	      } else if (typeof XMLHttpRequest !== 'undefined') {
 	        // For browsers use XHR adapter
-	        adapter = __webpack_require__(250);
+	        adapter = __webpack_require__(249);
 	      } else if (typeof process !== 'undefined') {
 	        // For node use HTTP adapter
-	        adapter = __webpack_require__(250);
+	        adapter = __webpack_require__(249);
 	      }
 
 	      if (typeof adapter === 'function') {
@@ -27476,18 +27425,18 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 250 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
-	var utils = __webpack_require__(247);
-	var buildURL = __webpack_require__(251);
-	var parseHeaders = __webpack_require__(252);
-	var transformData = __webpack_require__(253);
-	var isURLSameOrigin = __webpack_require__(254);
-	var btoa = (typeof window !== 'undefined' && window.btoa) || __webpack_require__(255);
-	var settle = __webpack_require__(256);
+	var utils = __webpack_require__(246);
+	var buildURL = __webpack_require__(250);
+	var parseHeaders = __webpack_require__(251);
+	var transformData = __webpack_require__(252);
+	var isURLSameOrigin = __webpack_require__(253);
+	var btoa = (typeof window !== 'undefined' && window.btoa) || __webpack_require__(254);
+	var settle = __webpack_require__(255);
 
 	module.exports = function xhrAdapter(resolve, reject, config) {
 	  var requestData = config.data;
@@ -27584,7 +27533,7 @@
 	  // This is only done if running in a standard browser environment.
 	  // Specifically not if we're in a web worker, or react-native.
 	  if (utils.isStandardBrowserEnv()) {
-	    var cookies = __webpack_require__(257);
+	    var cookies = __webpack_require__(256);
 
 	    // Add xsrf header
 	    var xsrfValue = config.withCredentials || isURLSameOrigin(config.url) ?
@@ -27645,12 +27594,12 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 251 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(247);
+	var utils = __webpack_require__(246);
 
 	function encode(val) {
 	  return encodeURIComponent(val).
@@ -27719,12 +27668,12 @@
 
 
 /***/ },
-/* 252 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(247);
+	var utils = __webpack_require__(246);
 
 	/**
 	 * Parse headers into an object
@@ -27762,12 +27711,12 @@
 
 
 /***/ },
-/* 253 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(247);
+	var utils = __webpack_require__(246);
 
 	/**
 	 * Transform the data for a request or a response
@@ -27788,12 +27737,12 @@
 
 
 /***/ },
-/* 254 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(247);
+	var utils = __webpack_require__(246);
 
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -27862,7 +27811,7 @@
 
 
 /***/ },
-/* 255 */
+/* 254 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27904,7 +27853,7 @@
 
 
 /***/ },
-/* 256 */
+/* 255 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27928,12 +27877,12 @@
 
 
 /***/ },
-/* 257 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(247);
+	var utils = __webpack_require__(246);
 
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -27987,12 +27936,12 @@
 
 
 /***/ },
-/* 258 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(247);
+	var utils = __webpack_require__(246);
 
 	function InterceptorManager() {
 	  this.handlers = [];
@@ -28045,7 +27994,7 @@
 
 
 /***/ },
-/* 259 */
+/* 258 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28065,7 +28014,7 @@
 
 
 /***/ },
-/* 260 */
+/* 259 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28083,7 +28032,7 @@
 
 
 /***/ },
-/* 261 */
+/* 260 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28100,7 +28049,7 @@
 
 
 /***/ },
-/* 262 */
+/* 261 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28133,56 +28082,7 @@
 
 
 /***/ },
-/* 263 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-
-	var _require = __webpack_require__(159);
-
-	var connect = _require.connect;
-
-	var actions = __webpack_require__(264);
-
-	var AddTodo = React.createClass({
-	  displayName: 'AddTodo',
-	  addTodo: function addTodo(e) {
-	    e.preventDefault;
-	    var elem = this.refs.newTask;
-	    var dispatch = this.props.dispatch;
-
-	    if (elem.value.length > 0) {
-	      dispatch(actions.startAddTodo(elem.value));
-	      elem.value = '';
-	    } else {
-	      elem.focus();
-	    }
-	  },
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'h3',
-	        null,
-	        'ADD TODO'
-	      ),
-	      React.createElement('input', { id: 'new-task', className: 'new-task', type: 'text', ref: 'newTask' }),
-	      React.createElement(
-	        'button',
-	        { className: 'add', onClick: this.addTodo },
-	        'Add'
-	      )
-	    );
-	  }
-	});
-
-	module.exports = connect()(AddTodo);
-
-/***/ },
-/* 264 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28190,7 +28090,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var axios = __webpack_require__(244);
+	var axios = __webpack_require__(243);
 
 	var _require = __webpack_require__(181);
 
@@ -28253,7 +28153,7 @@
 	  };
 	};
 
-	var startDeleteTodo = exports.startDeleteTodo = function startDeleteTodo(id, changedTodo) {
+	var startDeleteTodo = exports.startDeleteTodo = function startDeleteTodo(id) {
 	  var headers = { headers: { 'Auth': localStorage.getItem('Auth') } };
 	  return function (dispatch, getState) {
 	    axios.delete('/todos/' + id, headers).then(function (resp) {
@@ -28269,19 +28169,22 @@
 	  });
 	};
 
-	var authSuccess = exports.authSuccess = function authSuccess() {
-	  console.log('authSussess');
+	var authSuccess = exports.authSuccess = function authSuccess(username) {
 	  return {
 	    type: 'AUTH_SUCCESS',
-	    auth: { isAuthenticated: true, errorMessage: '' }
+	    auth: {
+	      isAuthenticated: true,
+	      username: username
+	    }
 	  };
 	};
 
 	var authError = exports.authError = function authError(errorMessage) {
-	  console.log('auth error');
 	  return {
 	    type: 'AUTH_ERROR',
-	    auth: { isAuthenticated: false, errorMessage: errorMessage }
+	    auth: {
+	      errorMessage: errorMessage
+	    }
 	  };
 	};
 
@@ -28291,8 +28194,9 @@
 	      username: username,
 	      password: password
 	    }).then(function (resp) {
+	      console.log(resp.data);
 	      localStorage.setItem('Auth', resp.headers.auth);
-	      dispatch(authSuccess());
+	      dispatch(authSuccess(resp.data.username));
 	      hashHistory.push('/todos');
 	    }).catch(function (e) {
 	      console.log(e);
@@ -28308,7 +28212,7 @@
 	      password: password
 	    }).then(function (resp) {
 	      localStorage.setItem('Auth', resp.headers.auth);
-	      dispatch(authSuccess());
+	      dispatch(authSuccess(resp.data.username));
 	      hashHistory.push('/todos');
 	    }).catch(function (e) {
 	      console.log(e);
@@ -28320,7 +28224,7 @@
 	var logout = exports.logout = function logout() {
 	  return {
 	    type: 'LOGOUT',
-	    auth: { isAuthenticated: false, errorMessage: '' }
+	    auth: { isAuthenticated: false }
 	  };
 	};
 
@@ -28334,6 +28238,106 @@
 	    });
 	  };
 	};
+
+/***/ },
+/* 263 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(158);
+	var axios = __webpack_require__(243);
+
+	var _require = __webpack_require__(159);
+
+	var connect = _require.connect;
+
+
+	var AddTodo = __webpack_require__(264);
+	var Todos = __webpack_require__(265);
+	var actions = __webpack_require__(262);
+
+	var TodoApp = React.createClass({
+	  displayName: 'TodoApp',
+	  componentDidMount: function componentDidMount() {
+	    var dispatch = this.props.dispatch;
+
+	    dispatch(actions.startAddTodos());
+	  },
+
+	  render: function render() {
+	    var todos = this.props.todos;
+
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(AddTodo, null),
+	      todos.length ? React.createElement(Todos, null) : React.createElement(
+	        'p',
+	        null,
+	        'No todos yet!',
+	        React.createElement('br', null),
+	        'Please add Todos!'
+	      )
+	    );
+	  }
+	});
+
+	module.exports = connect(function (state) {
+	  return {
+	    todos: state.todos
+	  };
+	})(TodoApp);
+
+/***/ },
+/* 264 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	var _require = __webpack_require__(159);
+
+	var connect = _require.connect;
+
+	var actions = __webpack_require__(262);
+
+	var AddTodo = React.createClass({
+	  displayName: 'AddTodo',
+	  addTodo: function addTodo(e) {
+	    e.preventDefault;
+	    var elem = this.refs.newTask;
+	    var dispatch = this.props.dispatch;
+
+	    if (elem.value.length > 0) {
+	      dispatch(actions.startAddTodo(elem.value));
+	      elem.value = '';
+	    } else {
+	      elem.focus();
+	    }
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h3',
+	        null,
+	        'ADD TODO'
+	      ),
+	      React.createElement('input', { id: 'new-task', className: 'new-task', type: 'text', ref: 'newTask' }),
+	      React.createElement(
+	        'button',
+	        { className: 'add', onClick: this.addTodo },
+	        'Add'
+	      )
+	    );
+	  }
+	});
+
+	module.exports = connect()(AddTodo);
 
 /***/ },
 /* 265 */
@@ -28422,7 +28426,7 @@
 
 	var connect = _require.connect;
 
-	var actions = __webpack_require__(264);
+	var actions = __webpack_require__(262);
 
 	var Todo = React.createClass({
 	  displayName: 'Todo',
@@ -38362,7 +38366,7 @@
 	var IndexLink = _require2.IndexLink;
 	var hashHistory = _require2.hashHistory;
 
-	var actions = __webpack_require__(264);
+	var actions = __webpack_require__(262);
 
 	var Nav = React.createClass({
 	  displayName: 'Nav',
@@ -38397,9 +38401,23 @@
 	    );
 	  },
 	  loggedIn: function loggedIn() {
+	    var username = this.props.auth.username;
+
 	    return React.createElement(
 	      'ul',
 	      { className: 'nav' },
+	      React.createElement(
+	        'li',
+	        null,
+	        React.createElement(
+	          'p',
+	          null,
+	          'welcome',
+	          React.createElement('span', null),
+	          username,
+	          '!'
+	        )
+	      ),
 	      React.createElement(
 	        'li',
 	        null,
@@ -38450,7 +38468,7 @@
 
 	var connect = _require2.connect;
 
-	var actions = __webpack_require__(264);
+	var actions = __webpack_require__(262);
 
 	var styles = {
 	  error: {
@@ -38583,11 +38601,14 @@
 	  value: true
 	});
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	var authStateDefault = {
 	  isAuthenticated: false,
-	  errorMessage: ''
+	  errorMessage: '',
+	  username: ''
 	};
 
 	var todosReducer = exports.todosReducer = function todosReducer() {
@@ -38599,10 +38620,9 @@
 	      return [].concat(_toConsumableArray(state), [action.todo]);
 	    case 'ADD_TODOS':
 	      return action.todos;
-	    default:
-	      return state;
 	    case 'UPDATE_TODO':
 	      return state.map(function (todo) {
+	        console.log(state);
 	        if (todo.id === action.todo.id) return action.todo;
 	        return todo;
 	      });
@@ -38610,6 +38630,8 @@
 	      return state.filter(function (todo) {
 	        todo.id !== action.id;
 	      });
+	    default:
+	      return state;
 	  }
 	};
 
@@ -38619,14 +38641,14 @@
 
 	  switch (action.type) {
 	    case 'AUTH_SUCCESS':
-	      return action.auth;
+	      return _extends({}, state, action.auth);
 	    case 'AUTH_ERROR':
-	      return action.auth;
+	      return _extends({}, state, action.auth);
 	    case 'LOGOUT':
-	      return action.auth;
+	      return _extends({}, state, action.auth);
 	    default:
 	      return state;
-	  };
+	  }
 	};
 
 /***/ },
@@ -38664,7 +38686,7 @@
 
 
 	// module
-	exports.push([module.id, "body, html {\n  background: #fff;\n  color: #333;\n  font-family: Lato, sans-serif;\n  margin: 0;\n  padding: 0;\n}\n.header {\n  margin: 10px 5%;\n  border-bottom: 2px solid black;\n}\nh1 {\n  float: left;\n  margin: 0;\n  margin-bottom: 10px;\n}\n.nav {\n  float: right;\n  margin-top: 10px;\n}\n.nav li {\n  display: inline;\n  border-bottom: none;\n}\n.nav li a {\n  margin-right: 20px;\n  text-decoration: none;\n  color: black;\n}\n.nav li a:hover {\n  color: #aaa;\n}\n.clear {\n  clear: both;\n}\n.container {\n  display: block;\n  width: 400px;\n  margin: 10px auto 0;\n}\nul {\n  margin: 0;\n  padding: 0;\n}\nli * {\n  float: left;\n}\nli, h3 {\n  clear:both;\n  list-style:none;\n}\ninput, button {\n  outline: none;\n}\nbutton {\n  background: none;\n  border: 0px;\n  color: #888;\n  font-size: 15px;\n  margin: 10px 0 0;\n  font-family: Lato, sans-serif;\n  cursor: pointer;\n}\n.edit, .delete, .add {\n  width: 60px;\n}\nbutton:hover {\n  color: #333;\n}\n.edit:hover {\n  color: green;\n}\n.delete:hover {\n  color: red;\n}\n/* Heading */\nh3 {\n  color: #333;\n  font-weight: 700;\n  font-size: 15px;\n  border-bottom: 2px solid #333;\n  padding: 10px 0 2px;\n  text-transform: uppercase;\n}\ninput[type=\"text\"], input[type=\"password\"] {\n  margin: 0;\n  font-size: 18px;\n  line-height: 18px;\n  height: 18px;\n  padding: 10px;\n  border: 1px solid #ddd;\n  background: #fff;\n  border-radius: 6px;\n  font-family: Lato, sans-serif;\n  color: #888;\n}\ninput[type=\"text\"]:focus {\n  color: #333;\n}\n\n/* New Task */\ninput#new-task {\n  float: left;\n  width: 318px;\n}\np > button:hover {\n  color: #0FC57C;\n}\n\n/* Task list */\nli {\n  overflow: hidden;\n  padding: 5px 0;\n  border-bottom: 1px solid #eee;\n}\nli > input[type=\"checkbox\"] {\n  margin: 0 10px;\n  position: relative;\n  top: 15px;\n}\nli > label {\n  font-size: 18px;\n  line-height: 40px;\n  width: 237px;\n  padding: 0 0 0 5px;\n}\nli >  input[type=\"text\"] {\n  width: 226px;\n}\nli > .delete:hover {\n  color: #CF2323;\n}\n\n/* Completed */\n#completed-tasks label {\n  text-decoration: line-through;\n  color: #888;\n}\n\n/* Edit Task */\nul li .edit-task {\n  display:none;\n}\n\nul li.edit-mode .edit-task {\n  display:block;\n}\n\nul li.edit-mode label {\n  display:none;\n}\n\n/****forms *****/\nform {\n  margin-top: 50px;\n}\nform li {\n  border-bottom: none;\n}\nform ul li input[type=text], form ul li input[type=password] {\n  display: inline;\n  width: 350px;\n}\nform button {\n  border: 2px solid black;\n  border-radius: 30px;\n  padding: 3px 15px;\n}\n", ""]);
+	exports.push([module.id, "body, html {\n  background: #fff;\n  color: #333;\n  font-family: Lato, sans-serif;\n  margin: 0;\n  padding: 0;\n}\n.header {\n  margin: 10px 5%;\n  border-bottom: 2px solid black;\n}\nh1 {\n  float: left;\n  margin: 0;\n  margin-bottom: 10px;\n}\n.nav {\n  float: right;\n  margin-top: 10px;\n}\n.nav li {\n  display: inline;\n  border-bottom: none;\n}\n.nav li a, .nav li p {\n  margin-right: 20px;\n  text-decoration: none;\n  color: black;\n}\n.nav li a:hover {\n  color: #aaa;\n}\n.clear {\n  clear: both;\n}\n.container {\n  display: block;\n  width: 400px;\n  margin: 10px auto 0;\n}\nul {\n  margin: 0;\n  padding: 0;\n}\nli * {\n  float: left;\n}\nli, h3 {\n  clear:both;\n  list-style:none;\n}\ninput, button {\n  outline: none;\n}\nbutton {\n  background: none;\n  border: 0px;\n  color: #888;\n  font-size: 15px;\n  margin: 10px 0 0;\n  font-family: Lato, sans-serif;\n  cursor: pointer;\n}\n.edit, .delete, .add {\n  width: 60px;\n}\nbutton:hover {\n  color: #333;\n}\n.edit:hover {\n  color: green;\n}\n.delete:hover {\n  color: red;\n}\n/* Heading */\nh3 {\n  color: #333;\n  font-weight: 700;\n  font-size: 15px;\n  border-bottom: 2px solid #333;\n  padding: 10px 0 2px;\n  text-transform: uppercase;\n}\ninput[type=\"text\"], input[type=\"password\"] {\n  margin: 0;\n  font-size: 18px;\n  line-height: 18px;\n  height: 18px;\n  padding: 10px;\n  border: 1px solid #ddd;\n  background: #fff;\n  border-radius: 6px;\n  font-family: Lato, sans-serif;\n  color: #888;\n}\ninput[type=\"text\"]:focus {\n  color: #333;\n}\n\n/* New Task */\ninput#new-task {\n  float: left;\n  width: 318px;\n}\np > button:hover {\n  color: #0FC57C;\n}\n\n/* Task list */\nli {\n  overflow: hidden;\n  padding: 5px 0;\n  border-bottom: 1px solid #eee;\n}\nli > input[type=\"checkbox\"] {\n  margin: 0 10px;\n  position: relative;\n  top: 15px;\n}\nli > label {\n  font-size: 18px;\n  line-height: 40px;\n  width: 237px;\n  padding: 0 0 0 5px;\n}\nli >  input[type=\"text\"] {\n  width: 226px;\n}\nli > .delete:hover {\n  color: #CF2323;\n}\n\n/* Completed */\n#completed-tasks label {\n  text-decoration: line-through;\n  color: #888;\n}\n\n/* Edit Task */\nul li .edit-task {\n  display:none;\n}\n\nul li.edit-mode .edit-task {\n  display:block;\n}\n\nul li.edit-mode label {\n  display:none;\n}\n\n/****forms *****/\nform {\n  margin-top: 50px;\n}\nform li {\n  border-bottom: none;\n}\nform ul li input[type=text], form ul li input[type=password] {\n  display: inline;\n  width: 350px;\n}\nform button {\n  border: 2px solid black;\n  border-radius: 30px;\n  padding: 3px 15px;\n}\n", ""]);
 
 	// exports
 
