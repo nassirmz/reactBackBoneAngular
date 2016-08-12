@@ -22,7 +22,7 @@ var Register = React.createClass({
     }
     else {
       this.refs.username.focus();
-      dispatch(actions.authError('Username/Password required!'));
+      dispatch(actions.authRegisterError('Username/Password required!'));
     }
   },
   render() {
@@ -33,7 +33,7 @@ var Register = React.createClass({
             <li><input id="password" placeholder="password" ref="password" type="password" /></li>
             <li><button id="signupButton" onClick={this.onSubmitRegister}>Create Free Account</button></li>
           </ul>
-          {this.props.auth.errorMessage && (<p style={styles.error}>{this.props.auth.errorMessage}!<br/>Please try again!</p>)}
+          {this.props.auth.errorRegisterMessage && (<p style={styles.error}>{this.props.auth.errorRegisterMessage}!<br/>Please try again!</p>)}
         </form>
     );
   }

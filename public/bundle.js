@@ -38484,7 +38484,7 @@
 	      dispatch(actions.startRegisterUser(username, password));
 	    } else {
 	      this.refs.username.focus();
-	      dispatch(actions.authError('Username/Password required!'));
+	      dispatch(actions.authRegisterError('Username/Password required!'));
 	    }
 	  },
 	  render: function render() {
@@ -38514,10 +38514,10 @@
 	          )
 	        )
 	      ),
-	      this.props.auth.errorMessage && React.createElement(
+	      this.props.auth.errorRegisterMessage && React.createElement(
 	        'p',
 	        { style: styles.error },
-	        this.props.auth.errorMessage,
+	        this.props.auth.errorRegisterMessage,
 	        '!',
 	        React.createElement('br', null),
 	        'Please try again!'
