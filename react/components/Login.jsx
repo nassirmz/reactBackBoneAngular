@@ -23,7 +23,7 @@ var Login = React.createClass({
     }
     else {
       this.refs.username.focus();
-      dispatch(actions.authError('Username/Password required!'));
+      dispatch(actions.authLoginError('Username/Password required!'));
     }
   },
   render() {
@@ -34,7 +34,7 @@ var Login = React.createClass({
             <li><input id="password" placeholder="password" type="password" ref="password"/></li>
             <li><button id="signinButton" onClick={this.onSubmitLogin}>Sign In</button></li>
           </ul>
-          {this.props.auth.errorMessage && (<p style={styles.error}>{this.props.auth.errorMessage}!<br/>Please try again!</p>)}
+          {this.props.auth.errorLoginMessage && (<p style={styles.error}>{this.props.auth.errorLoginMessage}!<br/>Please try again!</p>)}
         </form>
     );
   }

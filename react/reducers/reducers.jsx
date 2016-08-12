@@ -1,6 +1,7 @@
 var authStateDefault = {
   isAuthenticated: false,
-  errorMessage: '',
+  errorLoginMessage: '',
+  errorRegisterMessage: '',
   username: ''
 };
 
@@ -36,11 +37,16 @@ export var authReducer = (state = authStateDefault, action) => {
         ...state,
         ...action.auth
       };
-    case 'AUTH_ERROR':
+    case 'AUTH_LOGIN_ERROR':
       return {
         ...state,
         ...action.auth
       };
+    case 'AUTH_REGISTER_ERROR':
+      return {
+        ...state,
+        ...action.auth
+      }
     case 'LOGOUT':
       return {
         ...state,

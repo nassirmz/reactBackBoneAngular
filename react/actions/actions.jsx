@@ -91,11 +91,20 @@ export var authSuccess = (username) => {
   };
 };
 
-export var authError = (errorMessage) => {
+export var authLoginError = (errorLoginMessage) => {
   return {
-    type: 'AUTH_ERROR',
+    type: 'AUTH_LOGIN_ERROR',
     auth: {
-      errorMessage
+      errorLoginMessage
+    }
+  }
+}
+
+export var authRegisterError = (errorRegisterMessage) => {
+  return {
+    type: 'AUTH_REGISTER_ERROR',
+    auth: {
+      errorRegisterMessage
     }
   }
 }
@@ -114,7 +123,7 @@ export var startRegisterUser = (username, password) => {
     })
     .catch((e) => {
       console.log(e);
-      dispatch(authError('Username is unavailable!'))
+      dispatch(authRegisterError('Username is unavailable!'))
     });
   };
 };
@@ -132,7 +141,7 @@ export var startLoginUser = (username, password) => {
     })
     .catch((e) => {
       console.log(e);
-      dispatch(authError('Invalid login information!'))
+      dispatch(authLoginError('Invalid login information!'))
     });
   };
 };
