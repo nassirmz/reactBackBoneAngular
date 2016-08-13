@@ -1,6 +1,11 @@
 #dependecies
+
 node_modules
 backbone/lib/
 
 #db
 *.sqlite
+
+
+#webpack bundle
+public/bundle.js

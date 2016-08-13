@@ -1,0 +1,168 @@
+body, html {
+  background: #fff;
+  color: #333;
+  font-family: Lato, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.header {
+  margin: 10px 5%;
+  border-bottom: 2px solid black;
+}
+h1 {
+  float: left;
+  margin: 0;
+  margin-bottom: 10px;
+}
+.nav {
+  float: right;
+  margin-top: 10px;
+}
+.nav li {
+  display: inline;
+  border-bottom: none;
+}
+.nav li a {
+  margin-right: 20px;
+  text-decoration: none;
+  color: black;
+}
+.nav li a:hover {
+  color: #aaa;
+}
+.clear {
+  clear: both;
+}
+.container {
+  display: block;
+  width: 400px;
+  margin: 10px auto 0;
+}
+ul {
+  margin: 0;
+  padding: 0;
+}
+li * {
+  float: left;
+}
+li, h3 {
+  clear:both;
+  list-style:none;
+}
+input, button {
+  outline: none;
+}
+button {
+  background: none;
+  border: 0px;
+  color: #888;
+  font-size: 15px;
+  margin: 10px 0 0;
+  font-family: Lato, sans-serif;
+  cursor: pointer;
+}
+.edit, .delete, .add {
+  width: 60px;
+}
+button:hover {
+  color: #333;
+}
+.edit:hover {
+  color: green;
+}
+.delete:hover {
+  color: red;
+}
+/* Heading */
+h3 {
+  color: #333;
+  font-weight: 700;
+  font-size: 15px;
+  border-bottom: 2px solid #333;
+  padding: 10px 0 2px;
+  text-transform: uppercase;
+}
+input[type="text"], input[type="password"] {
+  margin: 0;
+  font-size: 18px;
+  line-height: 18px;
+  height: 18px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 6px;
+  font-family: Lato, sans-serif;
+  color: #888;
+}
+input[type="text"]:focus {
+  color: #333;
+}
+
+/* New Task */
+input#new-task {
+  float: left;
+  width: 318px;
+}
+p > button:hover {
+  color: #0FC57C;
+}
+
+/* Task list */
+li {
+  overflow: hidden;
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+}
+li > input[type="checkbox"] {
+  margin: 0 10px;
+  position: relative;
+  top: 15px;
+}
+li > label {
+  font-size: 18px;
+  line-height: 40px;
+  width: 237px;
+  padding: 0 0 0 5px;
+}
+li >  input[type="text"] {
+  width: 226px;
+}
+li > .delete:hover {
+  color: #CF2323;
+}
+
+/* Completed */
+#completed-tasks label {
+  text-decoration: line-through;
+  color: #888;
+}
+
+/* Edit Task */
+ul li .edit-task {
+  display:none;
+}
+
+ul li.edit-mode .edit-task {
+  display:block;
+}
+
+ul li.edit-mode label {
+  display:none;
+}
+
+/****forms *****/
+form {
+  margin-top: 50px;
+}
+form li {
+  border-bottom: none;
+}
+form ul li input[type=text], form ul li input[type=password] {
+  display: inline;
+  width: 350px;
+}
+form button {
+  border: 2px solid black;
+  border-radius: 30px;
+  padding: 3px 15px;
+}
