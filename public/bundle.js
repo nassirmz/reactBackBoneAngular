@@ -38618,13 +38618,14 @@
 	      return action.todos;
 	    case 'UPDATE_TODO':
 	      return state.map(function (todo) {
-	        console.log(state);
 	        if (todo.id === action.todo.id) return action.todo;
 	        return todo;
 	      });
 	    case 'DELETE_TODO':
 	      return state.filter(function (todo) {
-	        todo.id !== action.id;
+	        if (todo.id !== action.id) {
+	          return todo;
+	        }
 	      });
 	    default:
 	      return state;

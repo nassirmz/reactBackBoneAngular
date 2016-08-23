@@ -16,14 +16,15 @@ export var todosReducer = (state = [], action) => {
       return action.todos;
     case 'UPDATE_TODO':
       return state.map((todo) => {
-        console.log(state);
         if(todo.id === action.todo.id)
           return action.todo;
         return todo;
       });
     case 'DELETE_TODO':
       return state.filter((todo) => {
-        todo.id !== action.id;
+        if(todo.id !== action.id) {
+          return todo;
+        }
       });
     default:
       return state;
