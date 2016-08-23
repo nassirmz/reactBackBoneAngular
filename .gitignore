@@ -9,3 +9,6 @@ backbone/lib/
 
 #webpack bundle
 public/bundle.js
+
+#ignore amazon key
+*.pem
