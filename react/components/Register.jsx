@@ -35,7 +35,7 @@ var Register = React.createClass({
             <li><input id="password" placeholder="password" ref="password" type="password" /></li>
             <li><button id="signupButton" onClick={this.onSubmitRegister}>Create Free Account</button></li>
           </ul>
-          {this.props.auth.errorRegisterMessage && (<p style={styles.error}>{this.props.auth.errorRegisterMessage}!<br/>Please try again!</p>)}
+          {this.props.errorMessage && (<p style={styles.error}>{this.props.errorMessage}!<br/>Please try again!</p>)}
         </form>
     );
   }
@@ -43,5 +43,5 @@ var Register = React.createClass({
 
 //connect component with state and export
 module.exports = connect((state) => {
-  return {  auth: state.auth };
+  return {  errorMessage: state.auth.errorRegisterMessage };
 })(Register);

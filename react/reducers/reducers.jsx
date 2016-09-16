@@ -38,7 +38,7 @@ export var authReducer = (state = authStateDefault, action) => {
   switch (action.type) {
     case 'AUTH_SUCCESS':
       return {
-        ...state,
+        ...authStateDefault,
         ...action.auth
       };
     case 'AUTH_LOGIN_ERROR':

@@ -26761,6 +26761,10 @@
 
 	var Login = React.createClass({
 	  displayName: 'Login',
+
+
+	  //handle login click events
+
 	  onSubmitLogin: function onSubmitLogin(e) {
 	    var dispatch = this.props.dispatch;
 
@@ -26770,11 +26774,14 @@
 	    if (username.length > 0 && password.length > 0) {
 	      dispatch(actions.startLoginUser(username, password));
 	    } else {
+	      //focus on username input before sending a request if user doesn't type anyting
 	      this.refs.username.focus();
 	      dispatch(actions.authLoginError('Username/Password required!'));
 	    }
 	  },
 	  render: function render() {
+	    console.log(this.props.errorMessage);
+	    //render the login component on the page
 	    return React.createElement(
 	      'form',
 	      null,
@@ -26801,10 +26808,10 @@
 	          )
 	        )
 	      ),
-	      this.props.auth.errorLoginMessage && React.createElement(
+	      this.props.errorMessage && React.createElement(
 	        'p',
 	        { style: styles.error },
-	        this.props.auth.errorLoginMessage,
+	        this.props.errorMessage,
 	        '!',
 	        React.createElement('br', null),
 	        'Please try again!'
@@ -26814,7 +26821,7 @@
 	});
 
 	module.exports = connect(function (state) {
-	  return { auth: state.auth };
+	  return { errorMessage: state.auth.errorLoginMessage };
 	})(Login);
 
 /***/ },
@@ -26825,6 +26832,7 @@
 
 	var axios = __webpack_require__(243);
 
+	//Authentication API Requests
 	module.exports = {
 	  register: function register(username, password, cb) {
 	    cb = arguments[arguments.length - 1];
@@ -26845,9 +26853,6 @@
 	  logout: function logout(cb) {
 	    var token = localStorage.getItem('Auth');
 	    localStorage.removeItem('Auth');
-	    axios.delete('users/logout', { headers: { 'Auth': token } }).then(function (data) {
-	      console.log(data);
-	    });
 	  },
 	  handleAuth: function handleAuth(promise, cb) {
 	    promise.then(function (resp) {
@@ -28095,6 +28100,9 @@
 	var _require = __webpack_require__(181);
 
 	var hashHistory = _require.hashHistory;
+
+	//Action creator for adding Todo
+
 	var addTodo = exports.addTodo = function addTodo(todo) {
 	  return {
 	    type: 'ADD_TODO',
@@ -28109,6 +28117,7 @@
 	  };
 	};
 
+	//action creator for updating todo
 	var updateTodo = exports.updateTodo = function updateTodo(todo) {
 	  return {
 	    type: 'UPDATE_TODO',
@@ -28116,6 +28125,7 @@
 	  };
 	};
 
+	//action creator for deleting todo
 	var deleteTodo = exports.deleteTodo = function deleteTodo(id) {
 	  return {
 	    type: 'DELETE_TODO',
@@ -28162,6 +28172,7 @@
 	  };
 	};
 
+	//Action creator for handling Authentication
 	var handleAuth = exports.handleAuth = function handleAuth(promise, cb) {
 	  promise.then(function (resp) {
 	    localStorage.setItem('Auth', resp.headers.auth);
@@ -28169,6 +28180,7 @@
 	  });
 	};
 
+	//Action creator for  login/Register success
 	var authSuccess = exports.authSuccess = function authSuccess(username) {
 	  return {
 	    type: 'AUTH_SUCCESS',
@@ -28179,6 +28191,7 @@
 	  };
 	};
 
+	//Action creator for login error
 	var authLoginError = exports.authLoginError = function authLoginError(errorLoginMessage) {
 	  return {
 	    type: 'AUTH_LOGIN_ERROR',
@@ -28188,6 +28201,7 @@
 	  };
 	};
 
+	//Action creator for Registration error
 	var authRegisterError = exports.authRegisterError = function authRegisterError(errorRegisterMessage) {
 	  return {
 	    type: 'AUTH_REGISTER_ERROR',
@@ -28230,6 +28244,7 @@
 	  };
 	};
 
+	//Action creator for logging out
 	var logout = exports.logout = function logout() {
 	  return {
 	    type: 'LOGOUT',
@@ -28240,11 +28255,9 @@
 	var startLogout = exports.startLogout = function startLogout() {
 	  var headers = { headers: { Auth: localStorage.getItem('Auth') } };
 	  return function (dispatch, getState) {
-	    axios.delete('/users/logout', headers).then(function (resp) {
-	      localStorage.removeItem('Auth');
-	      dispatch(logout());
-	      hashHistory.push('/');
-	    });
+	    localStorage.removeItem('Auth');
+	    dispatch(logout());
+	    hashHistory.push('/');
 	  };
 	};
 
@@ -28357,12 +28370,13 @@
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var React = __webpack_require__(1);
-	var Todo = __webpack_require__(266);
 
 	var _require = __webpack_require__(159);
 
 	var connect = _require.connect;
 
+
+	var Todo = __webpack_require__(266);
 
 	var Todos = React.createClass({
 	  displayName: 'Todos',
@@ -28388,6 +28402,7 @@
 	        return React.createElement(Todo, _extends({}, todo, { key: todo.id }));
 	      });
 	    };
+	    //render completed todos and incomplete todos in separate divs
 	    return React.createElement(
 	      'div',
 	      null,
@@ -28434,6 +28449,7 @@
 	var _require = __webpack_require__(159);
 
 	var connect = _require.connect;
+
 
 	var actions = __webpack_require__(262);
 
@@ -38342,6 +38358,7 @@
 	var Main = React.createClass({
 	  displayName: 'Main',
 	  render: function render() {
+	    //render main component
 	    return React.createElement(
 	      'div',
 	      { className: 'main' },
@@ -38379,6 +38396,8 @@
 
 	var Nav = React.createClass({
 	  displayName: 'Nav',
+
+	  //render signout button for authenticated users and signin and create account buttons for unauthenticated users
 	  onSubmitLogout: function onSubmitLogout(e) {
 	    var dispatch = this.props.dispatch;
 
@@ -38441,6 +38460,7 @@
 	  }
 	});
 
+	//connect state to Component
 	module.exports = connect(function (state) {
 	  return {
 	    auth: state.auth
@@ -38463,6 +38483,7 @@
 
 	var connect = _require2.connect;
 
+
 	var actions = __webpack_require__(262);
 
 	var styles = {
@@ -38474,6 +38495,9 @@
 
 	var Register = React.createClass({
 	  displayName: 'Register',
+
+
+	  //handle registration
 	  onSubmitRegister: function onSubmitRegister(e) {
 	    var dispatch = this.props.dispatch;
 
@@ -38514,10 +38538,10 @@
 	          )
 	        )
 	      ),
-	      this.props.auth.errorRegisterMessage && React.createElement(
+	      this.props.errorMessage && React.createElement(
 	        'p',
 	        { style: styles.error },
-	        this.props.auth.errorRegisterMessage,
+	        this.props.errorMessage,
 	        '!',
 	        React.createElement('br', null),
 	        'Please try again!'
@@ -38526,8 +38550,9 @@
 	  }
 	});
 
+	//connect component with state and export
 	module.exports = connect(function (state) {
-	  return { auth: state.auth };
+	  return { errorMessage: state.auth.errorRegisterMessage };
 	})(Register);
 
 /***/ },
@@ -38546,13 +38571,18 @@
 
 	var todosReducer = _require.todosReducer;
 	var authReducer = _require.authReducer;
+
+	//combine reducers and export
+
 	var configure = exports.configure = function configure() {
 	  var reducer = redux.combineReducers({
 	    todos: todosReducer,
 	    auth: authReducer
 	  });
 
-	  var store = redux.createStore(reducer, redux.compose(redux.applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : function (f) {
+	  var store = redux.createStore(reducer, redux.compose(
+	  //apply Thunk middleware
+	  redux.applyMiddleware(thunk), window.devToolsExtension ? window.devToolsExtension() : function (f) {
 	    return f;
 	  }));
 	  return store;
@@ -38600,6 +38630,7 @@
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
+	//Authentication default state
 	var authStateDefault = {
 	  isAuthenticated: false,
 	  errorLoginMessage: '',
@@ -38607,6 +38638,7 @@
 	  username: ''
 	};
 
+	//todos reducer
 	var todosReducer = exports.todosReducer = function todosReducer() {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 	  var action = arguments[1];
@@ -38632,13 +38664,14 @@
 	  }
 	};
 
+	//Authentication state reducer
 	var authReducer = exports.authReducer = function authReducer() {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? authStateDefault : arguments[0];
 	  var action = arguments[1];
 
 	  switch (action.type) {
 	    case 'AUTH_SUCCESS':
-	      return _extends({}, state, action.auth);
+	      return _extends({}, authStateDefault, action.auth);
 	    case 'AUTH_LOGIN_ERROR':
 	      return _extends({}, state, action.auth);
 	    case 'AUTH_REGISTER_ERROR':

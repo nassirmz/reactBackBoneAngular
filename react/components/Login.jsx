@@ -15,6 +15,8 @@ var styles = {
 var Login = React.createClass({
 
   //handle login click events
+  
+
   onSubmitLogin(e) {
     var {dispatch} = this.props;
     e.preventDefault();
@@ -30,7 +32,7 @@ var Login = React.createClass({
     }
   },
   render() {
-    
+    console.log(this.props.errorMessage)
     //render the login component on the page
     return (
         <form>
@@ -39,12 +41,12 @@ var Login = React.createClass({
             <li><input id="password" placeholder="password" type="password" ref="password"/></li>
             <li><button id="signinButton" onClick={this.onSubmitLogin}>Sign In</button></li>
           </ul>
-          {this.props.auth.errorLoginMessage && (<p style={styles.error}>{this.props.auth.errorLoginMessage}!<br/>Please try again!</p>)}
+          {this.props.errorMessage && (<p style={styles.error}>{this.props.errorMessage}!<br/>Please try again!</p>)}
         </form>
     );
   }
 });
 
 module.exports = connect((state) => {
-  return {  auth: state.auth };
+  return {  errorMessage: state.auth.errorLoginMessage };
 })(Login);
