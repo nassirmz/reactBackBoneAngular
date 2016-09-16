@@ -11,6 +11,7 @@ module.exports = {
     });
     this.handleAuth(promise, cb);
   },
+
   login (username, password, cb) {
     var promise = axios.post('/users/login', {
       username: username,
@@ -19,14 +20,12 @@ module.exports = {
     this.handleAuth(promise, cb);
 
   },
+
   logout (cb) {
     var token = localStorage.getItem('Auth');
     localStorage.removeItem('Auth');
-    axios.delete('users/logout', { headers: { 'Auth': token }})
-    .then((data) => {
-      console.log(data);
-    });
   },
+
   handleAuth (promise, cb) {
     promise.then((resp) => {
       if (resp.headers.auth) {
@@ -42,6 +41,7 @@ module.exports = {
       console.error(e);
     })
   },
+
   isAuthenticated () {
     var token = localStorage.getItem('Auth');
     return token ? true : false;
