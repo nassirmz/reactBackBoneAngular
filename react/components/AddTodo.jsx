@@ -3,6 +3,7 @@ var {connect} = require('react-redux');
 var actions = require('actions');
 
 var AddTodo = React.createClass({
+
   addTodo (e) {
     e.preventDefault;
     var elem = this.refs.newTask;

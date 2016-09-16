@@ -1,3 +1,4 @@
+//Authentication default state
 var authStateDefault = {
   isAuthenticated: false,
   errorLoginMessage: '',
@@ -5,6 +6,7 @@ var authStateDefault = {
   username: ''
 };
 
+//todos reducer
 export var todosReducer = (state = [], action) => {
   switch (action.type) {
     case 'ADD_TODO':
@@ -31,6 +33,7 @@ export var todosReducer = (state = [], action) => {
   }
 };
 
+//Authentication state reducer
 export var authReducer = (state = authStateDefault, action) => {
   switch (action.type) {
     case 'AUTH_SUCCESS':

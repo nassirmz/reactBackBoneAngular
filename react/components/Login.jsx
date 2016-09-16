@@ -13,6 +13,8 @@ var styles = {
 };
 
 var Login = React.createClass({
+
+  //handle login click events
   onSubmitLogin(e) {
     var {dispatch} = this.props;
     e.preventDefault();
@@ -22,11 +24,14 @@ var Login = React.createClass({
       dispatch(actions.startLoginUser(username, password));
     }
     else {
+      //focus on username input before sending a request if user doesn't type anyting
       this.refs.username.focus();
       dispatch(actions.authLoginError('Username/Password required!'));
     }
   },
   render() {
+    
+    //render the login component on the page
     return (
         <form>
           <ul>

@@ -2,6 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var $ = require('jquery');
 var {connect} = require('react-redux');
+
 var actions = require('actions');
 
 var Todo = React.createClass({

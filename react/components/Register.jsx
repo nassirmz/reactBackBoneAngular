@@ -1,7 +1,7 @@
 var React = require('react');
-
 var {hashHistory} = require('react-router');
 var {connect} = require('react-redux');
+
 var actions = require('actions');
 
 var styles = {
@@ -12,6 +12,8 @@ var styles = {
 };
 
 var Register = React.createClass({
+
+  //handle registration
   onSubmitRegister (e) {
     var {dispatch} = this.props;
     e.preventDefault();
@@ -33,12 +35,14 @@ var Register = React.createClass({
             <li><input id="password" placeholder="password" ref="password" type="password" /></li>
             <li><button id="signupButton" onClick={this.onSubmitRegister}>Create Free Account</button></li>
           </ul>
+          //display error messages on error signup
           {this.props.auth.errorRegisterMessage && (<p style={styles.error}>{this.props.auth.errorRegisterMessage}!<br/>Please try again!</p>)}
         </form>
     );
   }
 });
 
+//connect component with state and export
 module.exports = connect((state) => {
   return {  auth: state.auth };
 })(Register);

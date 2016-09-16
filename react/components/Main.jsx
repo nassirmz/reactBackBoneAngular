@@ -6,6 +6,7 @@ var Login = require('Login');
 
 var Main = React.createClass({
   render () {
+    //render main component
     return (
       <div className="main">
         <Nav/>

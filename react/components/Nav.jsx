@@ -5,6 +5,7 @@ var {Link, IndexLink, hashHistory} = require('react-router');
 var actions = require('actions');
 
 var Nav = React.createClass({
+  //render signout button for authenticated users and signin and create account buttons for unauthenticated users
   onSubmitLogout (e) {
     var {dispatch} = this.props;
     e.preventDefault();
@@ -37,6 +38,7 @@ var Nav = React.createClass({
   }
 });
 
+//connect state to Component
 module.exports = connect((state) => {
   return {
     auth: state.auth

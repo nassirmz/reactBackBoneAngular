@@ -1,6 +1,7 @@
 var React = require('react');
-var Todo = require('Todo');
 var {connect} = require('react-redux');
+
+var Todo = require('Todo');
 
 var Todos = React.createClass({
   render () {
@@ -28,6 +29,7 @@ var Todos = React.createClass({
         );
       })
     };
+    //render completed todos and incomplete todos in separate divs
     return (
       <div>
         <h3>Todo</h3>

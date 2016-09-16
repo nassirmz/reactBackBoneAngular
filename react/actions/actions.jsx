@@ -1,6 +1,7 @@
 var axios = require('axios');
 var {hashHistory} = require('react-router');
 
+//Action creator for adding Todo
 export var addTodo = (todo) => {
   return {
     type: 'ADD_TODO',
@@ -15,6 +16,7 @@ export var addTodos = (todos) => {
   };
 };
 
+//action creator for updating todo
 export var updateTodo = (todo) => {
   return {
     type: 'UPDATE_TODO',
@@ -22,6 +24,7 @@ export var updateTodo = (todo) => {
   };
 };
 
+//action creator for deleting todo
 export var deleteTodo = (id) => {
   return {
     type: 'DELETE_TODO',
@@ -74,6 +77,7 @@ export var startDeleteTodo = (id) => {
   };
 };
 
+//Action creator for handling Authentication
 export var handleAuth = (promise, cb) => {
   promise.then((resp) => {
     localStorage.setItem('Auth', resp.headers.auth);
@@ -81,6 +85,7 @@ export var handleAuth = (promise, cb) => {
   });
 };
 
+//Action creator for  login/Register success
 export var authSuccess = (username) => {
   return {
     type: 'AUTH_SUCCESS',
@@ -91,6 +96,7 @@ export var authSuccess = (username) => {
   };
 };
 
+//Action creator for login error
 export var authLoginError = (errorLoginMessage) => {
   return {
     type: 'AUTH_LOGIN_ERROR',
@@ -100,6 +106,7 @@ export var authLoginError = (errorLoginMessage) => {
   }
 }
 
+//Action creator for Registration error
 export var authRegisterError = (errorRegisterMessage) => {
   return {
     type: 'AUTH_REGISTER_ERROR',
@@ -146,6 +153,7 @@ export var startLoginUser = (username, password) => {
   };
 };
 
+//Action creator for logging out
 export var logout = () => {
   return {
     type: 'LOGOUT',

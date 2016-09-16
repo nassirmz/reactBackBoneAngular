@@ -1,5 +1,6 @@
 var axios = require('axios');
 
+//Authentication API Requests
 module.exports = {
   register (username, password, cb) {
     cb = arguments[arguments.length - 1];

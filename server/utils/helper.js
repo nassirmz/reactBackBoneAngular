@@ -1,70 +1,36 @@
 var db = require('./../db/db');
 var bcrypt = require('bcrypt');
 var cryptojs = require('crypto-js');
+var jwt = require('jsonwebtoken');
 
 module.exports = {
-  getAllTodos: function(req, res) {
+
+  //get request for all todos
+  getAllTodos: function(req, res, next) {
     req.user
       .getTodos()
-        .then(function (result) {
-          res.status(200).send(result);
-        });
+      .then(function (result) {
+        res.status(200).send(result);
+      })
+      .catch(next);
   },
-  createTodo: function (req, res) {
+
+  //creating a todo
+  createTodo: function (req, res, next) {
     db.todo
       .create(req.body)
       .then(function (result) {
-        req.user
-          .addTodo(result)
-          .then(function () {
-            return result.reload();
-          })
-          .then(function (result) {
-            res.status(201).send(result);
-          }, function (err) {
-            console.error(err);
-          });
-      }, function (err) {
-        console.error(err);
+        return Promise.all([req.user.addTodo(result), result]);
       })
-      .catch(function (err) {
-        console.log(err);
-        res.status(400).send(err);
-      });
-  },
-  createUser: function (req, res) {
-    db.user
-      .create(req.body)
       .then(function (result) {
-        var token = result.generateToken('authentication');
-        userInstance = result;
-        return db.token.create({
-          token: token
-        })
-        .then(function (tokenInstance) {
-          res.header('Auth', tokenInstance.get('token')).send(userInstance.toPublicJSON());
-        });
-        }, function (err) {
-          res.status(500).send(err);
-          console.log(err);
-        })
-        .catch(function (err) {
-          console.log(err);
-          res.status(401).send();
-        });
-  },
-  getUser: function (req, res) {
-    var userID = Number(req.params.id);
-    db.user
-      .findById(userID)
-      .then(function (result) {
-        res.send(result);
+        res.status(201).send(result[1]);
       })
-      .catch(function (err) {
-        res.status(401).send(err);
-      });
+      .catch(next);
   },
-  updateTodo: function (req, res) {
+
+
+  //update todo
+  updateTodo: function (req, res, next) {
     var userID = Number(req.params.id);
     db.todo
       .findOne({
@@ -74,18 +40,17 @@ module.exports = {
         }
       })
       .then(function (result) {
-        result
+        return result
           .update(req.body)
-          .then(function (result) {
-            res.send(result);
-          });
       })
-      .catch(function (err) {
-        console.log(err);
-        res.status(400).send(err);
-      });
+      .then(function (result) {
+        res.send(result);
+      })
+      .catch(next);
   },
-  getTodo: function (req, res) {
+
+  //get a single todo
+  getTodo: function (req, res, next) {
     var todoID = Number(req.params.id);
     db.todo
       .findOne({
@@ -96,13 +61,12 @@ module.exports = {
       })
       .then(function (result) {
         res.status(200).send(result);
-
       })
-      .catch(function (err) {
-        res.status(500).send(err);
-      });
+      .catch(next);
   },
-  deleteTodo: function (req, res) {
+
+  //delete a single todo
+  deleteTodo: function (req, res, next) {
     var todoID = Number(req.params.id);
     db.todo
       .destroy({
@@ -112,15 +76,31 @@ module.exports = {
         }
       })
       .then(function (result) {
-        console.log(result);
         res.sendStatus(200);
       })
+      .catch(next);
+  },
+
+  //creating a new user
+  createUser: function (req, res) {
+    db.user
+      .create(req.body)
+      .then(function (result) {
+        var token = result.generateToken('authentication');
+        userInstance = result;
+        return token;
+      })
+      .then(function (token) {
+        res.header('Auth', token).send(userInstance.toPublicJSON());
+      })
       .catch(function (err) {
-        res.status(500).send(err);
+        console.log(err);
+        res.status(401).send();
       });
   },
+
+  //login user
   loginUser: function (req, res) {
-    var userInstance;
     db.user
       .findOne({
         where: {
@@ -128,57 +108,50 @@ module.exports = {
         }
       })
       .then(function (result) {
-        if (!result || !bcrypt.compareSync(req.body.password, result.get('password_hash'))) {
-          res.status(401).send();
-        }
-        var token = result.generateToken('authentication');
-        userInstance = result;
-        return db.token.create({
-          token: token
-        })
-        .then(function (tokenInstance) {
-          res.header('Auth', tokenInstance.get('token')).send(userInstance.toPublicJSON());
-        });
-      }, function (err) {
-        res.status(500).send(err);
-        console.log(err);
+        var isAuthenticated = !result
+          || !bcrypt.compareSync(req.body.password, result.get('password_hash'));
+        var token = result.generateToken();
+        return isAuthenticated
+          ? [result, token]
+          : null;
+      })
+      .then(function (result) {
+        result
+          ? res.header('Auth', result[1]).send(result[0].toPublicJSON())
+          : res.status(401).send();
       })
       .catch(function (err) {
-        console.log(err);
+        console.log(err.stack);
         res.status(401).send();
       });
   },
-  logoutUser: function (req, res) {
-    req.token
-      .destroy()
-      .then(function (result) {
-        res.status(204).send(result);
-      })
-      .catch(function (err) {
-        res.status(500).send(err);
-      });
-  },
+
+  //require authentication middleware
   requireAuthentication: function (req, res, next) {
     var token = req.get('Auth') || '';
-    db.token
-      .findOne({
-      where: {
-        tokenHash: cryptojs.MD5(token).toString()
+    console.log(token);
+    jwt.verify(token, 'qwerty098', function (err, data) {
+      if(err) {
+        return next(err);
       }
-      })
-      .then(function (tokenInstance) {
-        if(!tokenInstance) {
-          throw new Error();
-        }
-        req.token = tokenInstance;
-        return db.user.findByToken(token);
-      })
-      .then(function (user) {
-        req.user = user;
-        next();
-      })
-      .catch(function (err) {
-        res.status(401).send(err);
-      });
+      db.user
+        .findOne({
+          where: {
+            id: data.id
+          }
+        })
+        .then(function (user) {
+          req.user = user;
+          next();
+        })
+        .catch(next);
+    });
+  },
+
+  //global error handler
+  error: function (err, req, res, next) {
+    console.error(err);
+    console.log(err.stack);
+    res.status(400).send();
   }
 };
