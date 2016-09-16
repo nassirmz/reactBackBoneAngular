@@ -17,7 +17,6 @@ var TodoApp = React.createClass({
     return (
       <div>
         <AddTodo/>
-        // display Todos Component or a p element that indicate no todos yet if there is no todos
         {todos.length ? (<Todos/>) : (<p>No todos yet!<br/>Please add Todos!</p>)}
       </div>
     );

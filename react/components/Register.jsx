@@ -35,7 +35,6 @@ var Register = React.createClass({
             <li><input id="password" placeholder="password" ref="password" type="password" /></li>
             <li><button id="signupButton" onClick={this.onSubmitRegister}>Create Free Account</button></li>
           </ul>
-          //display error messages on error signup
           {this.props.auth.errorRegisterMessage && (<p style={styles.error}>{this.props.auth.errorRegisterMessage}!<br/>Please try again!</p>)}
         </form>
     );
