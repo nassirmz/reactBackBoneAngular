@@ -34,46 +34,15 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   }, {
-    classMethods: {
-      findByToken: function (token) {
-        return new Promise(function (resolve, reject) {
-          try {
-            var decodedJWT = jwt.verify(token, 'qwerty098');
-            var bytes = cryptojs.AES.decrypt(decodedJWT.token, 'abc123!@#!');
-            var tokenData = JSON.parse(bytes.toString(cryptojs.enc.Utf8));
-            user
-              .findById(tokenData.id)
-              .then(function (result) {
-                if (result) {
-                  resolve(result);
-                } else {
-                  reject();
-                }
-              }, function (err) {
-                console.log(err);
-                reject();
-              });
-          } catch (err) {
-            reject();
-            console.log(err);
-          }
-        });
-      }
-    },
     instanceMethods: {
       toPublicJSON: function () {
         var json = this.toJSON();
         return _.pick(json, 'id', 'email', 'createdAt', 'updatedAt');
       },
-      generateToken: function (type) {
-        if (!_.isString(type)) {
-          return undefined;
-        }
+      generateToken: function () {
         try {
-          var stringData = JSON.stringify( {id: this.get('id'), type: type });
-          var encryptedData = cryptojs.AES.encrypt(stringData, 'abc123!@#!').toString();
           var token = jwt.sign({
-            token: encryptedData
+            id: this.get('id')
           }, 'qwerty098');
           return token;
         } catch (err) {
