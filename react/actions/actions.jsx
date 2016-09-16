@@ -164,11 +164,8 @@ export var logout = () => {
 export var startLogout = () => {
   var headers = { headers: { Auth: localStorage.getItem('Auth')}};
   return (dispatch, getState) => {
-    axios.delete('/users/logout', headers)
-    .then((resp) => {
-      localStorage.removeItem('Auth');
-      dispatch(logout());
-      hashHistory.push('/');
-    })
+    localStorage.removeItem('Auth');
+    dispatch(logout());
+    hashHistory.push('/');
   }
 }
