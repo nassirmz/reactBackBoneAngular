@@ -12,3 +12,6 @@ public/bundle.js
 
 #ignore amazon key
 *.pem
+
+# logs
+*.log
